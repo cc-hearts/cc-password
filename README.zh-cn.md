@@ -16,11 +16,10 @@ electron-password 是一款基于 Electron 和 Vue 3 的桌面端密码管理工
 
 ## 技术栈
 
-Electron - 用于构建跨平台桌面应用程序的开源框架
-Vue 3 - 用于构建用户界面的渐进式 JavaScript 框架
-Vue Router - 用于管理应用程序路由的官方 Vue.js 路由器
-Vuex - 用于管理应用程序状态的官方 Vue.js 状态管理库
-其他依赖项详见 package.json 文件
+* `Electron` - 用于构建跨平台桌面应用程序的开源框架
+* `Vue 3` - 用于构建用户界面的渐进式 JavaScript 框架
+* `Vue Router` - 用于管理应用程序路由的官方 Vue.js 路由器
+* 其他依赖项详见 `package.json` 文件
 
 ## 贡献
 

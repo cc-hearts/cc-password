@@ -1,5 +1,7 @@
 # electron-password
 
+[简体中文](./README.zh-cn.md)
+
 electron-password is a desktop password management tool built with Electron and Vue 3.
 
 ## Features
@@ -16,11 +18,10 @@ electron-password is a desktop password management tool built with Electron and 
 
 ## Tech Stack
 
-Electron - An open-source framework for building cross-platform desktop applications
-Vue 3 - A progressive JavaScript framework for building user interfaces
-Vue Router - The official Vue.js router for managing application routes
-Vuex - The official Vue.js state management library for managing application state
-Other dependencies listed in the package.json file
+* `Electron` - An open-source framework for building cross-platform desktop applications
+* `Vue 3` - A progressive JavaScript framework for building user interfaces
+* `Vue Router` - The official Vue.js router for managing application routes
+Other dependencies listed in the `package.json` file
 
 ## Contribution
 

@@ -1,4 +1,3 @@
-
 import { type Platform } from 'esbuild'
 export const esbuildConfig = {
   entryPoints: ['./scripts/main.ts'],

@@ -10,7 +10,10 @@ const toGithub = () => {
 </script>
 
 <template>
-  <header class="flex justify-between items-center px-3 shrink-0" :class="[ns.cls]">
+  <header
+    class="flex justify-between items-center px-3 shrink-0"
+    :class="[ns.cls]"
+  >
     <slot name="left">
       <div></div>
     </slot>
@@ -29,7 +32,7 @@ const toGithub = () => {
 @include b('header') {
   --header-shadow: rgb(229, 230, 235);
   height: 60px;
-  box-shadow: 0 1px 0 var(--header-shadow);
+  // box-shadow: 0 1px 0 var(--header-shadow);
 
   &__icon {
     color: var(--color-text-2);

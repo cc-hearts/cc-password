@@ -2,10 +2,16 @@ import { protocol } from 'electron'
 import { createReadStream } from 'node:fs'
 import { extname, join } from 'node:path'
 const schemaConfig = {
-  standard: true, supportFetchAPI: true, bypassCSP: true, corsEnabled: true, stream: true
+  standard: true,
+  supportFetchAPI: true,
+  bypassCSP: true,
+  corsEnabled: true,
+  stream: true,
 }
 
-protocol.registerSchemesAsPrivileged([{ scheme: "app", privileges: schemaConfig }]);
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'app', privileges: schemaConfig },
+])
 
 function getMimeType(extension: string) {
   const mimeTypes = {
@@ -63,27 +69,27 @@ function getMimeType(extension: string) {
     '.3gp': 'video/3gpp',
     '.3g2': 'video/3gpp2',
   }
-  return Reflect.get(mimeTypes, extension) || ""
+  return Reflect.get(mimeTypes, extension) || ''
 }
 export function registerScheme() {
   protocol.registerStreamProtocol('app', (request, callback) => {
-    console.log('protocol request: ', request);
-    let pathname = new URL(request.url).pathname;
-    console.log(pathname);
-    let extension = extname(pathname).toLowerCase();
-    console.log(extension);
+    console.log('protocol request: ', request)
+    let pathname = new URL(request.url).pathname
+    console.log(pathname)
+    let extension = extname(pathname).toLowerCase()
+    console.log(extension)
     if (extension === '') {
       pathname = 'index.html'
       extension = '.html'
     }
-    const tarFilePath = join(__dirname, pathname);
-    console.log(tarFilePath);
+    const tarFilePath = join(__dirname, pathname)
+    console.log(tarFilePath)
     callback({
       statusCode: 200,
       headers: {
-        'content-type': getMimeType(extension)
+        'content-type': getMimeType(extension),
       },
-      data: createReadStream(tarFilePath)
+      data: createReadStream(tarFilePath),
     })
   })
 }

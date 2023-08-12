@@ -8,15 +8,26 @@ import Pages from 'vite-plugin-pages'
 import Markdown from 'vite-plugin-vue-markdown'
 import LinkAttributes from 'markdown-it-link-attributes'
 import Shiki from 'markdown-it-shiki'
-import { devPlugin } from './scripts/plugins'
+import optimizer from 'vite-plugin-optimizer'
+import { getReplacer } from './scripts/plugins/optimizer'
+import { devPlugin, buildPlugin } from './scripts/plugins'
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      plugins: [buildPlugin()],
+    },
+  },
   plugins: [
+    Pages({
+      dirs: 'src/pages',
+      extensions: ['vue', 'md', 'tsx'],
+    }),
+    optimizer(getReplacer()),
     devPlugin(),
     vue({
       include: [/\.vue$/, /\.md$/],
     }),
-    vueJsx(),
     UnoCSS(),
     VueI18n({
       runtimeOnly: true,
@@ -24,10 +35,8 @@ export default defineConfig({
       fullInstall: true,
       include: [resolve(__dirname, './src/locales/**')],
     }),
-    Pages({
-      dirs: 'src/pages',
-      extensions: ['vue', 'md'],
-    }),
+
+    vueJsx(),
     Markdown({
       wrapperClasses: 'prose prose-sm m-auto text-left',
       headEnabled: true,

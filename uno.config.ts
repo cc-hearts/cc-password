@@ -8,4 +8,10 @@ export default defineConfig({
     presetUno(),
     // ...custom presets
   ],
+  rules: [
+    [
+      'border-ins',
+      { 'border-color': 'var(--box-color-1)', transform: 'border 0.3s' },
+    ],
+  ],
 })

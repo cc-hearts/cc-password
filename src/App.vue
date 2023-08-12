@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import Headers from '@/components/header/headers.vue'
 import Home from '@/layouts/home'
-import { useRouter } from 'vue-router';
-
-console.log(useRouter());
 </script>
 
 <template>

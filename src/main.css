@@ -8,6 +8,11 @@ body,
   padding: 0;
 }
 
+ul,
+li {
+  list-style: none;
+}
+
 html.dark {
   background: #121212;
   color-scheme: dark;

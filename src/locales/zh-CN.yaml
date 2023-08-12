@@ -1,1 +1,15 @@
-button:
+pages-index:
+  usernamePlaceholder: 请输入用户名
+  passwordPlaceholder: 请输入密码
+  submitButton: 登录
+
+pages-password:
+  newCategory: 新增分类
+  removeCategorySuccessMessage: 删除分类成功
+  allCategory: 全部分类
+  addPasswordModalTitle: 新增密码
+  removeCategoryConfirmTitle: 是否删除该分类？
+  rulesRef:
+    cidRequireMessage: 分类不能为空
+    passwordRequireMessage: 密码不能为空
+    usernameRequireMessage: 用户名不能为空

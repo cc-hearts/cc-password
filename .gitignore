@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.env
+app.*.yaml
+release
+prisma-client-js
+prisma.yaml

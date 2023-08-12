@@ -1,12 +1,25 @@
-import { esbuildConfig } from "./config.js"
+import { esbuildConfig } from './config.js'
 import { join as _join } from 'node:path'
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import {
+  readFileSync,
+  writeFileSync,
+  mkdirSync,
+  createReadStream,
+  createWriteStream,
+} from 'node:fs'
+import { execSync } from 'node:child_process'
 function join(...paths: string[]) {
   return _join(process.cwd(), ...paths)
 }
-export function buildPlugin() {
+function build() {
   function buildMain() {
     require('esbuild').buildSync(esbuildConfig)
+  }
+
+  function prepareYaml() {
+    const yamlUrl = join('app.production.yaml')
+    const yaml = readFileSync(yamlUrl, 'utf-8')
+    writeFileSync(join('dist', 'app.production.yaml'), yaml, 'utf-8')
   }
 
   function preparePkg() {
@@ -24,6 +37,26 @@ export function buildPlugin() {
     }
   }
 
+  function copy() {
+    return new Promise<void>((resolve) => {
+      const readStream = createReadStream(join('scripts/preload.js'))
+      const writeStream = createWriteStream(join('dist', 'preload.js'))
+      readStream.pipe(writeStream)
+      writeStream.on('finish', () => {
+        resolve()
+      })
+    })
+  }
+
+  function copyDir(dirs: string, targetDirs: string) {
+    execSync(`cp -r ${dirs} ${targetDirs}`)
+  }
+
+  function prepareNodeModules() {
+    // node 复制文件夹
+    copyDir(join('prisma'), join('dist/prisma'))
+    copyDir(join('scripts/prisma-client-js'), join('dist/prisma-client-js'))
+  }
 
   // 构建依赖
   function deployCode() {
@@ -33,9 +66,9 @@ export function buildPlugin() {
           output: join('release'),
           app: join('dist'),
         },
-        files: ["**"],
+        files: ['**'],
         extends: null,
-        productName: 'electron-app',
+        productName: 'electron-password',
         appId: 'cc-hearts',
         asar: true,
         nsis: {
@@ -44,26 +77,43 @@ export function buildPlugin() {
           allowToChangeInstallationDirectory: false,
           createDesktopShortcut: true,
           createStartMenuShortcut: true,
-          shortcutName: "cc",
+          shortcutName: 'cc',
         },
-        publish: [{ provider: "generic", url: "http://localhost:5500/" }],
+        publish: [{ provider: 'generic', url: 'http://localhost:5173/' }],
       },
       project: process.cwd(),
     }
     return require('electron-builder').build(options)
   }
-  return { buildMain, preparePkg, deployCode }
+  return {
+    buildMain,
+    prepareYaml,
+    prepareNodeModules,
+    copy,
+    preparePkg,
+    deployCode,
+  }
 }
 
-export default () => {
+export const buildPlugin = () => {
   return {
     name: 'electron-build-plugin',
-    closeBundle() {
+    async closeBundle() {
       // build end hook
-      const { buildMain, preparePkg, deployCode } = buildPlugin()
+      const {
+        buildMain,
+        copy,
+        prepareNodeModules,
+        prepareYaml,
+        preparePkg,
+        deployCode,
+      } = build()
       buildMain()
+      prepareYaml()
+      prepareNodeModules()
+      await copy()
       preparePkg()
       deployCode()
-    }
+    },
   }
 }

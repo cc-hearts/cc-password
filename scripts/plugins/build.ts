@@ -16,11 +16,6 @@ function build() {
     require('esbuild').buildSync(esbuildConfig)
   }
 
-  function prepareYaml() {
-    const yamlUrl = join('app.production.yaml')
-    const yaml = readFileSync(yamlUrl, 'utf-8')
-    writeFileSync(join('dist', 'app.production.yaml'), yaml, 'utf-8')
-  }
 
   function preparePkg() {
     const pkgUrl = join('package.json')
@@ -87,7 +82,6 @@ function build() {
   }
   return {
     buildMain,
-    prepareYaml,
     prepareNodeModules,
     copy,
     preparePkg,
@@ -104,12 +98,10 @@ export const buildPlugin = () => {
         buildMain,
         copy,
         prepareNodeModules,
-        prepareYaml,
         preparePkg,
         deployCode,
       } = build()
       buildMain()
-      prepareYaml()
       prepareNodeModules()
       await copy()
       preparePkg()

@@ -16,7 +16,7 @@ function replaceEnv(recourse: string, replaceString: string) {
   return recourse.replace(reg, replaceString)
 }
 function bootStrap() {
-  execSync('npx prisma generate')
+  execSync('npx prisma generate', { stdio: 'inherit' })
   const prismaPath = './prisma/schema.prisma'
   const data = readFileSync(prismaPath, 'utf-8')
   const outputPath = getOutput(data)

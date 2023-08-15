@@ -4,8 +4,8 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  output          = "../scripts/prisma-client-js"
+  provider = "prisma-client-js"
+  output   = "../scripts/prisma-client-js"
 }
 
 enum USER_STATUS {
@@ -20,21 +20,20 @@ model user {
   password   String
   mobile     String?   @unique @map("mobile")
   email      String?
-  status     Int?   @default(1)
+  status     Int?      @default(1)
   createTime DateTime? @default(now()) @map("createTime")
   updateTime DateTime? @updatedAt @map("updateTime")
 
   @@unique([mobile, username])
 }
 
-
 model Security {
-  id          Int       @id @default(autoincrement())
-  uid         Int       @map("uid")
-  security    String
-  iv          String
-  createdAt   DateTime  @default(now())                 @map("created_at")
-  updatedAt   DateTime  @updatedAt                      @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  uid       Int      @map("uid")
+  security  String
+  iv        String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("security")
 }
@@ -52,9 +51,10 @@ model Password {
 }
 
 model PasswordCategory {
-  id       Int     @id @default(autoincrement())
-  category String  @db.VarChar(255) @map(name: "category") @unique
+  id       Int    @id @default(autoincrement())
+  category String
+  uid      Int    @map("uid")
 
+  @@unique([uid, category], name: "unique_uid_category")
   @@map(name: "password_category")
 }
-

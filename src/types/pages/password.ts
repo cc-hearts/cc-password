@@ -1,7 +1,8 @@
 export interface InsertPassword {
-  uid: number
   password: string
   username: string
   cid: number
+  uid: number
+  description?: string
   url?: string
 }

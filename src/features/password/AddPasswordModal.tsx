@@ -9,13 +9,13 @@ import {
 import { addPassWord } from '@/model/password'
 import { searchPasswordCategory } from '@/model/passwordCategory'
 import { useCategory } from '@/storage/category'
-import { useProfile } from '@/storage/user'
 import { IEvent } from '@/types/common'
 import { GetPromiseReturns } from '@/types/utils'
 import { successMsg } from '@/utils/message'
 import { computed, defineComponent, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { encodeAes } from '@/utils/crypto'
+import type { getArraySubitem } from '@cc-heart/utils/helper'
 
 export default defineComponent({
   name: 'AddPasswordModal',
@@ -34,10 +34,11 @@ export default defineComponent({
       password: '',
       description: '',
     })
+    type IData = GetPromiseReturns<typeof searchPasswordCategory>
+    type IDataItem = getArraySubitem<IData>
     const { t } = useI18n()
-    const { profile } = useProfile()
     const { category } =
-      useCategory<GetPromiseReturns<typeof searchPasswordCategory>>()
+      useCategory<IData>()
     const compCategory = computed(() => category.value.slice(1))
     const rulesRef = reactive({
       username: [
@@ -72,7 +73,6 @@ export default defineComponent({
         ...modalRef,
         password,
         cid: Number(modalRef.cid) || 0,
-        uid: profile.value!.uid,
       })
       successMsg('添加成功')
       emit('refresh')
@@ -91,7 +91,7 @@ export default defineComponent({
               value={modalRef.cid}
               onChange={(val: number) => (modalRef.cid = val)}
             >
-              {compCategory.value.map((item) => {
+              {compCategory.value.map((item: IDataItem) => {
                 return (
                   <Select.Option value={item.id}>{item.category}</Select.Option>
                 )

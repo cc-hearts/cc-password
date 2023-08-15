@@ -45,7 +45,7 @@ export default defineComponent({
       }
     )
     async function getData() {
-      const [t, result] = await findPassWordList(pagination)
+      const [t, result] = await findPassWordList({ ...pagination, cid: activeCategory.value })
       total.value = t
       state.data = result
     }

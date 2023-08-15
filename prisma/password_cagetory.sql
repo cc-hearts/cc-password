@@ -1,4 +1,10 @@
-CREATE TABLE password_category (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  category VARCHAR(255) COLLATE utf8mb4_general_ci UNIQUE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create table password_category
+(
+    id       int auto_increment
+        primary key,
+    category varchar(255) collate utf8mb4_general_ci null,
+    uid      int                                     null,
+    constraint unique_uid_category
+        unique (uid, category)
+);
+

@@ -26,9 +26,6 @@ dependencies:
   '@types/nprogress':
     specifier: ^0.2.0
     version: 0.2.0
-  '@types/vue-i18n':
-    specifier: ^7.0.0
-    version: 7.0.0(vue@3.2.47)
   '@vitejs/plugin-vue-jsx':
     specifier: ^3.0.1
     version: 3.0.1(vite@4.3.8)(vue@3.2.47)
@@ -1359,15 +1356,6 @@ packages:
     resolution: {integrity: sha512-NNm+gdePAX1VGvPcGZCDKQZKYSiAWigKhKaz5KF94hG6f2s8de9Ow5+7AbXoeKxL8gavZfk4UquSAygOF2duEQ==}
     dev: true
     optional: true
-
-  /@types/vue-i18n@7.0.0(vue@3.2.47):
-    resolution: {integrity: sha512-4e3EvN4k+B6eTq1qWDFW1wpzCgz+8nNCn6LAQTkcRoGJx9rVO5iYzyEogFTi9RwBJ588+Rx0nUwRFjKUYPe/BQ==}
-    deprecated: This is a stub types definition for vue-i18n (https://github.com/kazupon/vue-i18n). vue-i18n provides its own type definitions, so you don't need @types/vue-i18n installed!
-    dependencies:
-      vue-i18n: 9.2.2(vue@3.2.47)
-    transitivePeerDependencies:
-      - vue
-    dev: false
 
   /@types/yauzl@2.10.0:
     resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}

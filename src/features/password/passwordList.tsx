@@ -1,7 +1,7 @@
 import { usePagination } from '@/hooks/usePagination'
 import { findPassWordList } from '@/model/password'
 import { useCategory } from '@/storage/category'
-import { defineComponent, onMounted, reactive, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
 import {
   InputSearch,
   Button,
@@ -41,7 +41,7 @@ export default defineComponent({
     watch(
       () => activeCategory.value,
       () => {
-        getData()
+        handlePaginationChange(1, pagination.size)
       }
     )
     async function getData() {
@@ -56,6 +56,18 @@ export default defineComponent({
     const handleSelectActivePasswordDescription = (id: number) => {
       setActiveDescription(String(id))
     }
+
+    const paginationProps = computed(() => {
+      if (total.value > pagination.size) {
+        return {
+          ...pagination,
+          size: String(pagination.size),
+          total: total.value,
+          onChange: handlePaginationChange,
+        }
+      }
+      return false
+    })
     return () => (
       <>
         <div>
@@ -71,12 +83,7 @@ export default defineComponent({
           <List
             item-layout="horizontal"
             dataSource={state.data}
-            pagination={{
-              ...pagination,
-              size: String(pagination.size),
-              total: total.value,
-              onChange: handlePaginationChange,
-            }}
+            pagination={paginationProps.value}
           >
             {state.data.map((item) => {
               return (

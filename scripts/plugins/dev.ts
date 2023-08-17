@@ -1,5 +1,6 @@
 import { ViteDevServer } from 'vite'
 import { esbuildConfig } from './config'
+import { copy } from './preloadCopy'
 export const devPlugin = () => {
   return {
     name: 'dev-plugin',
@@ -8,6 +9,7 @@ export const devPlugin = () => {
       esbuild.buildSync(esbuildConfig)
       server.httpServer?.once('listening', async () => {
         const { spawn } = await import('child_process')
+        await copy()
         const addressInfo = server.httpServer?.address()!
         console.log('address info', addressInfo)
         if (typeof addressInfo !== 'string') {

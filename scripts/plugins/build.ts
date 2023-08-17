@@ -1,16 +1,12 @@
 import { esbuildConfig } from './config.js'
-import { join as _join } from 'node:path'
 import {
   readFileSync,
   writeFileSync,
-  mkdirSync,
-  createReadStream,
-  createWriteStream,
+  mkdirSync
 } from 'node:fs'
 import { execSync } from 'node:child_process'
-function join(...paths: string[]) {
-  return _join(process.cwd(), ...paths)
-}
+import { copy } from './preloadCopy.js'
+import { join } from '../utils/path.js'
 function build() {
   function buildMain() {
     require('esbuild').buildSync(esbuildConfig)
@@ -32,16 +28,7 @@ function build() {
     }
   }
 
-  function copy() {
-    return new Promise<void>((resolve) => {
-      const readStream = createReadStream(join('scripts/preload.js'))
-      const writeStream = createWriteStream(join('dist', 'preload.js'))
-      readStream.pipe(writeStream)
-      writeStream.on('finish', () => {
-        resolve()
-      })
-    })
-  }
+
 
   function copyDir(dirs: string, targetDirs: string) {
     execSync(`cp -r ${dirs} ${targetDirs}`)
@@ -83,7 +70,6 @@ function build() {
   return {
     buildMain,
     prepareNodeModules,
-    copy,
     preparePkg,
     deployCode,
   }
@@ -96,7 +82,6 @@ export const buildPlugin = () => {
       // build end hook
       const {
         buildMain,
-        copy,
         prepareNodeModules,
         preparePkg,
         deployCode,

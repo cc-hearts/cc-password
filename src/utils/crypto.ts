@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { useProfile } from '@/storage/user'
+import { useSecurity } from '@/storage/user'
 const { createHash, createCipheriv, createDecipheriv, randomBytes } = crypto
 
 export function encodeMd5(str: string) {
@@ -9,9 +9,9 @@ export function encodeMd5(str: string) {
 }
 
 // aes 加密
-export function encodeAes(plainText: string) {
-  const { security } = useProfile()
-  if (!security.value) return null
+export async function encodeAes(plainText: string) {
+  const security = await useSecurity()
+  if (!security || !security.value) return null
   // 创建加密器
   const cipher = createCipheriv(
     'aes-256-cbc',
@@ -23,9 +23,9 @@ export function encodeAes(plainText: string) {
   encrypted += cipher.final('hex')
   return encrypted
 }
-export function decodeAes(encrypted: string) {
-  const { security } = useProfile()
-  if (!security.value) return null
+export async function decodeAes(encrypted: string) {
+  const security = await useSecurity()
+  if (!security || !security.value) return null
   const decipher = createDecipheriv(
     'aes-256-cbc',
     strParseBuffer(security.value.key),

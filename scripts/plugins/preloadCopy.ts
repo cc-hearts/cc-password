@@ -1,4 +1,4 @@
-import { createReadStream, createWriteStream } from "node:fs"
+import { createReadStream, createWriteStream } from 'node:fs'
 import { join } from '../utils/path.js'
 export function copy() {
   return new Promise<void>((resolve) => {

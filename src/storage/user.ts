@@ -1,29 +1,47 @@
 import { isNull } from '@cc-heart/utils'
 import { UnwrapNestedRefs, computed, reactive } from 'vue'
 import type { Profile } from '@/features/user/types'
+import { findSecurity } from '@/model/security'
 
-let state: null | UnwrapNestedRefs<{
+let userProfile: null | UnwrapNestedRefs<{
   user: null | Profile
-  security: null | { key: string; iv: string }
 }> = null
 
 function useProfile() {
-  if (isNull(state)) {
-    state = reactive({
+  if (isNull(userProfile)) {
+    userProfile = reactive({
       user: null,
       security: null,
     })
   }
-  const profile = computed(() => state?.user)
-  const security = computed(() => state?.security)
+  const profile = computed(() => userProfile?.user)
   function setUserInfo(user: Profile) {
-    if (state) state.user = user
+    if (userProfile) userProfile.user = user
   }
 
-  function setSecurity<T extends { key: string; iv: string }>(security: T) {
-    if (state) state.security = security
-  }
-  return { profile, setUserInfo, security, setSecurity }
+  return { profile, setUserInfo }
 }
 
-export { useProfile }
+const securityState: UnwrapNestedRefs<{
+  security: null | { key: string; iv: string }
+}> = reactive({
+  security: null,
+})
+
+async function useSecurity() {
+  const security = computed(() => securityState.security)
+  if (security.value) {
+    return security
+  }
+  const { profile } = useProfile()
+  if (profile.value?.uid) {
+    const entity = await findSecurity(profile.value.uid)
+    if (entity) {
+      securityState.security = { ...entity, key: entity.security }
+      return security
+    }
+  }
+  return null
+}
+
+export { useProfile, useSecurity }

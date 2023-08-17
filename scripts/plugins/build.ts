@@ -1,9 +1,5 @@
 import { esbuildConfig } from './config.js'
-import {
-  readFileSync,
-  writeFileSync,
-  mkdirSync
-} from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
 import { execSync } from 'node:child_process'
 import { copy } from './preloadCopy.js'
@@ -12,7 +8,6 @@ function build() {
   function buildMain() {
     require('esbuild').buildSync(esbuildConfig)
   }
-
 
   function preparePkg() {
     const pkgUrl = join('package.json')
@@ -28,8 +23,6 @@ function build() {
       mkdirSync(join('dist', 'node_modules'))
     }
   }
-
-
 
   function copyDir(dirs: string, targetDirs: string) {
     execSync(`cp -r ${dirs} ${targetDirs}`)

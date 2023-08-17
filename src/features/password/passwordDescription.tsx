@@ -27,7 +27,7 @@ export default defineComponent({
     async function handleSearchPassword(id: number) {
       const result = await searchPassword(id)
       if (result && result.password) {
-        const code = decodeAes(result.password)
+        const code = await decodeAes(result.password)
         if (code) description.password = code
       }
     }

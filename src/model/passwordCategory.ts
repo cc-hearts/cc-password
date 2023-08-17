@@ -11,7 +11,7 @@ async function addPasswordCategory(data: AddPasswordCategory) {
   return getModel().create({
     data: {
       ...data,
-      uid
+      uid,
     },
   })
 }
@@ -19,7 +19,7 @@ async function addPasswordCategory(data: AddPasswordCategory) {
 async function searchPasswordCategory() {
   const uid = useUid()
   return await getModel().findMany({
-    where: { uid }
+    where: { uid },
   })
 }
 

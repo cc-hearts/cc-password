@@ -37,8 +37,7 @@ export default defineComponent({
     type IData = GetPromiseReturns<typeof searchPasswordCategory>
     type IDataItem = getArraySubitem<IData>
     const { t } = useI18n()
-    const { category } =
-      useCategory<IData>()
+    const { category } = useCategory<IData>()
     const compCategory = computed(() => category.value.slice(1))
     const rulesRef = reactive({
       username: [
@@ -67,7 +66,7 @@ export default defineComponent({
     }
     const handleSubmit = async () => {
       await validate()
-      const password = encodeAes(modalRef.password)
+      const password = await encodeAes(modalRef.password)
       if (!password) return
       await addPassWord({
         ...modalRef,

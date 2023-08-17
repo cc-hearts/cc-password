@@ -1,4 +1,4 @@
-import { useProfile } from "@/storage";
+import { useProfile } from '@/storage'
 
 export function useUid() {
   const { profile } = useProfile()

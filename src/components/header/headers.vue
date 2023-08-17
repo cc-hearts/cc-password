@@ -3,9 +3,10 @@ import { useNamespace } from '@/hooks'
 import { GithubIcon } from '@/icons'
 import { githubUrl } from '@/configs'
 import SwitchTheme from './switchTheme.vue'
+import { useOpenLink } from '@/hooks/useOpenLink'
 const ns = useNamespace('header')
 const toGithub = () => {
-  if (githubUrl) window.open(githubUrl)
+  if (githubUrl) useOpenLink(githubUrl)
 }
 </script>
 

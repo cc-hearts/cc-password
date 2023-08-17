@@ -4,6 +4,7 @@ import {
   writeFileSync,
   mkdirSync
 } from 'node:fs'
+import { rm } from 'node:fs/promises'
 import { execSync } from 'node:child_process'
 import { copy } from './preloadCopy.js'
 import { join } from '../utils/path.js'
@@ -40,6 +41,10 @@ function build() {
     copyDir(join('scripts/prisma-client-js'), join('dist/prisma-client-js'))
   }
 
+  async function removeReleaseDir() {
+    return await rm(join('release'), { recursive: true, force: true })
+  }
+
   // 构建依赖
   function deployCode() {
     const options = {
@@ -71,6 +76,7 @@ function build() {
     buildMain,
     prepareNodeModules,
     preparePkg,
+    removeReleaseDir,
     deployCode,
   }
 }
@@ -84,12 +90,14 @@ export const buildPlugin = () => {
         buildMain,
         prepareNodeModules,
         preparePkg,
+        removeReleaseDir,
         deployCode,
       } = build()
       buildMain()
       prepareNodeModules()
       await copy()
       preparePkg()
+      await removeReleaseDir()
       deployCode()
     },
   }

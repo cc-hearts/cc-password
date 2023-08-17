@@ -6,11 +6,11 @@ electron-password is a desktop password management tool built with Electron and 
 
 ## Features
 
-- [ ] Secure storage and management of passwords
-- [ ] Support for creating, editing, and deleting password entries
+- [x] Secure storage and management of passwords
+- [x] Support for creating, editing, and deleting password entries
 - [ ] Automatic generation of strong passwords
 - [ ] Password strength evaluation
-- [ ] Support for multiple users and accounts
+- [x] Support for multiple users and accounts
 - [ ] Encrypted storage and data synchronization
 - [ ] Password search and filtering
 - [ ] Keyboard shortcuts

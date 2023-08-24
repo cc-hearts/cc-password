@@ -32,6 +32,7 @@ export default defineComponent({
       cid: '' as string | number,
       url: '',
       password: '',
+      title: '',
       description: '',
     })
     type IData = GetPromiseReturns<typeof searchPasswordCategory>
@@ -96,6 +97,14 @@ export default defineComponent({
                 )
               })}
             </Select>
+          </FormItem>
+          <FormItem label="title" required name="title">
+            <Input
+              value={modalRef.title}
+              onChange={(e: IEvent<HTMLInputElement>) =>
+                (modalRef.title = e.target.value)
+              }
+            />
           </FormItem>
           <FormItem label="url" name="url">
             <Input

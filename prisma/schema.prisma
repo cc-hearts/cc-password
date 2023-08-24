@@ -45,6 +45,7 @@ model Password {
   password    String
   username    String
   url         String? @default("")
+  title       String? @default("")
   description String? @default("")
 
   @@map("password")

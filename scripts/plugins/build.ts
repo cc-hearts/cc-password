@@ -1,9 +1,10 @@
 import { esbuildConfig } from './config.js'
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
-import { execSync } from 'node:child_process'
 import { copy } from './preloadCopy.js'
 import { join } from '../utils/path.js'
+import { setupPrismaClient } from '../utils/setup.js'
+
 function build() {
   function buildMain() {
     require('esbuild').buildSync(esbuildConfig)
@@ -22,16 +23,6 @@ function build() {
       writeFileSync(tarJsonPath, JSON.stringify(pkg, null, 2), 'utf-8')
       mkdirSync(join('dist', 'node_modules'))
     }
-  }
-
-  function copyDir(dirs: string, targetDirs: string) {
-    execSync(`cp -r ${dirs} ${targetDirs}`)
-  }
-
-  function prepareNodeModules() {
-    // node 复制文件夹
-    copyDir(join('prisma'), join('dist/prisma'))
-    copyDir(join('scripts/prisma-client-js'), join('dist/prisma-client-js'))
   }
 
   async function removeReleaseDir() {
@@ -67,7 +58,6 @@ function build() {
   }
   return {
     buildMain,
-    prepareNodeModules,
     preparePkg,
     removeReleaseDir,
     deployCode,
@@ -79,15 +69,9 @@ export const buildPlugin = () => {
     name: 'electron-build-plugin',
     async closeBundle() {
       // build end hook
-      const {
-        buildMain,
-        prepareNodeModules,
-        preparePkg,
-        removeReleaseDir,
-        deployCode,
-      } = build()
+      const { buildMain, preparePkg, removeReleaseDir, deployCode } = build()
       buildMain()
-      prepareNodeModules()
+      setupPrismaClient()
       await copy()
       preparePkg()
       await removeReleaseDir()

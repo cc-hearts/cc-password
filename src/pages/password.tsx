@@ -90,7 +90,7 @@ export default defineComponent({
     })
     return () => (
       <div class="flex h-full w-full">
-        <div class="w-1/4 p2 will-change-transform	">
+        <div class="w-1/4 p2 will-change-transform">
           <ul class="flex items-center justify-center flex-col p-x-6">
             {categoryList.value.map((item) => {
               return (

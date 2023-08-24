@@ -6,5 +6,10 @@
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["vite.config.ts", "scripts/**/*.ts", "scripts/preload.js"]
+  "include": [
+    "vite.config.ts",
+    "scripts/**/*.ts",
+    "scripts/preload.js",
+    "scripts/utils/setup.ts"
+  ]
 }

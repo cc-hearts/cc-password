@@ -38,6 +38,9 @@ dependencies:
   esbuild:
     specifier: ^0.19.0
     version: 0.19.0
+  esm:
+    specifier: ^3.2.25
+    version: 3.2.25
   markdown-it-link-attributes:
     specifier: ^4.0.1
     version: 4.0.1
@@ -2988,6 +2991,11 @@ packages:
       text-table: 0.2.0
     transitivePeerDependencies:
       - supports-color
+
+  /esm@3.2.25:
+    resolution: {integrity: sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==}
+    engines: {node: '>=6'}
+    dev: false
 
   /espree@6.2.1:
     resolution: {integrity: sha512-ysCxRQY3WaXJz9tdbWOwuWr5Y/XrPTGX9Kiz3yoUXwW0VZ4w30HTkQLaGx/+ttFjF8i+ACbArnB4ce68a9m5hw==}

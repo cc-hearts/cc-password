@@ -7,4 +7,5 @@ CREATE TABLE `password` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `password` ADD COLUMN `description` VARCHAR(255);
+ALTER TABLE `password` ADD COLUMN `title` VARCHAR(255);
 ALTER TABLE `password` ADD COLUMN `username` VARCHAR(255) NOT NULL;

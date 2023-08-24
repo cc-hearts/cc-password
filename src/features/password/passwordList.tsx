@@ -14,6 +14,7 @@ import AddPasswordModal from './AddPasswordModal'
 import RefreshIcon from '@/icons/refresh.vue'
 import { GetPromiseReturns } from '@/types/utils'
 import { useDescription } from '@/storage/description'
+import { IEvent } from '@/types/common'
 export default defineComponent({
   setup() {
     const { activeCategory } = useCategory()
@@ -25,6 +26,7 @@ export default defineComponent({
     }
     const visible = ref<boolean>(false)
     const total = ref(0)
+    const searchData = ref('')
     const state = reactive({
       data: [] as GetPromiseReturns<typeof findPassWordList>[1],
     })
@@ -45,10 +47,13 @@ export default defineComponent({
       }
     )
     async function getData() {
-      const [t, result] = await findPassWordList({
-        ...pagination,
-        cid: activeCategory.value,
-      })
+      const [t, result] = await findPassWordList(
+        {
+          ...pagination,
+          cid: activeCategory.value,
+        },
+        searchData.value
+      )
       total.value = t
       state.data = result
     }
@@ -74,7 +79,14 @@ export default defineComponent({
     return () => (
       <>
         <div>
-          <InputSearch style="width: 200px" />
+          <InputSearch
+            style="width: 200px"
+            value={searchData.value}
+            onChange={(e: IEvent<HTMLInputElement>) =>
+              (searchData.value = e.target.value)
+            }
+            onSearch={getData}
+          />
           <Button class="m-l-2" type="dashed" onClick={showModal}>
             {{ icon: () => <AddIcon /> }}
           </Button>
@@ -97,7 +109,7 @@ export default defineComponent({
                 >
                   <ListItemMeta description={item.username}>
                     {{
-                      title: () => <span>{item.description}</span>,
+                      title: () => <span>{item.title}</span>,
                     }}
                   </ListItemMeta>
                 </ListItem>

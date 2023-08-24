@@ -8,12 +8,27 @@ import { useUid } from '@/hooks'
 async function getModel() {
   return getModelInstance('password')!
 }
-async function findPassWordList<T extends Pagination>(params: T) {
+async function findPassWordList<T extends Pagination>(
+  params: T,
+  title?: string
+) {
   const { page, size, ...target } = params
   const { take, skip } = useTransformPagination({ page, size })
   const model = await getModel()
   const uid = useUid()
-  const where = { ...filterFalsy(target), uid }
+  let where: { uid: number; title?: { contains: string } } = {
+    ...filterFalsy(target),
+    uid,
+  }
+  if (title) {
+    where = {
+      ...where,
+      title: {
+        contains: title,
+      },
+    }
+  }
+
   return await Promise.all([
     model.count({ where }),
     model.findMany({ where, take, skip }),
@@ -38,6 +53,7 @@ async function findPasswordDetail(id: number) {
       url: true,
       username: true,
       password: false,
+      title: true,
       description: true,
     },
   })

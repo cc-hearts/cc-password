@@ -41,6 +41,7 @@ export default defineComponent({
       }
     )
     const columns = [
+      { label: 'title', key: 'title' },
       { label: 'url', key: 'url' },
       { label: 'description', key: 'description' },
       { label: 'username', key: 'username' },

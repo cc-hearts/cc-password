@@ -1,4 +1,4 @@
-import { type PrismaClient as PrismaClientType } from '@prisma/client'
+import { type PrismaClient as PrismaClientType } from '../../scripts/prisma-client-js'
 let prisma: PrismaClientType | null = null
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

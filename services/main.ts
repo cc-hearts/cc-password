@@ -3,8 +3,9 @@ import {
   BrowserWindow,
   type BrowserWindowConstructorOptions,
 } from 'electron'
-import { setup } from './utils/preset'
+import { setup } from '../scripts/utils/preset'
 import { registerScheme } from './customScheme.js'
+import { handleShowWindowEvent } from './events.js'
 setup()
 let mainBrowserWindow: BrowserWindow | null = null
 app.whenReady().then(() => {
@@ -18,11 +19,12 @@ app.whenReady().then(() => {
     disableHtmlFullscreenWindowResize: true,
     preload: `${__dirname}/preload.js`,
   }
-  mainBrowserWindow = new BrowserWindow({ webPreferences })
+  mainBrowserWindow = new BrowserWindow({ webPreferences, show: false })
   const IS_DEV = !!process.argv[2]
   if (IS_DEV) {
     mainBrowserWindow.webContents.openDevTools({ mode: 'undocked' })
   }
+  handleShowWindowEvent()
   if (IS_DEV) {
     mainBrowserWindow.loadURL(process.argv[2])
   } else {

@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import Headers from '@/components/header/headers.vue'
 import Home from '@/layouts/home'
+import { ipcRenderer } from 'electron'
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  console.log('123')
+  ipcRenderer.invoke('showWindow')
+})
 </script>
 
 <template>

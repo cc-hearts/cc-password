@@ -10,6 +10,7 @@
     "vite.config.ts",
     "scripts/**/*.ts",
     "scripts/preload.js",
-    "scripts/utils/setup.ts"
+    "scripts/utils/setup.ts",
+    "services/**/*.ts"
   ]
 }

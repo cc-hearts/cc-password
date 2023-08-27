@@ -1,3 +1,4 @@
+// https://github.com/vite-plugin/vite-plugin-optimizer/blob/main/README.md#how-to-work
 export const getReplacer = () => {
   const externals = [
     'os',
@@ -20,5 +21,12 @@ export const getReplacer = () => {
     })
     return acc
   }, res)
+
+  // electron api
+  const electronApis = ['ipcRenderer'].join(',')
+  res['electron'] = {
+    find: new RegExp(`^electron$`),
+    code: `const {${electronApis}} = require('electron'); export {${electronApis}} `,
+  }
   return res
 }

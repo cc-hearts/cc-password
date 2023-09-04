@@ -23,7 +23,7 @@ export const getReplacer = () => {
   }, res)
 
   // electron api
-  const electronApis = ['ipcRenderer'].join(',')
+  const electronApis = ['ipcRenderer', 'clipboard'].join(',')
   res['electron'] = {
     find: new RegExp(`^electron$`),
     code: `const {${electronApis}} = require('electron'); export {${electronApis}} `,

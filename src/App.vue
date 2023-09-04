@@ -5,7 +5,6 @@ import { ipcRenderer } from 'electron'
 import { onMounted } from 'vue'
 
 onMounted(() => {
-  console.log('123')
   ipcRenderer.invoke('showWindow')
 })
 </script>

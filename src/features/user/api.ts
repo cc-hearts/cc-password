@@ -1,5 +1,6 @@
 import { Get, Post } from '@/utils/request.ts'
 import type { ILoginApi, ILoginParams, Profile } from './types'
+import { getRefreshToken } from '@/storage'
 
 export async function loginApi<T extends ILoginParams>(data: T) {
   const resultApi = Post<ILoginApi>(`user/login`, data)
@@ -8,5 +9,12 @@ export async function loginApi<T extends ILoginParams>(data: T) {
 
 export async function getProfile() {
   const { data } = Get<Profile>(`user/userInfo`)
+  return data
+}
+
+export async function refreshTokenApi(refreshToken: string) {
+  const { data } = Post<ILoginApi>(`user/refreshToken`, {
+    refreshToken,
+  })
   return data
 }

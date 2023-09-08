@@ -64,4 +64,14 @@ async function searchPassword(id: number) {
   return await model.findUnique({ where: { id } })
 }
 
+export async function changePasswordDescription<
+  T extends Partial<Omit<InsertPassword, 'uid'>>
+>(id: number, data: T) {
+  const model = await getModel()
+  return await model.update({
+    where: { id },
+    data,
+  })
+}
+
 export { findPassWordList, addPassWord, findPasswordDetail, searchPassword }

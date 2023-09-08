@@ -11,6 +11,8 @@
   --color-white: #fff;
   // box
   --box-color-1: rgb(229, 230, 235);
+
+  --docsearch-searchbox-background: #ebedf0;
 }
 
 :root.dark {
@@ -24,6 +26,8 @@
   --color-text-3: rgba(255, 255, 255, 0.5);
 
   --box-color-1: rgb(72, 72, 73);
+
+  --docsearch-searchbox-background: #313136;
 }
 
 html {

@@ -6,14 +6,13 @@ import {
 import { useDescription } from '@/storage/description'
 import { GetPromiseReturns } from '@/types/utils'
 import { Descriptions, DescriptionsItem, Input, message } from 'ant-design-vue'
-import { defineComponent, reactive, watch } from 'vue'
+import { defineComponent, reactive, ref, watch, nextTick } from 'vue'
 import ViewIcon from '@/icons/view.vue'
 import ViewCloseIcon from '@/icons/viewClose.vue'
 import { decodeAes } from '@/utils/crypto'
 import * as electron from 'electron'
 import { EditIcon } from '@/icons'
 import { IEvent } from '@/types/common'
-
 const { clipboard } = electron
 
 export default defineComponent({
@@ -26,6 +25,8 @@ export default defineComponent({
       { label: 'username', key: 'username' },
       { label: 'password', key: 'password' },
     ] as const
+
+    const changeInputRef = ref<any | null>(null)
 
     const requiredField = ['username', 'password']
     const passwordLabel = '******************'
@@ -77,6 +78,7 @@ export default defineComponent({
     const handleEditPasswordDescription = (field: string) => {
       description.editKey = field
       description.editValue = Reflect.get(description.data!, field)
+      nextTick(() => changeInputRef.value?.focus())
     }
     const handleEditBlur = () => {
       description.editKey = null
@@ -125,23 +127,29 @@ export default defineComponent({
                   labelStyle={{
                     width: '100px',
                     'justify-content': 'end',
+                    position: 'relative',
                     'user-select': 'none',
                   }}
                 >
                   {description.editKey !== column.key ? (
                     <div
                       class={
-                        'overflow-hidden relative whitespace-nowrap text-ellipsis flex-1 p-r-12 description-item' +
+                        'whitespace-nowrap text-ellipsis flex-1 p-r-12 h-full description-item' +
                         (isPasswordField ? ' cursor-pointer' : '')
                       }
                     >
-                      <span onClick={() => handleCopyPassword(key)} class="relative">
+                      <span
+                        onClick={() => handleCopyPassword(key)}
+                        class="relative"
+                      >
                         {isPasswordField
                           ? description.password || passwordLabel
                           : description.data![key]}
                       </span>
                       <EditIcon
-                        class={'description-item__field m-l-1 align-middle'}
+                        class={
+                          'absolute right-6 description-item__field m-l-1 align-middle'
+                        }
                         onClick={() => {
                           handleEditPasswordDescription(column.key)
                         }}
@@ -167,15 +175,16 @@ export default defineComponent({
                   ) : (
                     <div onKeydown={handleKeyDown}>
                       <Input
-                        onBlur={() => {
-                          handleEditBlur()
-                        }}
+                        ref={e => changeInputRef.value = e}
+                        onBlur={handleEditBlur}
                         value={description.editValue}
-                        onChange={(e: IEvent<HTMLInputElement>) => description.editValue = e.target.value}
-                        style={{ width: '80%' }}
-                        suffix={
-                          <span class="keyboard-bg p-x-1 rounded">Esc</span>
+                        onChange={(e: IEvent<HTMLInputElement>) =>
+                          (description.editValue = e.target.value)
                         }
+                        style={{ width: '80%' }}
+                        // suffix={
+                        //   <span class="keyboard-bg p-x-1 rounded">Esc</span>
+                        // }
                       />
                     </div>
                   )}

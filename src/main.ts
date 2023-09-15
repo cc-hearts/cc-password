@@ -5,6 +5,7 @@ import '@/assets/scss/theme.scss'
 import './main.css'
 import './modules/i18n'
 import { useInitTheme } from '@/hooks'
+import { registerDirective }  from  './directives'
 ;(async () => {
   useInitTheme()
   const app = createApp(App)
@@ -17,5 +18,6 @@ import { useInitTheme } from '@/hooks'
     }
   )
 
+  registerDirective(app)
   app.mount('#app')
 })()

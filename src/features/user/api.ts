@@ -12,7 +12,7 @@ export async function getProfile() {
 }
 
 export async function refreshTokenApi(refreshToken: string) {
-  const { data } = Post<ILoginApi>(`user/refreshToken`, {
+  const { data } = Post<ILoginApi>(`user/refresh`, {
     refreshToken,
   })
   return data

@@ -12,6 +12,7 @@
     "scss": "npx sass ./src/assets/scss/test/test.scss  ./src/assets/scss/test/dist/test.css"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.0",
     "@cc-heart/eslint-config": "^0.0.5",
     "@cc-heart/utils": "^2.0.11",
     "@cc-heart/utils-client": "^0.0.16",

@@ -52,7 +52,7 @@ async function findPasswordDetail(id: number) {
       cid: true,
       url: true,
       username: true,
-      password: false,
+      password: true,
       title: true,
       description: true,
     },

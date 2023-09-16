@@ -5,7 +5,17 @@ import {
 } from '@/model/password'
 import { useDescription } from '@/storage/description'
 import { GetPromiseReturns } from '@/types/utils'
-import { Descriptions, DescriptionsItem, Input, message } from 'ant-design-vue'
+
+import {
+  Button,
+  Descriptions,
+  DescriptionsItem,
+  Form,
+  FormItem,
+  Input,
+  message,
+} from 'ant-design-vue'
+import { EditOutlined } from '@ant-design/icons-vue'
 import { defineComponent, reactive, ref, watch, nextTick } from 'vue'
 import ViewIcon from '@/icons/view.vue'
 import ViewCloseIcon from '@/icons/viewClose.vue'
@@ -19,17 +29,15 @@ export default defineComponent({
   name: 'passwordDescription',
   setup() {
     const columns = [
-      { label: 'title', key: 'title' },
-      { label: 'url', key: 'url' },
-      { label: 'description', key: 'description' },
       { label: 'username', key: 'username' },
       { label: 'password', key: 'password' },
+      { label: 'website', key: 'url' },
+      { label: 'description', key: 'description' },
     ] as const
 
     const changeInputRef = ref<any | null>(null)
 
     const requiredField = ['username', 'password']
-    const passwordLabel = '******************'
     const { activeDescription } = useDescription()
     const description = reactive({
       data: {} as GetPromiseReturns<typeof findPasswordDetail>,
@@ -111,88 +119,131 @@ export default defineComponent({
       message.success('🎉 change success')
       getData()
     }
+    return () => {
+      if (!activeDescription.value) return null
+      // <div class="min-w-0 p-x-2 overflow-hidden">
+      //   <Descriptions column={1}
+      //     style={{ margin: '12px', border:'1px solid var(--box-color-1)', position: 'relative'}}
+      //     layout="vertical"
+      //   >
+      //     {activeDescription.value &&
+      //       description.data?.id &&
+      //       columns.map((column) => {
+      //         const key = column.key as (typeof columns)[number]['key']
+      //         const isPasswordField = key === 'password'
+      //         return (
+      //           <DescriptionsItem
+      //             id={column.key}
+      //             label={column.label}
+      //             style={{ padding: '20px'}}
+      //           >
+      //            <div>
+      //               {description.editKey !== column.key ? (
+      //                 <div
+      //                   class={
+      //                     'whitespace-nowrap text-ellipsis flex-1 p-r-12 h-full description-item' +
+      //                     (isPasswordField ? ' cursor-pointer' : '')
+      //                   }
+      //                 >
+      //                   <span
+      //                     onClick={() => handleCopyPassword(key)}
+      //                     class="relative"
+      //                   >
+      //                     {isPasswordField
+      //                       ? description.password || passwordLabel
+      //                       : description.data![key]}
+      //                   </span>
+      //                   <EditIcon
+      //                     class={
+      //                       'absolute right-6 description-item__field m-l-1 align-middle'
+      //                     }
+      //                     onClick={() => {
+      //                       handleEditPasswordDescription(column.key)
+      //                     }}
+      //                   />
+      //                   {isPasswordField && (
+      //                     <span class="absolute right-0 select-none">
+      //                       {description.password ? (
+      //                         <span onClick={handleRemovePassword}>
+      //                           <ViewCloseIcon />
+      //                         </span>
+      //                       ) : (
+      //                         <span
+      //                           onClick={() =>
+      //                             handleSearchPassword(description.data!.id)
+      //                           }
+      //                         >
+      //                           <ViewIcon />
+      //                         </span>
+      //                       )}
+      //                     </span>
+      //                   )}
+      //                 </div>
+      //               ) : (
+      //                 <div onKeydown={handleKeyDown}>
+      //                   <Input
+      //                     ref={e => changeInputRef.value = e}
+      //                     onBlur={handleEditBlur}
+      //                     value={description.editValue}
+      //                     onChange={(e: IEvent<HTMLInputElement>) =>
+      //                       (description.editValue = e.target.value)
+      //                     }
+      //                     style={{ width: '80%' }}
+      //                   />
+      //                 </div>
+      //               )}
+      //            </div>
+      //           </DescriptionsItem>
+      //         )
+      //       })}
+      //   </Descriptions>
+      // </div>
 
-    return () => (
-      <div class="min-w-0 p-x-2 overflow-hidden">
-        <Descriptions column={1}>
-          {activeDescription.value &&
-            description.data?.id &&
-            columns.map((column) => {
-              const key = column.key as (typeof columns)[number]['key']
-              const isPasswordField = key === 'password'
-              return (
-                <DescriptionsItem
-                  id={column.key}
-                  label={column.label}
-                  labelStyle={{
-                    width: '100px',
-                    'justify-content': 'end',
-                    position: 'relative',
-                    'user-select': 'none',
-                  }}
-                >
-                  {description.editKey !== column.key ? (
-                    <div
-                      class={
-                        'whitespace-nowrap text-ellipsis flex-1 p-r-12 h-full description-item' +
-                        (isPasswordField ? ' cursor-pointer' : '')
-                      }
-                    >
-                      <span
-                        onClick={() => handleCopyPassword(key)}
-                        class="relative"
-                      >
-                        {isPasswordField
-                          ? description.password || passwordLabel
-                          : description.data![key]}
-                      </span>
-                      <EditIcon
-                        class={
-                          'absolute right-6 description-item__field m-l-1 align-middle'
-                        }
-                        onClick={() => {
-                          handleEditPasswordDescription(column.key)
-                        }}
-                      />
-                      {isPasswordField && (
-                        <span class="absolute right-0 select-none">
-                          {description.password ? (
-                            <span onClick={handleRemovePassword}>
-                              <ViewCloseIcon />
-                            </span>
-                          ) : (
-                            <span
-                              onClick={() =>
-                                handleSearchPassword(description.data!.id)
-                              }
-                            >
-                              <ViewIcon />
-                            </span>
-                          )}
-                        </span>
-                      )}
-                    </div>
-                  ) : (
-                    <div onKeydown={handleKeyDown}>
-                      <Input
-                        ref={e => changeInputRef.value = e}
-                        onBlur={handleEditBlur}
-                        value={description.editValue}
-                        onChange={(e: IEvent<HTMLInputElement>) =>
-                          (description.editValue = e.target.value)
-                        }
-                        style={{ width: '80%' }}
-                        // suffix={
-                        //   <span class="keyboard-bg p-x-1 rounded">Esc</span>
-                        // }
-                      />
-                    </div>
-                  )}
-                </DescriptionsItem>
-              )
-            })}
-        </Descriptions>
-      </div>
-    )
+      return (
+        <div>
+          <div class="flex justify-between">
+            <div></div>
+            <div>
+              <Button icon={<EditOutlined />} type="text">
+                Edit
+              </Button>
+            </div>
+          </div>
+          <div class="m-6 leading-5">
+            <h3>{Reflect.get(description.data!, 'title')}</h3>
+            <div class={'border-ins border-solid border-1px rounded m-y-6'}>
+              {columns.map((column, index) => {
+                const key = column.key as (typeof columns)[number]['key']
+                const isPasswordField = key === 'password'
+                const isLastIndex = index === columns.length - 1
+                return (
+                  <div
+                    key={key}
+                    class={
+                      (isLastIndex
+                        ? ''
+                        : 'border-b-1px border-b-solid border-b-ins ') + 'p-3'
+                    }
+                  >
+                    <div>{column.label}</div>
+                    <Input
+                      style={{
+                        padding: 0,
+                        color: 'inherit',
+                        cursor: 'default',
+                      }}
+                      value={Reflect.get(description.data!, key)}
+                      type={isPasswordField ? 'password' : 'default'}
+                      bordered={false}
+                      disabled
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )
+    }
   },
 })

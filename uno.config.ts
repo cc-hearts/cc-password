@@ -14,6 +14,10 @@ export default defineConfig({
       { 'border-color': 'var(--box-color-1)', transform: 'border 0.3s' },
     ],
     [
+      'border-b-ins',
+      { 'border-bottom-color': 'var(--box-color-1)', transform: 'border 0.3s' },
+    ],
+    [
       'keyboard-bg',
       {
         'background-color': 'var(--docsearch-searchbox-background)',

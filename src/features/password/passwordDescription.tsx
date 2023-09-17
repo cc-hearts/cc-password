@@ -8,21 +8,16 @@ import { GetPromiseReturns } from '@/types/utils'
 
 import {
   Button,
-  Descriptions,
-  DescriptionsItem,
-  Form,
-  FormItem,
+  Dropdown,
   Input,
+  Menu,
+  MenuItem,
   message,
 } from 'ant-design-vue'
-import { EditOutlined } from '@ant-design/icons-vue'
-import { defineComponent, reactive, ref, watch, nextTick } from 'vue'
-import ViewIcon from '@/icons/view.vue'
-import ViewCloseIcon from '@/icons/viewClose.vue'
+import { DownOutlined, EditOutlined } from '@ant-design/icons-vue'
+import { defineComponent, reactive, ref, watch } from 'vue'
 import { decodeAes } from '@/utils/crypto'
 import * as electron from 'electron'
-import { EditIcon } from '@/icons'
-import { IEvent } from '@/types/common'
 const { clipboard } = electron
 
 export default defineComponent({
@@ -31,26 +26,33 @@ export default defineComponent({
     const columns = [
       { label: 'username', key: 'username' },
       { label: 'password', key: 'password' },
+    ] as const
+
+    const otherColumns = [
       { label: 'website', key: 'url' },
       { label: 'description', key: 'description' },
     ] as const
 
-    const changeInputRef = ref<any | null>(null)
-
-    const requiredField = ['username', 'password']
+    const reviewPasswordStatus = ref(false)
     const { activeDescription } = useDescription()
+
     const description = reactive({
       data: {} as GetPromiseReturns<typeof findPasswordDetail>,
       password: '',
-      editKey: null as null | string,
-      editValue: '',
     })
+
+    const toggleReviewPasswordStatus = () => {
+      reviewPasswordStatus.value = !reviewPasswordStatus.value
+    }
     async function getData() {
       handleRemovePassword()
       const id = Number(activeDescription.value)
       if (id) {
         const data = await findPasswordDetail(id)
-        if (data) description.data = data
+        if (data) {
+          description.data = data
+          handleSearchPassword(description.data.id!)
+        }
       }
     }
 
@@ -63,6 +65,7 @@ export default defineComponent({
     }
     function handleRemovePassword() {
       description.password = ''
+      reviewPasswordStatus.value = false
     }
     watch(
       () => activeDescription.value,
@@ -83,128 +86,49 @@ export default defineComponent({
       }
     }
 
-    const handleEditPasswordDescription = (field: string) => {
-      description.editKey = field
-      description.editValue = Reflect.get(description.data!, field)
-      nextTick(() => changeInputRef.value?.focus())
-    }
-    const handleEditBlur = () => {
-      description.editKey = null
-      description.editValue = ''
-    }
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === 'Escape') {
-        handleEditBlur
-      } else if (e.code === 'Enter') {
-        handleEditDescription()
-        handleEditBlur()
+    const handleMenuClick = ({ key }: { key: string }) => {
+      switch (key) {
+        case 'toggle':
+          toggleReviewPasswordStatus()
+          if (reviewPasswordStatus.value)
+            handleSearchPassword(description.data!.id)
+          break
+        case 'copy':
+          handleCopyPassword('password')
+          break
       }
     }
 
-    const handleEditDescription = async () => {
-      if (!description.editKey) return
-      const isRequired = requiredField.includes(description.editKey)
-      if (isRequired) {
-        if (!description.editValue.trim()) {
-          message.error('required field')
-          return
-        }
-      }
-      const changeField = { [description.editKey]: description.editValue }
-      await changePasswordDescription(
-        Number(activeDescription.value),
-        changeField
-      )
-      message.success('🎉 change success')
-      getData()
+    const formatDescription = (field: string, key: string) => {
+      if (key === 'password')
+        return (
+          <Input
+            style={{ padding: 0 }}
+            type={reviewPasswordStatus.value ? 'default' : 'password'}
+            bordered={false}
+            value={description.password}
+          />
+        )
+      return field
+    }
+
+    const formatOtherDescription = (description: string, key: string) => {
+      if (key === 'url')
+        return (
+          <Button style={{ padding: 0 }} type="link">
+            {description}
+          </Button>
+        )
+      return description
     }
     return () => {
       if (!activeDescription.value) return null
-      // <div class="min-w-0 p-x-2 overflow-hidden">
-      //   <Descriptions column={1}
-      //     style={{ margin: '12px', border:'1px solid var(--box-color-1)', position: 'relative'}}
-      //     layout="vertical"
-      //   >
-      //     {activeDescription.value &&
-      //       description.data?.id &&
-      //       columns.map((column) => {
-      //         const key = column.key as (typeof columns)[number]['key']
-      //         const isPasswordField = key === 'password'
-      //         return (
-      //           <DescriptionsItem
-      //             id={column.key}
-      //             label={column.label}
-      //             style={{ padding: '20px'}}
-      //           >
-      //            <div>
-      //               {description.editKey !== column.key ? (
-      //                 <div
-      //                   class={
-      //                     'whitespace-nowrap text-ellipsis flex-1 p-r-12 h-full description-item' +
-      //                     (isPasswordField ? ' cursor-pointer' : '')
-      //                   }
-      //                 >
-      //                   <span
-      //                     onClick={() => handleCopyPassword(key)}
-      //                     class="relative"
-      //                   >
-      //                     {isPasswordField
-      //                       ? description.password || passwordLabel
-      //                       : description.data![key]}
-      //                   </span>
-      //                   <EditIcon
-      //                     class={
-      //                       'absolute right-6 description-item__field m-l-1 align-middle'
-      //                     }
-      //                     onClick={() => {
-      //                       handleEditPasswordDescription(column.key)
-      //                     }}
-      //                   />
-      //                   {isPasswordField && (
-      //                     <span class="absolute right-0 select-none">
-      //                       {description.password ? (
-      //                         <span onClick={handleRemovePassword}>
-      //                           <ViewCloseIcon />
-      //                         </span>
-      //                       ) : (
-      //                         <span
-      //                           onClick={() =>
-      //                             handleSearchPassword(description.data!.id)
-      //                           }
-      //                         >
-      //                           <ViewIcon />
-      //                         </span>
-      //                       )}
-      //                     </span>
-      //                   )}
-      //                 </div>
-      //               ) : (
-      //                 <div onKeydown={handleKeyDown}>
-      //                   <Input
-      //                     ref={e => changeInputRef.value = e}
-      //                     onBlur={handleEditBlur}
-      //                     value={description.editValue}
-      //                     onChange={(e: IEvent<HTMLInputElement>) =>
-      //                       (description.editValue = e.target.value)
-      //                     }
-      //                     style={{ width: '80%' }}
-      //                   />
-      //                 </div>
-      //               )}
-      //            </div>
-      //           </DescriptionsItem>
-      //         )
-      //       })}
-      //   </Descriptions>
-      // </div>
-
       return (
         <div>
-          <div class="flex justify-between">
+          <div class="flex m-t-4 justify-between">
             <div></div>
             <div>
-              <Button icon={<EditOutlined />} type="text">
+              <Button icon={<EditOutlined />} type="link">
                 Edit
               </Button>
             </div>
@@ -225,22 +149,63 @@ export default defineComponent({
                         : 'border-b-1px border-b-solid border-b-ins ') + 'p-3'
                     }
                   >
-                    <div>{column.label}</div>
-                    <Input
-                      style={{
-                        padding: 0,
-                        color: 'inherit',
-                        cursor: 'default',
-                      }}
-                      value={Reflect.get(description.data!, key)}
-                      type={isPasswordField ? 'password' : 'default'}
-                      bordered={false}
-                      disabled
-                    />
+                    <div
+                      class={
+                        isPasswordField
+                          ? 'flex items-center justify-between	'
+                          : ''
+                      }
+                    >
+                      <span>{column.label}</span>
+                      {isPasswordField && (
+                        <Dropdown>
+                          {{
+                            overlay: () => (
+                              <Menu onClick={handleMenuClick}>
+                                <MenuItem key="toggle">
+                                  {reviewPasswordStatus.value
+                                    ? 'hidden'
+                                    : 'view'}
+                                </MenuItem>
+                                <MenuItem key="copy">copy</MenuItem>
+                              </Menu>
+                            ),
+                            default: () => (
+                              <Button type="link">
+                                Actions
+                                <DownOutlined />
+                              </Button>
+                            ),
+                          }}
+                        </Dropdown>
+                      )}
+                    </div>
+                    <div>
+                      {formatDescription(
+                        Reflect.get(description.data!, key),
+                        key
+                      )}
+                    </div>
                   </div>
                 )
               })}
             </div>
+          </div>
+          <div class="m-6 leading-5">
+            {otherColumns.map((column) => {
+              const key = column.key as (typeof columns)[number]['key']
+              return (
+                <div key={key} class="m-y-3">
+                  <div>{column.label}</div>
+                  <div>
+                    {formatOtherDescription(
+                      Reflect.get(description.data!, key),
+                      key
+                    )}
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       )

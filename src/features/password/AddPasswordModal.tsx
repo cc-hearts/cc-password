@@ -8,25 +8,35 @@ import {
 } from 'ant-design-vue'
 import { addPassWord } from '@/model/password'
 import { searchPasswordCategory } from '@/model/passwordCategory'
+import { changePasswordDescription } from '@/model/password'
 import { useCategory } from '@/storage/category'
 import { IEvent } from '@/types/common'
 import { GetPromiseReturns } from '@/types/utils'
-import { successMsg } from '@/utils/message'
+import { errorMsg, successMsg } from '@/utils/message'
 import { computed, defineComponent, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { encodeAes } from '@/utils/crypto'
 import type { getArraySubitem } from '@cc-heart/utils/helper'
 
 export default defineComponent({
-  name: 'AddPasswordModal',
+  name: 'PasswordModal',
   props: {
     visible: {
       type: Boolean,
       default: false,
     },
+    status: {
+      type: String,
+      default: 'add',
+      validate: (val: string) => ['add', 'edit'].includes(val),
+    },
+    id: {
+      type: Number,
+      default: null,
+    },
   },
   emits: ['cancel', 'refresh'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const modalRef = reactive({
       username: '',
       cid: '' as string | number,
@@ -69,15 +79,34 @@ export default defineComponent({
       await validate()
       const password = await encodeAes(modalRef.password)
       if (!password) return
-      await addPassWord({
-        ...modalRef,
-        password,
-        cid: Number(modalRef.cid) || 0,
-      })
+      const isAdd = props.status === 'add'
+      if (isAdd) {
+        await addPassWord({
+          ...modalRef,
+          password,
+          cid: Number(modalRef.cid) || 0,
+        })
+      } else {
+        if (!props.id) {
+          errorMsg('id is required')
+          return
+        }
+        await changePasswordDescription(props.id, {
+          ...modalRef,
+          password,
+          cid: Number(modalRef.cid) || 0,
+        })
+      }
       successMsg('添加成功')
       emit('refresh')
       handleCancel()
     }
+    const setFieldsValue = (data: Partial<typeof modalRef>) => {
+      Object.assign(modalRef, data)
+    }
+    expose({
+      setFieldsValue,
+    })
     return () => (
       <Modal
         visible={props.visible}

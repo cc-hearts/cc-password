@@ -11,17 +11,16 @@ electron-password is a desktop password management tool built with Electron and 
 - [ ] Automatic generation of strong passwords
 - [ ] Password strength evaluation
 - [x] Support for multiple users and accounts
-- [ ] Encrypted storage and data synchronization
-- [ ] Password search and filtering
-- [ ] Keyboard shortcuts
-- [ ] Customizable themes
+- [x] Encrypted storage and data synchronization
+- [x] Keyboard shortcuts
 
 ## Tech Stack
 
 - `Electron` - An open-source framework for building cross-platform desktop applications
 - `Vue 3` - A progressive JavaScript framework for building user interfaces
 - `Vue Router` - The official Vue.js router for managing application routes
-  Other dependencies listed in the `package.json` file
+
+- Other dependencies listed in the `package.json` file
 
 ## Contribution
 
@@ -29,4 +28,4 @@ Contributions to `electron-password` are welcome. If you have any suggestions, q
 
 ## License
 
-MIT License
+[MIT License](./LICENSE)

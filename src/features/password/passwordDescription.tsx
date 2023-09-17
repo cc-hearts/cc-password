@@ -1,8 +1,4 @@
-import {
-  changePasswordDescription,
-  findPasswordDetail,
-  searchPassword,
-} from '@/model/password'
+import { findPasswordDetail, searchPassword } from '@/model/password'
 import { useDescription } from '@/storage/description'
 import { GetPromiseReturns } from '@/types/utils'
 
@@ -17,7 +13,10 @@ import {
 import { DownOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { defineComponent, reactive, ref, watch } from 'vue'
 import { decodeAes } from '@/utils/crypto'
+import AddPasswordModal from './AddPasswordModal'
 import * as electron from 'electron'
+import { fn } from '@cc-heart/utils/helper'
+import { useOpenLink } from '@/hooks/useOpenLink'
 const { clipboard } = electron
 
 export default defineComponent({
@@ -33,7 +32,12 @@ export default defineComponent({
       { label: 'description', key: 'description' },
     ] as const
 
+    const passwordModelProps = reactive({
+      visible: false,
+    })
+    const passwordModalRef = ref<{ setFieldsValue: fn } | null>(null)
     const reviewPasswordStatus = ref(false)
+
     const { activeDescription } = useDescription()
 
     const description = reactive({
@@ -52,6 +56,16 @@ export default defineComponent({
         if (data) {
           description.data = data
           handleSearchPassword(description.data.id!)
+          Reflect.set(
+            data,
+            'createdAt',
+            new Date(data.createdAt).toLocaleString()
+          )
+          Reflect.set(
+            data,
+            'updatedAt',
+            new Date(data.updatedAt).toLocaleString()
+          )
         }
       }
     }
@@ -63,10 +77,12 @@ export default defineComponent({
         if (code) description.password = code
       }
     }
+
     function handleRemovePassword() {
       description.password = ''
       reviewPasswordStatus.value = false
     }
+
     watch(
       () => activeDescription.value,
       () => {
@@ -84,6 +100,18 @@ export default defineComponent({
         message.success('🎉 copy password to clipboard success')
         description.password = pwd
       }
+    }
+
+    const handleEditPasswordDescription = () => {
+      passwordModelProps.visible = true
+      passwordModalRef &&
+        passwordModalRef.value?.setFieldsValue({
+          ...description.data,
+          password: description.password,
+        })
+    }
+    const handleCancelPasswordModal = () => {
+      passwordModelProps.visible = false
     }
 
     const handleMenuClick = ({ key }: { key: string }) => {
@@ -115,7 +143,11 @@ export default defineComponent({
     const formatOtherDescription = (description: string, key: string) => {
       if (key === 'url')
         return (
-          <Button style={{ padding: 0 }} type="link">
+          <Button
+            style={{ padding: 0 }}
+            type="link"
+            onClick={() => useOpenLink(description)}
+          >
             {description}
           </Button>
         )
@@ -128,7 +160,11 @@ export default defineComponent({
           <div class="flex m-t-4 justify-between">
             <div></div>
             <div>
-              <Button icon={<EditOutlined />} type="link">
+              <Button
+                icon={<EditOutlined />}
+                type="link"
+                onClick={handleEditPasswordDescription}
+              >
                 Edit
               </Button>
             </div>
@@ -207,6 +243,22 @@ export default defineComponent({
               )
             })}
           </div>
+          <div class="m-t-20 flex text-sm	text-slate-400 flex-col items-center justify-center">
+            {description.data?.createdAt && (
+              <div>created: {description.data.createdAt}</div>
+            )}
+            {description.data?.updatedAt && (
+              <div>modified: {description.data.updatedAt}</div>
+            )}
+          </div>
+          <AddPasswordModal
+            ref={passwordModalRef}
+            id={description.data!.id}
+            status="edit"
+            onRefresh={getData}
+            onCancel={handleCancelPasswordModal}
+            visible={passwordModelProps.visible}
+          />
         </div>
       )
     }

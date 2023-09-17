@@ -15,6 +15,8 @@ import RefreshIcon from '@/icons/refresh.vue'
 import { GetPromiseReturns } from '@/types/utils'
 import { useDescription } from '@/storage/description'
 import { IEvent } from '@/types/common'
+import { successTips } from '@/utils/message'
+
 export default defineComponent({
   setup() {
     const { activeCategory } = useCategory()
@@ -65,6 +67,11 @@ export default defineComponent({
       setActiveDescription(String(id))
     }
 
+    const refreshData = async () => {
+      await getData()
+      successTips('🎉 refresh success')
+    }
+
     const paginationProps = computed(() => {
       if (total.value > pagination.size) {
         return {
@@ -90,7 +97,7 @@ export default defineComponent({
           <Button class="m-l-2" type="dashed" onClick={showModal}>
             {{ icon: () => <AddIcon /> }}
           </Button>
-          <Button class="m-l-2" type="dashed" onClick={getData}>
+          <Button class="m-l-2" type="dashed" onClick={refreshData}>
             {{ icon: () => <RefreshIcon /> }}
           </Button>
         </div>

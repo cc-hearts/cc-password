@@ -1,4 +1,4 @@
-import { notification } from 'ant-design-vue'
+import { notification, message as _message } from 'ant-design-vue'
 
 type IconType = 'success' | 'info' | 'warning' | 'error'
 
@@ -15,4 +15,8 @@ export function errorMsg(msg = '') {
 
 export function successMsg(msg = '') {
   message('success')(msg)
+}
+
+export function successTips(msg = '') {
+  _message['success'](msg)
 }

@@ -55,6 +55,8 @@ async function findPasswordDetail(id: number) {
       password: true,
       title: true,
       description: true,
+      createdAt: true,
+      updatedAt: true,
     },
   })
 }

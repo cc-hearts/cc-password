@@ -13,3 +13,6 @@ pages-password:
     cidRequireMessage: 分类不能为空
     passwordRequireMessage: 密码不能为空
     usernameRequireMessage: 用户名不能为空
+
+
+logout: 退出登陆

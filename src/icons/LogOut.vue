@@ -1,14 +1,15 @@
 
 <template>
   <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-    <path fill="currentColor"
-      d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2a9.985 9.985 0 0 1 8 4h-2.71a8 8 0 1 0 .001 12h2.71A9.985 9.985 0 0 1 12 22Zm7-6v-3h-8v-2h8V8l5 4l-5 4Z">
-    </path>
+    <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+      <path d="M14 8V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2v-2"></path>
+      <path d="M9 12h12l-3-3m0 6l3-3"></path>
+    </g>
   </svg>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'RiLogoutCircleRLine'
+  name: 'TablerLogout'
 }
 </script>

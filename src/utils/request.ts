@@ -23,6 +23,7 @@ request.useResponseInterceptor(async (data) => {
   if ([401].includes(code)) {
     clearToken()
     router.push('/login')
+    return
   }
   errorMsg(message)
   return Promise.reject(message)

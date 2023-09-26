@@ -5,3 +5,6 @@ pages-index:
 pages-password:
   newCategory: New Category
   removeCategorySuccessMessage: Category removed successfully
+
+
+logout: Logout

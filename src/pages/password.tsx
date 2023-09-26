@@ -23,7 +23,8 @@ export default defineComponent({
     const ns = useNamespace('category')
     const isAddStatus = ref(false)
     const addCategory = ref('')
-    const ALL_CATEGORY = { id: 0, category: t('pages-password.allCategory') }
+    const ALL_CATEGORY = { id: 0, category: '' }
+
     const {
       category: categoryList,
       setCategory,
@@ -109,7 +110,9 @@ export default defineComponent({
                         : ''
                     }
                   >
-                    {item.category}
+                    {item.id === 0
+                      ? t('pages-password.allCategory')
+                      : item.category}
                     {item.id !== 0 && (
                       <span
                         class="absolute right-0"

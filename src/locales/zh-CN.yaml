@@ -13,6 +13,45 @@ pages-password:
     cidRequireMessage: 分类不能为空
     passwordRequireMessage: 密码不能为空
     usernameRequireMessage: 用户名不能为空
-
+  submitButtonText: 提交
+  cancelButtonText: 取消
 
 logout: 退出登陆
+
+generaPasswordPage:
+  modalTitle: 密码生成
+  cancelButtonText: 取消
+  copySuccessMsg: "🎉 成功拷贝至粘贴板"
+
+add-password-modal:
+  submitErrorMsg: 'id是必填项'
+  successMsg: '添加成功'
+  copySuccessMsg: '🎉 拷贝至粘贴板成功'
+
+headers:
+  title: '确认退出登陆吗？'
+  content: '您将被注销并重定向到登录页面'
+  okText: '确认'
+  cancelText: '取消'
+  generateText: "生成密钥"
+  toggleLocatesSuccessMsg: "🎉 切换语言成功"
+
+securityPage:
+  securityErrorTip: '请生成密钥'
+  ivErrorTip: '请生成iv'
+  header: "初次使用，需要生成密钥"
+  generaButtonText: "生成密钥"
+  entryButtonText: "开始使用"
+
+passwordDescriptionPage:
+  copySuccessText: '🎉 成功复制到粘贴板'
+  copy: '复制'
+  actions: '操作'
+  created: '创建时间：'
+  modified: '修改时间：'
+  edit: '编辑'
+  hidden: '隐藏'
+  view: '显示'
+
+passwordList:
+  refreshSuccessTips: '🎉 刷新成功'

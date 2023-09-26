@@ -11,24 +11,54 @@ import { Modal, Popover } from 'ant-design-vue'
 import { MoreOutlined } from '@ant-design/icons-vue'
 import { clearRefreshToken, clearToken } from '@/storage'
 import { useRouter } from 'vue-router'
+import GeneratorPasswordModal from '@/features/password/generatorPasswordModal'
+import ArrowUp from '@/icons/arrowUp.vue'
+import { reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+import I18n from '@/icons/i18n.vue'
+import { loadLanguageAsync } from '@/modules/i18n'
+import { successTips } from '@/utils/message'
+import { setLocates } from '@/storage/locates'
 
 const router = useRouter()
 const ns = useNamespace('header')
+const generaPasswordProps = reactive({
+  visible: false,
+  onCancel: () => {
+    generaPasswordProps.visible = false
+  },
+})
 const toGithub = () => {
   if (githubUrl) useOpenLink(githubUrl)
 }
+const { t } = useI18n()
 const handleLogout = () => {
   Modal.confirm({
-    title: 'Are you sure to log out?',
-    content: 'You will be logged out and redirected to the login page.',
-    okText: 'Yes',
-    cancelText: 'No',
+    title: t('headers.title'),
+    content: t('headers.content'),
+    okText: t('headers.okText'),
+    cancelText: t('headers.cancelText'),
     onOk() {
       clearToken()
       clearRefreshToken()
       router.push('/login')
     },
   })
+}
+
+const openPasswordModal = () => {
+  generaPasswordProps.visible = true
+}
+
+const locates = [
+  { label: '简体中文', value: 'zh-CN' },
+  { label: 'English', value: 'en-US' },
+]
+
+const handleToggleLocates = (value: string) => {
+  loadLanguageAsync(value)
+  setLocates(value)
+  successTips(t('headers.toggleLocatesSuccessMsg'))
 }
 </script>
 
@@ -42,16 +72,34 @@ const handleLogout = () => {
     </slot>
     <div class="flex text-xl items-center" :class="[ns.e('icon')]">
       <slot name="right-icon"></slot>
-      <IPopover content="password generator">
-        <TagsIcon />
+      <IPopover :content="t('headers.generateText')">
+        <TagsIcon @click="openPasswordModal" />
       </IPopover>
       <IPopover content="github">
         <GithubIcon @click="toGithub" />
       </IPopover>
+      <SwitchTheme />
       <div :class="[ns.e('split')]">
-        <SwitchTheme />
+        <Popover>
+          <template #content>
+            <template v-for="item in locates" :key="item.value">
+              <div
+                class="cursor-pointer m-y-1 justify-center p-x-2 flex items-center"
+                :class="[ns.e('popover')]"
+                @click="handleToggleLocates(item.value)"
+              >
+                <span>{{ item.label }}</span>
+                <ArrowUp />
+              </div>
+            </template>
+          </template>
+          <I18n />
+        </Popover>
       </div>
-      <Popover :overlayClassName="ns.e('custom-popover')" placement="bottomRight">
+      <Popover
+        :overlayClassName="ns.e('custom-popover')"
+        placement="bottomRight"
+      >
         <template #content>
           <div
             class="flex items-center"
@@ -66,6 +114,10 @@ const handleLogout = () => {
         <MoreOutlined />
       </Popover>
     </div>
+    <GeneratorPasswordModal
+      :visible="generaPasswordProps.visible"
+      @cancel="generaPasswordProps.onCancel"
+    />
   </header>
 </template>
 
@@ -110,7 +162,7 @@ const handleLogout = () => {
   }
 
   &__split {
-    $marginX: 6px;
+    $marginX: 9px;
     display: flex;
     &::before,
     &::after {
@@ -130,13 +182,14 @@ const handleLogout = () => {
   }
 
   @include e('popover') {
-    --cc-popover-hover-bg-color: rgba(0,0,0,0.06);
     padding: 2px 4px;
     transition: all 0.3s;
     border-radius: 4px;
     cursor: pointer;
+    color: var(--color-text-2);
     &:hover {
       background-color: var(--cc-popover-hover-bg-color);
+      color: var(--color-text-1);
     }
   }
 

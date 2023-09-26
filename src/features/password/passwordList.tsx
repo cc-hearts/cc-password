@@ -16,11 +16,13 @@ import { GetPromiseReturns } from '@/types/utils'
 import { useDescription } from '@/storage/description'
 import { IEvent } from '@/types/common'
 import { successTips } from '@/utils/message'
+import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
   setup() {
     const { activeCategory } = useCategory()
     const pagination = usePagination()
+    const { t } = useI18n()
     const handlePaginationChange = (page: number, size: number) => {
       pagination.page = page
       pagination.size = size
@@ -69,7 +71,7 @@ export default defineComponent({
 
     const refreshData = async () => {
       await getData()
-      successTips('🎉 refresh success')
+      successTips(t('passwordList.refreshSuccessTips'))
     }
 
     const paginationProps = computed(() => {

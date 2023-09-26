@@ -13,6 +13,8 @@
   --box-color-1: rgb(229, 230, 235);
 
   --docsearch-searchbox-background: #ebedf0;
+
+  --cc-popover-hover-bg-color: rgba(0, 0, 0, 0.06);
 }
 
 :root.dark {
@@ -28,6 +30,8 @@
   --box-color-1: rgb(72, 72, 73);
 
   --docsearch-searchbox-background: #313136;
+
+  --cc-popover-hover-bg-color: rgba(255, 255, 255, 0.12);
 }
 
 html {

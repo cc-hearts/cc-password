@@ -88,7 +88,7 @@ export default defineComponent({
         })
       } else {
         if (!props.id) {
-          errorMsg('id is required')
+          errorMsg(t('add-password-modal.submitErrorMsg'))
           return
         }
         await changePasswordDescription(props.id, {
@@ -97,7 +97,7 @@ export default defineComponent({
           cid: Number(modalRef.cid) || 0,
         })
       }
-      successMsg('添加成功')
+      successMsg(t('add-password-modal.successMsg'))
       emit('refresh')
       handleCancel()
     }
@@ -113,6 +113,8 @@ export default defineComponent({
         title={t('pages-password.addPasswordModalTitle')}
         onCancel={handleCancel}
         onOk={handleSubmit}
+        okText={t('pages-password.submitButtonText')}
+        cancelText={t('pages-password.cancelButtonText')}
       >
         <Form model={modalRef} rules={rulesRef} labelCol={{ span: 5 }}>
           <FormItem label="category" required name="cid">

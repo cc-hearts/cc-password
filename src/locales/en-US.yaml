@@ -2,9 +2,56 @@ pages-index:
   usernamePlaceholder: Please enter username
   passwordPlaceholder: Please enter password
   submitButton: Login
+
 pages-password:
   newCategory: New Category
   removeCategorySuccessMessage: Category removed successfully
-
+  allCategory: "All Category"
+  addPasswordModalTitle: "Add Password"
+  removeCategoryConfirmTitle: "Delete the classification?"
+  rulesRef:
+    cidRequireMessage: "The classification cannot be empty"
+    passwordRequireMessage: "Password cannot be empty"
+    usernameRequireMessage: "The user name cannot be empty"
+  submitButtonText: 'Submit'
+  cancelButtonText: 'Cancel'
 
 logout: Logout
+
+generaPasswordPage:
+  modalTitle: Generate Password
+  cancelButtonText: cancel
+  copySuccessMsg: "🎉 successfully copy generator password to clipboard"
+
+add-password-modal:
+  submitErrorMsg: 'id is required'
+  successMsg: 'add successfully'
+  copySuccessMsg: '🎉 Copy to pasteboard successful'
+
+headers:
+  title: 'Are you sure to log out?'
+  content: 'You will be logged out and redirected to the login page.'
+  okText: 'Yes'
+  cancelText: 'No'
+  generateText: "Generator Security"
+  toggleLocatesSuccessMsg: "🎉 The language switch was successful"
+
+securityPage:
+  securityErrorTip: 'Please generate key'
+  ivErrorTip: 'Please generate iv'
+  header: "For first time use, you need to generate a key"
+  generaButtonText: "Generate key"
+  entryButtonText: "Get started"
+
+passwordDescriptionPage:
+  copySuccessText: '🎉 copy password to clipboard success'
+  copy: 'copy'
+  actions: 'Actions'
+  created: 'Created Time:'
+  modified: 'Modified Time:'
+  edit: 'Edit'
+  hidden: 'hidden'
+  view: 'view'
+
+passwordList:
+  refreshSuccessTips: '🎉 refresh success'

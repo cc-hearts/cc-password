@@ -1,4 +1,5 @@
 import { isDev } from '@/configs'
+import { getLocates } from '@/storage/locates'
 import type { App } from 'vue'
 import type { Locale } from 'vue-i18n'
 import { createI18n } from 'vue-i18n'
@@ -21,6 +22,7 @@ const localesMap = Object.fromEntries(
 ) as Record<Locale, () => { default: Promise<Record<string, string>> }>
 
 if (isDev) {
+  console.log(i18n.global.locale.value)
   console.log(localesMap)
 }
 
@@ -35,10 +37,8 @@ function setI18nLanguage(locale: Locale) {
 const loadedLanguages: string[] = []
 export async function loadLanguageAsync(locale: string) {
   // 相同的语言直接设置
-  if (i18n.global.locale.value === locale) return setI18nLanguage(locale)
-
-  // 如果语言已经加载过
-  if (loadedLanguages.includes(locale)) return setI18nLanguage(locale)
+  if (i18n.global.locale.value === locale && loadedLanguages.includes(locale))
+    return setI18nLanguage(locale)
 
   // 如果语言没有加载过
   const msg = await localesMap[locale]()
@@ -49,5 +49,5 @@ export async function loadLanguageAsync(locale: string) {
 
 export const setup = ({ app }: { app: App }) => {
   app.use(i18n)
-  loadLanguageAsync('zh-CN')
+  loadLanguageAsync(getLocates() || 'zh-CN')
 }

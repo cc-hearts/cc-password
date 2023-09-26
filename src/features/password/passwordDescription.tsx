@@ -17,6 +17,7 @@ import AddPasswordModal from './AddPasswordModal'
 import * as electron from 'electron'
 import { fn } from '@cc-heart/utils/helper'
 import { useOpenLink } from '@/hooks/useOpenLink'
+import { useI18n } from 'vue-i18n'
 const { clipboard } = electron
 
 export default defineComponent({
@@ -89,6 +90,7 @@ export default defineComponent({
         getData()
       }
     )
+    const { t } = useI18n()
 
     const handleCopyPassword = async (key: string) => {
       if (key === 'password') {
@@ -97,7 +99,7 @@ export default defineComponent({
           await handleSearchPassword(description.data!.id)
         }
         clipboard.writeText(description.password)
-        message.success('🎉 copy password to clipboard success')
+        message.success(t('passwordDescriptionPage.copySuccessText'))
         description.password = pwd
       }
     }
@@ -165,7 +167,7 @@ export default defineComponent({
                 type="link"
                 onClick={handleEditPasswordDescription}
               >
-                Edit
+                {t('passwordDescriptionPage.edit')}
               </Button>
             </div>
           </div>
@@ -199,16 +201,21 @@ export default defineComponent({
                             overlay: () => (
                               <Menu onClick={handleMenuClick}>
                                 <MenuItem key="toggle">
-                                  {reviewPasswordStatus.value
-                                    ? 'hidden'
-                                    : 'view'}
+                                  {t(
+                                    'passwordDescriptionPage.' +
+                                      (reviewPasswordStatus.value
+                                        ? 'hidden'
+                                        : 'view')
+                                  )}
                                 </MenuItem>
-                                <MenuItem key="copy">copy</MenuItem>
+                                <MenuItem key="copy">
+                                  {t('passwordDescriptionPage.copy')}
+                                </MenuItem>
                               </Menu>
                             ),
                             default: () => (
                               <Button type="link">
-                                Actions
+                                {t('passwordDescriptionPage.actions')}
                                 <DownOutlined />
                               </Button>
                             ),
@@ -245,10 +252,16 @@ export default defineComponent({
           </div>
           <div class="m-t-20 flex text-sm	text-slate-400 flex-col items-center justify-center">
             {description.data?.createdAt && (
-              <div>created: {description.data.createdAt}</div>
+              <div>
+                {t('passwordDescriptionPage.created')}{' '}
+                {description.data.createdAt}
+              </div>
             )}
             {description.data?.updatedAt && (
-              <div>modified: {description.data.updatedAt}</div>
+              <div>
+                {t('passwordDescriptionPage.modified')}{' '}
+                {description.data.updatedAt}
+              </div>
             )}
           </div>
           <AddPasswordModal

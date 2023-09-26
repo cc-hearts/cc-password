@@ -11,7 +11,7 @@ import {
 } from 'ant-design-vue'
 import { defineComponent, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-
+import { useI18n } from 'vue-i18n'
 export default defineComponent({
   name: 'GeneratorSecurityPage',
   setup() {
@@ -19,19 +19,20 @@ export default defineComponent({
       security: '',
       iv: '',
     })
+    const { t } = useI18n()
     const { profile } = useProfile()
     const router = useRouter()
     const rulesRef = reactive({
       security: [
         {
           required: true,
-          message: '请生成密钥',
+          message: t('securityPage.securityErrorTip'),
         },
       ],
       iv: [
         {
           required: true,
-          message: '请生成iv',
+          message: t('securityPage.ivErrorTip'),
         },
       ],
     })
@@ -50,7 +51,9 @@ export default defineComponent({
     return () => (
       <div class="h-full w-full flex flex-col justify-center items-center">
         <div class="translate-x-20%">
-          <TypographyTitle level={4}>初次使用，需要生成密钥。</TypographyTitle>
+          <TypographyTitle level={4}>
+            {t('securityPage.header')}
+          </TypographyTitle>
         </div>
         <Form class="w-sm m-t-3" modal={modalRef} labelCol={{ span: 6 }}>
           <FormItem label="security" name="security" required>
@@ -71,9 +74,11 @@ export default defineComponent({
           </FormItem>
           <div class="text-center translate-x-10%">
             <Button class="m-r-2 " onClick={generatorSecurity}>
-              生成密钥
+              {t('securityPage.generaButtonText')}
             </Button>
-            <Button onClick={handleSubmit}>开始使用</Button>
+            <Button onClick={handleSubmit}>
+              {t('securityPage.entryButtonText')}
+            </Button>
           </div>
         </Form>
       </div>

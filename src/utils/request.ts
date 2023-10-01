@@ -15,7 +15,7 @@ const request = new Request<IBaseResponse>(
 async function getRouter() {
   return import('../modules/router')
 }
-request.useResponseInterceptor(async (data, {url, data: config}) => {
+request.useResponseInterceptor(async (data, { url, data: config }) => {
   const { code, message } = data
   const { router } = await getRouter()
   if ([200].includes(code)) {
@@ -25,16 +25,18 @@ request.useResponseInterceptor(async (data, {url, data: config}) => {
     try {
       const refreshToken = getRefreshToken()
       if (refreshToken) {
-        const {data} = await refreshTokenApi(refreshToken)
+        const { data } = await refreshTokenApi(refreshToken)
         if (data) {
           const { accessToken, refreshToken } = data
           setToken(accessToken)
           setRefreshToken(refreshToken)
         }
-        const { data: _data } = await Promise.resolve(request.request(url, config.method, config.body, config.interceptor))
+        const { data: _data } = await Promise.resolve(
+          request.request(url, config.method, config.body, config.interceptor)
+        )
         return Promise.resolve(_data)
       }
-    } catch(error) {
+    } catch (error) {
       console.log(error)
     }
     router.push('/login')

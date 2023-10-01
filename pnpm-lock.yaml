@@ -15,8 +15,8 @@ dependencies:
     specifier: ^2.0.11
     version: 2.0.11
   '@cc-heart/utils-client':
-    specifier: ^1.0.2
-    version: 1.0.2
+    specifier: ^1.0.3
+    version: 1.0.3
   '@intlify/unplugin-vue-i18n':
     specifier: ^1.0.1
     version: 1.4.0(vue-i18n@9.2.2)
@@ -472,8 +472,8 @@ packages:
       - typescript
     dev: false
 
-  /@cc-heart/utils-client@1.0.2:
-    resolution: {integrity: sha512-ncIt+9HCZx9t3hBumzqaWV8bev4rMXMKRXVFfO40SnjBhZcKBHMQ68B0dWFJ1Wj5MNM8Ds479daW8wyuiBQMCw==}
+  /@cc-heart/utils-client@1.0.3:
+    resolution: {integrity: sha512-P5P2u3ujsNSjtex9B5sj2bjqaVm+eqc61XIPEhGP9h8i8uNHATBCGx10upDuoBebc4C5s6ZtpCO15+fSChBfww==}
     dev: false
 
   /@cc-heart/utils@2.0.11:

@@ -1,3 +1,22 @@
+<template>
+  <div class="h-full w-full flex justify-center items-center">
+    <div class="w-80 text-center">
+      <Input
+        class="m-b-6"
+        v-model:value="userInfo.username"
+        :placeholder="$t('pages-index.usernamePlaceholder')"
+      />
+      <InputPassword
+        v-model:value="userInfo.password"
+        :placeholder="$t('pages-index.passwordPlaceholder')"
+      />
+      <Button class="m-t-6" @click="handleSubmit">{{
+        $t('pages-index.submitButton')
+      }}</Button>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { InputPassword, Button, Input } from 'ant-design-vue'
 import { reactive } from 'vue'
@@ -51,21 +70,3 @@ onUnmounted(() => {
   window.removeEventListener('keypress', listenerEnterToLogin)
 })
 </script>
-<template>
-  <div class="h-full w-full flex justify-center items-center">
-    <div class="w-80 text-center">
-      <Input
-        class="m-b-6"
-        v-model:value="userInfo.username"
-        :placeholder="$t('pages-index.usernamePlaceholder')"
-      />
-      <InputPassword
-        v-model:value="userInfo.password"
-        :placeholder="$t('pages-index.passwordPlaceholder')"
-      />
-      <Button class="m-t-6" @click="handleSubmit">{{
-        $t('pages-index.submitButton')
-      }}</Button>
-    </div>
-  </div>
-</template>

@@ -60,7 +60,6 @@ const handleToggleLocates = (value: string) => {
   setLocates(value)
   successTips(t('headers.toggleLocatesSuccessMsg'))
 }
-
 </script>
 
 <template>

@@ -1,7 +1,8 @@
 import { Request } from '@cc-heart/utils-client'
 import type { IBaseResponse } from '@/types'
-import { getToken, clearToken } from '@/storage'
+import { getToken, getRefreshToken, setToken, setRefreshToken } from '@/storage'
 import { errorMsg } from './message'
+import { refreshTokenApi } from '@/features/user/api'
 export type params = Record<string, any> | FormData
 const config = {
   baseUrl: import.meta.env.VITE_BASE_URL,
@@ -14,14 +15,27 @@ const request = new Request<IBaseResponse>(
 async function getRouter() {
   return import('../modules/router')
 }
-request.useResponseInterceptor(async (data) => {
+request.useResponseInterceptor(async (data, {url, data: config}) => {
   const { code, message } = data
   const { router } = await getRouter()
   if ([200].includes(code)) {
     return Promise.resolve(data)
   }
   if ([401].includes(code)) {
-    clearToken()
+    try {
+      const refreshToken = getRefreshToken()
+      if (refreshToken) {
+        const {data} = await refreshTokenApi(refreshToken)
+        if (data) {
+          const { accessToken, refreshToken } = data
+          setToken(accessToken)
+          setRefreshToken(refreshToken)
+        }
+        return request.request(url, config.method, config.body, config.interceptor)
+      }
+    } catch(error) {
+      console.log(error)
+    }
     router.push('/login')
     return
   }

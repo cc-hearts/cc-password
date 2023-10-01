@@ -9,6 +9,8 @@ import { useProfile } from '@/storage/user'
 import { isNull } from '@cc-heart/utils'
 import { onMounted } from 'vue'
 import { onUnmounted } from 'vue'
+import { encodeMd5 } from '@/utils/crypto'
+
 const router = useRouter()
 const userInfo = reactive({
   username: '',
@@ -16,7 +18,8 @@ const userInfo = reactive({
 })
 const handleSubmit = async () => {
   const { username, password } = userInfo
-  const { data } = await loginApi({ username, password: password })
+
+  const { data } = await loginApi({ username, password: encodeMd5(password) })
   if (data) {
     const { accessToken, refreshToken } = data
     setToken(accessToken)

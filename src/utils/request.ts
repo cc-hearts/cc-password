@@ -31,7 +31,8 @@ request.useResponseInterceptor(async (data, {url, data: config}) => {
           setToken(accessToken)
           setRefreshToken(refreshToken)
         }
-        return request.request(url, config.method, config.body, config.interceptor)
+        const { data: _data } = await Promise.resolve(request.request(url, config.method, config.body, config.interceptor))
+        return Promise.resolve(_data)
       }
     } catch(error) {
       console.log(error)

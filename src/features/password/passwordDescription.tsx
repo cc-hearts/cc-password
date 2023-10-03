@@ -18,6 +18,7 @@ import * as electron from 'electron'
 import { fn } from '@cc-heart/utils/helper'
 import { useOpenLink } from '@/hooks/useOpenLink'
 import { useI18n } from 'vue-i18n'
+import type { MenuInfo } from 'ant-design-vue/es/menu/src/interface'
 const { clipboard } = electron
 
 export default defineComponent({
@@ -116,7 +117,7 @@ export default defineComponent({
       passwordModelProps.visible = false
     }
 
-    const handleMenuClick = ({ key }: { key: string }) => {
+    const handleMenuClick = ({ key }: MenuInfo) => {
       switch (key) {
         case 'toggle':
           toggleReviewPasswordStatus()
@@ -134,7 +135,7 @@ export default defineComponent({
         return (
           <Input
             style={{ padding: 0 }}
-            type={reviewPasswordStatus.value ? 'default' : 'password'}
+            type={reviewPasswordStatus.value ? 'text' : 'password'}
             bordered={false}
             value={description.password}
           />

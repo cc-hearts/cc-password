@@ -14,9 +14,9 @@ import AddPasswordModal from './AddPasswordModal'
 import RefreshIcon from '@/icons/refresh.vue'
 import { GetPromiseReturns } from '@/types/utils'
 import { useDescription } from '@/storage/description'
-import { IEvent } from '@/types/common'
 import { successTips } from '@/utils/message'
 import { useI18n } from 'vue-i18n'
+import { ChangeEvent } from 'ant-design-vue/es/_util/EventInterface'
 
 export default defineComponent({
   setup() {
@@ -78,7 +78,7 @@ export default defineComponent({
       if (total.value > pagination.size) {
         return {
           ...pagination,
-          size: String(pagination.size),
+          size: String(pagination.size) as 'small' | 'default',
           total: total.value,
           onChange: handlePaginationChange,
         }
@@ -91,9 +91,7 @@ export default defineComponent({
           <InputSearch
             style="width: 200px"
             value={searchData.value}
-            onChange={(e: IEvent<HTMLInputElement>) =>
-              (searchData.value = e.target.value)
-            }
+            onChange={(e: ChangeEvent) => (searchData.value = e.target.value!)}
             onSearch={getData}
           />
           <Button class="m-l-2" type="dashed" onClick={showModal}>
@@ -114,7 +112,10 @@ export default defineComponent({
                 <ListItem
                   key={item.id}
                   class="cursor-pointer"
-                  onClick={() => handleSelectActivePasswordDescription(item.id)}
+                  // @ts-ignore
+                  onClick={() => {
+                    handleSelectActivePasswordDescription(item.id)
+                  }}
                 >
                   <ListItemMeta description={item.username}>
                     {{

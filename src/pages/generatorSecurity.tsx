@@ -55,7 +55,7 @@ export default defineComponent({
             {t('securityPage.header')}
           </TypographyTitle>
         </div>
-        <Form class="w-sm m-t-3" modal={modalRef} labelCol={{ span: 6 }}>
+        <Form class="w-sm m-t-3" model={modalRef} labelCol={{ span: 6 }}>
           <FormItem label="security" name="security" required>
             <Tooltip>
               {{

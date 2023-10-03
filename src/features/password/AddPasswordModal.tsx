@@ -10,13 +10,14 @@ import { addPassWord } from '@/model/password'
 import { searchPasswordCategory } from '@/model/passwordCategory'
 import { changePasswordDescription } from '@/model/password'
 import { useCategory } from '@/storage/category'
-import { IEvent } from '@/types/common'
 import { GetPromiseReturns } from '@/types/utils'
 import { errorMsg, successMsg } from '@/utils/message'
 import { computed, defineComponent, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { encodeAes } from '@/utils/crypto'
 import type { getArraySubitem } from '@cc-heart/utils/helper'
+import type { SelectValue } from 'ant-design-vue/es/select'
+import type { ChangeEvent } from 'ant-design-vue/es/_util/EventInterface'
 
 export default defineComponent({
   name: 'PasswordModal',
@@ -120,7 +121,9 @@ export default defineComponent({
           <FormItem label="category" required name="cid">
             <Select
               value={modalRef.cid}
-              onChange={(val: number) => (modalRef.cid = val)}
+              onChange={(val: SelectValue) => {
+                modalRef.cid = val as string
+              }}
             >
               {compCategory.value.map((item: IDataItem) => {
                 return (
@@ -132,40 +135,36 @@ export default defineComponent({
           <FormItem label="title" required name="title">
             <Input
               value={modalRef.title}
-              onChange={(e: IEvent<HTMLInputElement>) =>
-                (modalRef.title = e.target.value)
-              }
+              onChange={(e: ChangeEvent) => (modalRef.title = e.target.value!)}
             />
           </FormItem>
           <FormItem label="url" name="url">
             <Input
               value={modalRef.url}
-              onChange={(e: IEvent<HTMLInputElement>) =>
-                (modalRef.url = e.target.value)
-              }
+              onChange={(e: ChangeEvent) => (modalRef.url = e.target.value!)}
             />
           </FormItem>
           <FormItem label="description" name="description">
             <Input
               value={modalRef.description}
-              onChange={(e: IEvent<HTMLInputElement>) =>
-                (modalRef.description = e.target.value)
+              onChange={(e: ChangeEvent) =>
+                (modalRef.description = e.target.value!)
               }
             />
           </FormItem>
           <FormItem label="username" required name="username">
             <Input
               value={modalRef.username}
-              onChange={(e: IEvent<HTMLInputElement>) =>
-                (modalRef.username = e.target.value)
+              onChange={(e: ChangeEvent) =>
+                (modalRef.username = e.target.value!)
               }
             />
           </FormItem>
           <FormItem label="password" required name="password">
             <InputPassword
               value={modalRef.password}
-              onChange={(e: IEvent<HTMLInputElement>) =>
-                (modalRef.password = e.target.value)
+              onChange={(e: ChangeEvent) =>
+                (modalRef.password = e.target.value!)
               }
             />
           </FormItem>

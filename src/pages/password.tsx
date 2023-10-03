@@ -3,7 +3,6 @@ import { useI18n } from 'vue-i18n'
 import { useNamespace } from '@/hooks'
 import { successMsg } from '@/utils/message'
 import { useCategory } from '@/storage/category'
-import { IEvent } from '@/types/common'
 import { GetPromiseReturns } from '@/types/utils'
 import { Input, Modal } from 'ant-design-vue'
 import { isNull } from '@cc-heart/utils'
@@ -16,6 +15,7 @@ import {
 import PasswordList from '@/features/password/passwordList'
 import PasswordDescription from '@/features/password/passwordDescription'
 import '@/assets/scss/pages/password.scss'
+import { ChangeEvent } from 'ant-design-vue/es/_util/EventInterface'
 
 export default defineComponent({
   setup() {
@@ -135,8 +135,8 @@ export default defineComponent({
                 <div onKeydown={handleKeyDowns}>
                   <Input
                     value={addCategory.value}
-                    onChange={(e: IEvent<HTMLInputElement>) =>
-                      (addCategory.value = e.target?.value)
+                    onChange={(e: ChangeEvent) =>
+                      (addCategory.value = e.target?.value!)
                     }
                     allowClear
                     onPressEnter={handleEnter}

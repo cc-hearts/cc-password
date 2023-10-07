@@ -13,7 +13,8 @@ export const devPlugin = () => {
         const addressInfo = server.httpServer?.address()!
         console.log('address info', addressInfo)
         if (typeof addressInfo !== 'string') {
-          const httpAddress = `http://${addressInfo?.address}:${addressInfo.port}`
+          const address = addressInfo?.address.includes('::') ? 'localhost' : addressInfo?.address
+          const httpAddress = `http://${address}:${addressInfo.port}`
           const electronProcess = spawn(
             (await import('electron')).default.toString(),
             ['./dist/main.js', httpAddress],

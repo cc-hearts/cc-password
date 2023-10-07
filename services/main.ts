@@ -21,9 +21,9 @@ app.whenReady().then(() => {
   }
   mainBrowserWindow = new BrowserWindow({ webPreferences, show: false })
   const IS_DEV = !!process.argv[2]
-  if (IS_DEV) {
-    mainBrowserWindow.webContents.openDevTools({ mode: 'undocked' })
-  }
+  // if (IS_DEV) {
+  mainBrowserWindow.webContents.openDevTools({ mode: 'undocked' })
+  // }
   handleShowWindowEvent()
   if (IS_DEV) {
     mainBrowserWindow.loadURL(process.argv[2])

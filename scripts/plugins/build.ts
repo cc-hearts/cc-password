@@ -3,8 +3,9 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
 import { copy } from './preloadCopy.js'
 import { join } from '../utils/path.js'
-import { setupPrismaClient } from '../utils/setup.js'
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { bootStrap } from '../prisma.js'
 function build() {
   function buildMain() {
     require('esbuild').buildSync(esbuildConfig)
@@ -71,7 +72,7 @@ export const buildPlugin = () => {
       // build end hook
       const { buildMain, preparePkg, removeReleaseDir, deployCode } = build()
       buildMain()
-      setupPrismaClient()
+      bootStrap()
       await copy()
       preparePkg()
       await removeReleaseDir()

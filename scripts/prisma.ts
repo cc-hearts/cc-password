@@ -30,7 +30,9 @@ function replaceEnv(recourse: string, replaceString: string) {
   return recourse.replace(reg, replaceString)
 }
 
-function bootStrap() {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+async function bootStrap() {
   execSync('npx prisma generate', { stdio: 'inherit' })
   const prismaPath = './prisma/schema.prisma'
   const data = readFileSync(prismaPath, 'utf-8')
@@ -49,4 +51,6 @@ function bootStrap() {
   }
 }
 
-bootStrap()
+module.exports = {
+  bootStrap,
+}

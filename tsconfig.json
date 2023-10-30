@@ -20,7 +20,8 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "^/*": ["federal/*"]
     }
   },
   "include": [
@@ -28,7 +29,8 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "scripts/prisma-client-js/*.d.ts"
+    "scripts/prisma-client-js/*.d.ts",
+    "federal/**/*.ts"
   ],
   "references": [
     {

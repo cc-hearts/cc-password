@@ -8,6 +8,7 @@ import {
   Input,
   Menu,
   MenuItem,
+  Spin,
   message,
 } from 'ant-design-vue'
 import { DownOutlined, EditOutlined } from '@ant-design/icons-vue'
@@ -45,6 +46,7 @@ export default defineComponent({
     const description = reactive({
       data: {} as GetPromiseReturns<typeof findPasswordDetail>,
       password: '',
+      loading: false,
     })
 
     const toggleReviewPasswordStatus = () => {
@@ -54,20 +56,27 @@ export default defineComponent({
       handleRemovePassword()
       const id = Number(activeDescription.value)
       if (id) {
-        const data = await findPasswordDetail(id)
-        if (data) {
-          description.data = data
-          handleSearchPassword(description.data.id!)
-          Reflect.set(
-            data,
-            'createdAt',
-            new Date(data.createdAt).toLocaleString()
-          )
-          Reflect.set(
-            data,
-            'updatedAt',
-            new Date(data.updatedAt).toLocaleString()
-          )
+        description.loading = true
+        try {
+          const data = await findPasswordDetail(id)
+          if (data) {
+            description.data = data
+            handleSearchPassword(description.data.id!)
+            Reflect.set(
+              data,
+              'createdAt',
+              new Date(data.createdAt).toLocaleString()
+            )
+            Reflect.set(
+              data,
+              'updatedAt',
+              new Date(data.updatedAt).toLocaleString()
+            )
+          }
+        } catch (e) {
+          console.log('[passwordDescription] getData error', e)
+        } finally {
+          description.loading = false
         }
       }
     }
@@ -160,72 +169,90 @@ export default defineComponent({
       if (!activeDescription.value) return null
       return (
         <div>
-          <div class="flex m-t-4 justify-between">
-            <div></div>
-            <div>
-              <Button
-                icon={<EditOutlined />}
-                type="link"
-                onClick={handleEditPasswordDescription}
-              >
-                {t('passwordDescriptionPage.edit')}
-              </Button>
+          <Spin spinning={description.loading}>
+            <div class="flex m-t-4 justify-between">
+              <div></div>
+              <div>
+                <Button
+                  icon={<EditOutlined />}
+                  type="link"
+                  onClick={handleEditPasswordDescription}
+                >
+                  {t('passwordDescriptionPage.edit')}
+                </Button>
+              </div>
             </div>
-          </div>
-          <div class="m-6 leading-5">
-            <h3>{Reflect.get(description.data!, 'title')}</h3>
-            <div class={'border-ins border-solid border-1px rounded m-y-6'}>
-              {columns.map((column, index) => {
-                const key = column.key as (typeof columns)[number]['key']
-                const isPasswordField = key === 'password'
-                const isLastIndex = index === columns.length - 1
-                return (
-                  <div
-                    key={key}
-                    class={
-                      (isLastIndex
-                        ? ''
-                        : 'border-b-1px border-b-solid border-b-ins ') + 'p-3'
-                    }
-                  >
+            <div class="m-6 leading-5">
+              <h3>{Reflect.get(description.data!, 'title')}</h3>
+              <div class={'border-ins border-solid border-1px rounded m-y-6'}>
+                {columns.map((column, index) => {
+                  const key = column.key as (typeof columns)[number]['key']
+                  const isPasswordField = key === 'password'
+                  const isLastIndex = index === columns.length - 1
+                  return (
                     <div
+                      key={key}
                       class={
-                        isPasswordField
-                          ? 'flex items-center justify-between	'
-                          : ''
+                        (isLastIndex
+                          ? ''
+                          : 'border-b-1px border-b-solid border-b-ins ') + 'p-3'
                       }
                     >
-                      <span>{column.label}</span>
-                      {isPasswordField && (
-                        <Dropdown>
-                          {{
-                            overlay: () => (
-                              <Menu onClick={handleMenuClick}>
-                                <MenuItem key="toggle">
-                                  {t(
-                                    'passwordDescriptionPage.' +
-                                      (reviewPasswordStatus.value
-                                        ? 'hidden'
-                                        : 'view')
-                                  )}
-                                </MenuItem>
-                                <MenuItem key="copy">
-                                  {t('passwordDescriptionPage.copy')}
-                                </MenuItem>
-                              </Menu>
-                            ),
-                            default: () => (
-                              <Button type="link">
-                                {t('passwordDescriptionPage.actions')}
-                                <DownOutlined />
-                              </Button>
-                            ),
-                          }}
-                        </Dropdown>
-                      )}
+                      <div
+                        class={
+                          isPasswordField
+                            ? 'flex items-center justify-between	'
+                            : ''
+                        }
+                      >
+                        <span>{column.label}</span>
+                        {isPasswordField && (
+                          <Dropdown>
+                            {{
+                              overlay: () => (
+                                <Menu onClick={handleMenuClick}>
+                                  <MenuItem key="toggle">
+                                    {t(
+                                      'passwordDescriptionPage.' +
+                                        (reviewPasswordStatus.value
+                                          ? 'hidden'
+                                          : 'view')
+                                    )}
+                                  </MenuItem>
+                                  <MenuItem key="copy">
+                                    {t('passwordDescriptionPage.copy')}
+                                  </MenuItem>
+                                </Menu>
+                              ),
+                              default: () => (
+                                <Button type="link">
+                                  {t('passwordDescriptionPage.actions')}
+                                  <DownOutlined />
+                                </Button>
+                              ),
+                            }}
+                          </Dropdown>
+                        )}
+                      </div>
+                      <div>
+                        {formatDescription(
+                          Reflect.get(description.data!, key),
+                          key
+                        )}
+                      </div>
                     </div>
+                  )
+                })}
+              </div>
+            </div>
+            <div class="m-6 leading-5">
+              {otherColumns.map((column) => {
+                const key = column.key as (typeof columns)[number]['key']
+                return (
+                  <div key={key} class="m-y-3">
+                    <div>{column.label}</div>
                     <div>
-                      {formatDescription(
+                      {formatOtherDescription(
                         Reflect.get(description.data!, key),
                         key
                       )}
@@ -234,37 +261,21 @@ export default defineComponent({
                 )
               })}
             </div>
-          </div>
-          <div class="m-6 leading-5">
-            {otherColumns.map((column) => {
-              const key = column.key as (typeof columns)[number]['key']
-              return (
-                <div key={key} class="m-y-3">
-                  <div>{column.label}</div>
-                  <div>
-                    {formatOtherDescription(
-                      Reflect.get(description.data!, key),
-                      key
-                    )}
-                  </div>
+            <div class="m-t-20 flex text-sm	text-slate-400 flex-col items-center justify-center">
+              {description.data?.createdAt && (
+                <div>
+                  {t('passwordDescriptionPage.created')}
+                  {description.data.createdAt}
                 </div>
-              )
-            })}
-          </div>
-          <div class="m-t-20 flex text-sm	text-slate-400 flex-col items-center justify-center">
-            {description.data?.createdAt && (
-              <div>
-                {t('passwordDescriptionPage.created')}{' '}
-                {description.data.createdAt}
-              </div>
-            )}
-            {description.data?.updatedAt && (
-              <div>
-                {t('passwordDescriptionPage.modified')}{' '}
-                {description.data.updatedAt}
-              </div>
-            )}
-          </div>
+              )}
+              {description.data?.updatedAt && (
+                <div>
+                  {t('passwordDescriptionPage.modified')}
+                  {description.data.updatedAt}
+                </div>
+              )}
+            </div>
+          </Spin>
           <AddPasswordModal
             ref={passwordModalRef}
             id={description.data!.id}

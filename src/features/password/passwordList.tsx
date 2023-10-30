@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   ListItemMeta,
+  Spin,
 } from 'ant-design-vue'
 import AddIcon from '@/icons/add.vue'
 import AddPasswordModal from './AddPasswordModal'
@@ -32,6 +33,7 @@ export default defineComponent({
     const total = ref(0)
     const searchData = ref('')
     const state = reactive({
+      loading: false,
       data: [] as GetPromiseReturns<typeof findPassWordList>[1],
     })
 
@@ -51,15 +53,22 @@ export default defineComponent({
       }
     )
     async function getData() {
-      const [t, result] = await findPassWordList(
-        {
-          ...pagination,
-          cid: activeCategory.value,
-        },
-        searchData.value
-      )
-      total.value = t
-      state.data = result
+      state.loading = true
+      try {
+        const [t, result] = await findPassWordList(
+          {
+            ...pagination,
+            cid: activeCategory.value,
+          },
+          searchData.value
+        )
+        total.value = t
+        state.data = result
+      } catch (e) {
+        console.log('[passwordList] getData error', e)
+      } finally {
+        state.loading = false
+      }
     }
 
     onMounted(() => {
@@ -102,30 +111,33 @@ export default defineComponent({
           </Button>
         </div>
         <div class={'flex-1 overflow-auto p-b-4'}>
-          <List
-            item-layout="horizontal"
-            dataSource={state.data}
-            pagination={paginationProps.value}
-          >
-            {state.data.map((item) => {
-              return (
-                <ListItem
-                  key={item.id}
-                  class="cursor-pointer"
-                  // @ts-ignore
-                  onClick={() => {
-                    handleSelectActivePasswordDescription(item.id)
-                  }}
-                >
-                  <ListItemMeta description={item.username}>
-                    {{
-                      title: () => <span>{item.title}</span>,
+          <Spin spinning={state.loading}>
+            <List
+              item-layout="horizontal"
+              dataSource={state.data}
+              pagination={paginationProps.value}
+            >
+              {state.data.map((item) => {
+                return (
+                  <ListItem
+                    key={item.id}
+                    class="cursor-pointer"
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    onClick={() => {
+                      handleSelectActivePasswordDescription(item.id)
                     }}
-                  </ListItemMeta>
-                </ListItem>
-              )
-            })}
-          </List>
+                  >
+                    <ListItemMeta description={item.username}>
+                      {{
+                        title: () => <span>{item.title}</span>,
+                      }}
+                    </ListItemMeta>
+                  </ListItem>
+                )
+              })}
+            </List>
+          </Spin>
         </div>
         <AddPasswordModal
           visible={visible.value}

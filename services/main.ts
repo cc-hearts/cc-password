@@ -6,9 +6,11 @@ import {
 import { setup } from '../scripts/utils/preset'
 import { registerScheme } from './customScheme.js'
 import { handleShowWindowEvent } from './events.js'
+import { registerTray } from './tray'
 setup()
 let mainBrowserWindow: BrowserWindow | null = null
 app.whenReady().then(() => {
+  registerTray()
   const webPreferences: BrowserWindowConstructorOptions['webPreferences'] = {
     nodeIntegration: true,
     webSecurity: false,
@@ -21,9 +23,9 @@ app.whenReady().then(() => {
   }
   mainBrowserWindow = new BrowserWindow({ webPreferences, show: false })
   const IS_DEV = !!process.argv[2]
-  // if (IS_DEV) {
-  mainBrowserWindow.webContents.openDevTools({ mode: 'undocked' })
-  // }
+  if (IS_DEV) {
+    mainBrowserWindow.webContents.openDevTools({ mode: 'undocked' })
+  }
   handleShowWindowEvent()
   if (IS_DEV) {
     mainBrowserWindow.loadURL(process.argv[2])

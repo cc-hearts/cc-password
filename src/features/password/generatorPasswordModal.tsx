@@ -1,13 +1,12 @@
 import { Button, Input, Modal } from 'ant-design-vue'
 import { defineComponent, ref, watch } from 'vue'
-import crypto from 'crypto'
+import { generatorPassword } from '^/utils/crypto'
 import { CopyOutlined, RedoOutlined } from '@ant-design/icons-vue'
 import { useI18n } from 'vue-i18n'
 import * as electron from 'electron'
 import { successTips } from '@/utils/message'
 
 const { clipboard } = electron
-const { randomUUID } = crypto
 export default defineComponent({
   name: 'GeneratorPasswordModal',
   props: {
@@ -21,7 +20,7 @@ export default defineComponent({
     const password = ref('')
     const { t } = useI18n()
     const handleRefreshGeneratorPassword = () => {
-      password.value = randomUUID()
+      password.value = generatorPassword()
     }
     const handleCancel = () => {
       emit('cancel')

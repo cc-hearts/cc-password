@@ -40,7 +40,6 @@ request.useResponseInterceptor(async (data, { url, data: config }) => {
       console.log(error)
     }
     router.push('/login')
-    return
   }
   return Promise.reject(message)
 })

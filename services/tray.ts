@@ -11,7 +11,7 @@ function genPasswordCopy() {
 
 export function registerTray() {
   const icon = nativeImage.createFromPath(
-    resolve(__dirname, '../services/img/icon.png')
+    resolve(__dirname, './icon.png')
   )
   const tray = new Tray(icon)
   const contextMenu = Menu.buildFromTemplate([

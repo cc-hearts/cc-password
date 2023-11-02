@@ -14,10 +14,10 @@ import {
 import { DownOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { defineComponent, reactive, ref, watch } from 'vue'
 import { decodeAes } from '@/utils/crypto'
-import AddPasswordModal from './AddPasswordModal'
+import AddPasswordModal from './add-password-modal'
 import * as electron from 'electron'
 import { fn } from '@cc-heart/utils/helper'
-import { useOpenLink } from '@/hooks/useOpenLink'
+import { useOpenLink } from '@/hooks/use-open-link'
 import { useI18n } from 'vue-i18n'
 import type { MenuInfo } from 'ant-design-vue/es/menu/src/interface'
 const { clipboard } = electron
@@ -261,7 +261,7 @@ export default defineComponent({
                 )
               })}
             </div>
-            <div class="m-t-20 flex text-sm	text-slate-400 flex-col items-center justify-center">
+            <div class="m-t-20 flex text-sm	text-slate-400 flex-col items-center justify-center p-b-4">
               {description.data?.createdAt && (
                 <div>
                   {t('passwordDescriptionPage.created')}

@@ -1,7 +1,7 @@
 import { esbuildConfig } from './config.js'
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
-import { copy } from './preloadCopy.js'
+import { copy } from './preload-copy.js'
 import { join } from '../utils/path.js'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

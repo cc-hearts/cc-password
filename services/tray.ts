@@ -10,9 +10,7 @@ function genPasswordCopy() {
 }
 
 export function registerTray() {
-  const icon = nativeImage.createFromPath(
-    resolve(__dirname, './icon.png')
-  )
+  const icon = nativeImage.createFromPath(resolve(__dirname, './icon.png'))
   const tray = new Tray(icon)
   const contextMenu = Menu.buildFromTemplate([
     { label: '密码生成', type: 'normal', click: genPasswordCopy },

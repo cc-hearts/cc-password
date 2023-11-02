@@ -1,4 +1,4 @@
-import { usePagination } from '@/hooks/usePagination'
+import { usePagination } from '@/hooks/use-pagination'
 import { findPassWordList } from '@/model/password'
 import { useCategory } from '@/storage/category'
 import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
@@ -11,7 +11,7 @@ import {
   Spin,
 } from 'ant-design-vue'
 import AddIcon from '@/icons/add.vue'
-import AddPasswordModal from './AddPasswordModal'
+import AddPasswordModal from './add-password-modal'
 import RefreshIcon from '@/icons/refresh.vue'
 import { GetPromiseReturns } from '@/types/utils'
 import { useDescription } from '@/storage/description'
@@ -110,7 +110,10 @@ export default defineComponent({
             {{ icon: () => <RefreshIcon /> }}
           </Button>
         </div>
-        <div class={'flex-1 overflow-auto p-b-4'}>
+        <div
+          class={'overflow-auto p-b-4'}
+          style="height: calc(100vh - 48px - 48px)"
+        >
           <Spin spinning={state.loading}>
             <List
               item-layout="horizontal"

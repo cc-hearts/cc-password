@@ -1,4 +1,5 @@
 <template>
+  <LoginHeader />
   <div class="h-full w-full flex justify-center items-center">
     <div class="w-80 text-center">
       <Input
@@ -29,6 +30,7 @@ import { isNull } from '@cc-heart/utils'
 import { onMounted } from 'vue'
 import { onUnmounted } from 'vue'
 import { encodeMd5 } from '@/utils/crypto'
+import LoginHeader from '@/features/components/login-header.vue'
 
 const router = useRouter()
 const userInfo = reactive({

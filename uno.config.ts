@@ -23,5 +23,7 @@ export default defineConfig({
         'background-color': 'var(--docsearch-searchbox-background)',
       },
     ],
+    ['app-drag', { '-webkit-app-region': 'drag' }],
+    ['app-no-drag', { '-webkit-app-region': 'no-drag' }],
   ],
 })

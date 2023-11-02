@@ -1,54 +1,24 @@
 <script setup lang="ts">
-import { useNamespace } from '@/hooks'
-import { GithubIcon } from '@/icons'
 import { githubUrl } from '@/configs'
-import SwitchTheme from './switchTheme.vue'
-import { useOpenLink } from '@/hooks/useOpenLink'
-import TagsIcon from '@/icons/Tags.vue'
-import IPopover from './IPopover'
-import LogOut from '@/icons/LogOut.vue'
-import { Modal, Popover } from 'ant-design-vue'
-import { MoreOutlined } from '@ant-design/icons-vue'
-import { clearRefreshToken, clearToken } from '@/storage'
-import { useRouter } from 'vue-router'
-import GeneratorPasswordModal from '@/features/password/generatorPasswordModal'
-import ArrowUp from '@/icons/arrowUp.vue'
-import { reactive } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { useCssNamespace } from '@/hooks'
+import { useOpenLink } from '@/hooks/use-open-link'
+import { GithubIcon } from '@/icons'
+import ArrowUp from '@/icons/arrow-up.vue'
 import I18n from '@/icons/i18n.vue'
 import { loadLanguageAsync } from '@/modules/i18n'
-import { successTips } from '@/utils/message'
 import { setLocates } from '@/storage/locates'
+import { successTips } from '@/utils/message'
+import { Popover } from 'ant-design-vue'
+import { useI18n } from 'vue-i18n'
+import IPopover from './i-popover'
+import SwitchTheme from './switch-theme.vue'
 
-const router = useRouter()
-const ns = useNamespace('header')
-const generaPasswordProps = reactive({
-  visible: false,
-  onCancel: () => {
-    generaPasswordProps.visible = false
-  },
-})
+const ns = useCssNamespace('header')
+
 const toGithub = () => {
   if (githubUrl) useOpenLink(githubUrl)
 }
 const { t } = useI18n()
-const handleLogout = () => {
-  Modal.confirm({
-    title: t('headers.title'),
-    content: t('headers.content'),
-    okText: t('headers.okText'),
-    cancelText: t('headers.cancelText'),
-    onOk() {
-      clearToken()
-      clearRefreshToken()
-      router.push('/login')
-    },
-  })
-}
-
-const openPasswordModal = () => {
-  generaPasswordProps.visible = true
-}
 
 const locates = [
   { label: '简体中文', value: 'zh-CN' },
@@ -66,15 +36,14 @@ const handleToggleLocates = (value: string) => {
   <header
     class="flex justify-between items-center px-3 shrink-0"
     :class="[ns.cls]"
+    style="-webkit-app-region: drag"
   >
+    <TopBar />
     <slot name="left">
       <div></div>
     </slot>
-    <div class="flex text-xl items-center" :class="[ns.e('icon')]">
+    <div class="flex text-xl items-center z-10" :class="[ns.e('icon')]">
       <slot name="right-icon"></slot>
-      <IPopover :content="t('headers.generateText')">
-        <TagsIcon @click="openPasswordModal" />
-      </IPopover>
       <IPopover content="github">
         <GithubIcon @click="toGithub" />
       </IPopover>
@@ -96,28 +65,8 @@ const handleToggleLocates = (value: string) => {
           <I18n />
         </Popover>
       </div>
-      <Popover
-        :overlayClassName="ns.e('custom-popover')"
-        placement="bottomRight"
-      >
-        <template #content>
-          <div
-            class="flex items-center"
-            :class="[ns.e('popover')]"
-            @click="handleLogout"
-          >
-            <LogOut />
-            <div class="popover__split"></div>
-            <span>{{ $t('logout') }}</span>
-          </div>
-        </template>
-        <MoreOutlined />
-      </Popover>
+      <slot name="right"></slot>
     </div>
-    <GeneratorPasswordModal
-      :visible="generaPasswordProps.visible"
-      @cancel="generaPasswordProps.onCancel"
-    />
   </header>
 </template>
 
@@ -131,6 +80,11 @@ const handleToggleLocates = (value: string) => {
   --cc-divider-light: rgba(60, 60, 60, 0.12);
   height: 48px;
   box-shadow: 0 1px 0 var(--header-shadow);
+
+  svg,
+  button {
+    -webkit-app-region: no-drag;
+  }
 
   &__icon {
     color: var(--color-text-2);
@@ -146,6 +100,7 @@ const handleToggleLocates = (value: string) => {
       padding: 0.3rem;
       transition: all 0.3s;
       border-radius: 4px;
+
       &:hover {
         background-color: var(--icon-background-color);
       }
@@ -164,6 +119,7 @@ const handleToggleLocates = (value: string) => {
   &__split {
     $marginX: 9px;
     display: flex;
+
     &::before,
     &::after {
       content: '';
@@ -187,6 +143,7 @@ const handleToggleLocates = (value: string) => {
     border-radius: 4px;
     cursor: pointer;
     color: var(--color-text-2);
+
     &:hover {
       background-color: var(--cc-popover-hover-bg-color);
       color: var(--color-text-1);

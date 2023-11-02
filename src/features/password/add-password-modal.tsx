@@ -7,7 +7,7 @@ import {
   InputPassword,
 } from 'ant-design-vue'
 import { addPassWord } from '@/model/password'
-import { searchPasswordCategory } from '@/model/passwordCategory'
+import { searchPasswordCategory } from '@/model/password-category'
 import { changePasswordDescription } from '@/model/password'
 import { useCategory } from '@/storage/category'
 import { GetPromiseReturns } from '@/types/utils'

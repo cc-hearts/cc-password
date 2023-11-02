@@ -1,6 +1,6 @@
 import { ViteDevServer } from 'vite'
 import { esbuildConfig } from './config'
-import { copy } from './preloadCopy'
+import { copy } from './preload-copy'
 export const devPlugin = () => {
   return {
     name: 'dev-plugin',

@@ -4,8 +4,8 @@ import {
   type BrowserWindowConstructorOptions,
 } from 'electron'
 import { setup } from '../scripts/utils/preset'
-import { registerScheme } from './customScheme.js'
-import { handleShowWindowEvent } from './events.js'
+import { registerScheme } from './custom-scheme.js'
+import { registerEvent } from './events.js'
 import { registerTray } from './tray'
 setup()
 let mainBrowserWindow: BrowserWindow | null = null
@@ -21,16 +21,24 @@ app.whenReady().then(() => {
     disableHtmlFullscreenWindowResize: true,
     preload: `${__dirname}/preload.js`,
   }
-  mainBrowserWindow = new BrowserWindow({ webPreferences, show: false })
+  mainBrowserWindow = new BrowserWindow({
+    webPreferences,
+    show: false,
+    frame: false,
+  })
   const IS_DEV = !!process.argv[2]
   if (IS_DEV) {
     mainBrowserWindow.webContents.openDevTools({ mode: 'undocked' })
   }
-  handleShowWindowEvent()
+  registerEvent()
   if (IS_DEV) {
     mainBrowserWindow.loadURL(process.argv[2])
   } else {
     registerScheme()
     mainBrowserWindow.loadURL('app://index.html')
   }
+})
+
+app.on('activate', () => {
+  mainBrowserWindow?.show()
 })

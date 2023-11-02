@@ -1,4 +1,4 @@
-import { AddPasswordCategory } from '@/features/passwordCategory/types'
+import { AddPasswordCategory } from '@/features/password-category/types'
 import { getModelInstance } from './init'
 import { useUid } from '@/hooks'
 

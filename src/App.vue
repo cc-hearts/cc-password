@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import Headers from '@/components/header/headers.vue'
-import Home from '@/layouts/home'
 import { ipcRenderer } from 'electron'
 import { onMounted } from 'vue'
 import { ConfigProvider, theme } from 'ant-design-vue'
 import { isDark } from '@/configs'
 
 onMounted(() => {
-  ipcRenderer.invoke('showWindow')
+  ipcRenderer.invoke('show-window')
 })
 </script>
 
@@ -17,8 +15,7 @@ onMounted(() => {
       algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
     }"
   >
-    <Headers />
-    <Home />
+    <router-view />
   </ConfigProvider>
 </template>
 

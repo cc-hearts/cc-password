@@ -4,7 +4,7 @@ export function useDerivedNamespace(ns?: string) {
   return ns || defaultNamespace
 }
 
-export function useNamespace(
+export function useCssNamespace(
   block?: string | number,
   overrideNamespace?: string
 ) {
@@ -72,4 +72,4 @@ export function useNamespace(
   }
 }
 
-export type useNamespace = ReturnType<typeof useNamespace>
+export type useCssNamespace = ReturnType<typeof useCssNamespace>

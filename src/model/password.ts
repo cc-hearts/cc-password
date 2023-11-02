@@ -1,9 +1,9 @@
-import { InsertPassword } from '@/types'
-import { getModelInstance } from './init'
-import type { Pagination } from '@/types/pagination'
-import { useTransformPagination } from '@/hooks/usePagination'
-import { filterFalsy } from '@/utils/filter'
 import { useUid } from '@/hooks'
+import { useTransformPagination } from '@/hooks/use-pagination'
+import { InsertPassword } from '@/types'
+import type { Pagination } from '@/types/pagination'
+import { filterFalsy } from '@/utils/filter'
+import { getModelInstance } from './init'
 
 async function getModel() {
   return getModelInstance('password')!
@@ -31,7 +31,7 @@ async function findPassWordList<T extends Pagination>(
 
   return await Promise.all([
     model.count({ where }),
-    model.findMany({ where, take, skip }),
+    model.findMany({ where, take, skip, orderBy: { createdAt: 'desc' } }),
   ])
 }
 
@@ -76,4 +76,5 @@ export async function changePasswordDescription<
   })
 }
 
-export { findPassWordList, addPassWord, findPasswordDetail, searchPassword }
+export { addPassWord, findPassWordList, findPasswordDetail, searchPassword }
+

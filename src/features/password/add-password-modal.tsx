@@ -15,7 +15,7 @@ import { errorMsg, successMsg } from '@/utils/message'
 import { computed, defineComponent, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { encodeAes } from '@/utils/crypto'
-import type { getArraySubitem } from '@cc-heart/utils/helper'
+import type { getArrayChildItem } from '@cc-heart/utils/helper'
 import type { SelectValue } from 'ant-design-vue/es/select'
 import type { ChangeEvent } from 'ant-design-vue/es/_util/EventInterface'
 
@@ -47,7 +47,7 @@ export default defineComponent({
       description: '',
     })
     type IData = GetPromiseReturns<typeof searchPasswordCategory>
-    type IDataItem = getArraySubitem<IData>
+    type IDataItem = getArrayChildItem<IData>
     const { t } = useI18n()
     const { category } = useCategory<IData>()
     const compCategory = computed(() => category.value.slice(1))

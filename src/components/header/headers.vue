@@ -12,6 +12,7 @@ import { Popover } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import IPopover from './i-popover'
 import SwitchTheme from './switch-theme.vue'
+import { computed, useSlots } from 'vue'
 
 const ns = useCssNamespace('header')
 
@@ -24,7 +25,8 @@ const locates = [
   { label: '简体中文', value: 'zh-CN' },
   { label: 'English', value: 'en-US' },
 ]
-
+const slot = useSlots()
+const isExistRightSlot = computed(() => !!slot.right)
 const handleToggleLocates = (value: string) => {
   loadLanguageAsync(value)
   setLocates(value)
@@ -38,7 +40,6 @@ const handleToggleLocates = (value: string) => {
     :class="[ns.cls]"
     style="-webkit-app-region: drag"
   >
-    <TopBar />
     <slot name="left">
       <div></div>
     </slot>
@@ -48,7 +49,9 @@ const handleToggleLocates = (value: string) => {
         <GithubIcon @click="toGithub" />
       </IPopover>
       <SwitchTheme />
-      <div :class="[ns.e('split')]">
+      <div
+        :class="[ns.e('split'), isExistRightSlot && ns.em('split', 'right')]"
+      >
         <Popover>
           <template #content>
             <template v-for="item in locates" :key="item.value">
@@ -116,8 +119,9 @@ const handleToggleLocates = (value: string) => {
     }
   }
 
+  $marginX: 9px;
+
   &__split {
-    $marginX: 9px;
     display: flex;
 
     &::before,
@@ -130,7 +134,9 @@ const handleToggleLocates = (value: string) => {
       margin-right: $marginX;
       border-right: 1px solid var(--cc-divider-light);
     }
+  }
 
+  &__split--right {
     &::after {
       margin-left: $marginX;
       border-left: 1px solid var(--cc-divider-light);

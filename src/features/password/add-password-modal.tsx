@@ -110,7 +110,7 @@ export default defineComponent({
     })
     return () => (
       <Modal
-        visible={props.visible}
+        open={props.visible}
         title={t('pages-password.addPasswordModalTitle')}
         onCancel={handleCancel}
         onOk={handleSubmit}

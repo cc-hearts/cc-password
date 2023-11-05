@@ -1,5 +1,5 @@
 // showWindow event
-import { BrowserWindow, ipcMain } from 'electron'
+import { BrowserWindow, dialog, ipcMain } from 'electron'
 
 // get BrowserWindow Instance
 function getCurrentInstance(e: Electron.IpcMainInvokeEvent) {
@@ -32,8 +32,27 @@ export function handleChangeWindowSizeEvent() {
   })
 }
 
+export function handleSelectFilePathEvent() {
+  ipcMain.handle('open-search-dir-path', (event) => {
+    dialog.showOpenDialog({
+      properties: ['openDirectory'],
+      title: 'Select Directory',
+      buttonLabel: 'save'
+    }).then(res => {
+      console.log(res);
+      const { canceled } = res
+      if (!canceled) {
+        const [path] = res.filePaths
+        event.sender.send('selected-dir-path', path)
+      }
+    })
+  })
+}
+
 export function registerEvent() {
-  handleShowWindowEvent()
-  handleCloseWindowEvent()
-  handleChangeWindowSizeEvent()
+  [handleSelectFilePathEvent,
+    handleShowWindowEvent,
+    handleCloseWindowEvent,
+    handleChangeWindowSizeEvent
+  ].forEach(fn => fn())
 }

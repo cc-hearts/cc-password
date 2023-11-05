@@ -154,15 +154,7 @@ export default defineComponent({
 
     const formatOtherDescription = (description: string, key: string) => {
       if (key === 'url')
-        return (
-          <Button
-            style={{ padding: 0 }}
-            type="link"
-            onClick={() => useOpenLink(description)}
-          >
-            {description}
-          </Button>
-        )
+        return <a onClick={() => useOpenLink(description)}>{description}</a>
       return description
     }
     return () => {
@@ -171,7 +163,6 @@ export default defineComponent({
         <div>
           <Spin spinning={description.loading}>
             <div class="flex m-t-4 justify-between">
-              <div></div>
               <div>
                 <Button
                   icon={<EditOutlined />}

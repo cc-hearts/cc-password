@@ -17,6 +17,7 @@ pages-password:
   cancelButtonText: 取消
 
 logout: 退出登陆
+export: 导出密码
 
 generaPasswordPage:
   modalTitle: 密码生成
@@ -55,3 +56,22 @@ passwordDescriptionPage:
 
 passwordList:
   refreshSuccessTips: '🎉 刷新成功'
+
+side-context-menu:
+  remove-type: '删除分类'
+
+side:
+  addCategoryModal:
+    modalTitle: '添加分类'
+    categoryName: '名称'
+    categoryFieldPlaceholder: '请输入分类名称'
+    errorCategoryName: '分类名称不能为空'
+    successMsg: '🎉 添加分类成功'
+
+exportDataModal:
+  modalTitle: '导出数据'
+  exportName: '导出文件名称'
+  exportNamePlaceholder: '请输入导出文件名称'
+  exportSelectPath: '导出文件路径'
+  exportSelectPathPlaceholder: '请选择导出文件路径'
+  exportSuccess: '🎉 导出成功'

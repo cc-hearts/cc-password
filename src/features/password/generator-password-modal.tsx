@@ -41,7 +41,7 @@ export default defineComponent({
 
     return () => (
       <Modal
-        visible={props.visible}
+        open={props.visible}
         onCancel={handleCancel}
         title={t('generaPasswordPage.modalTitle')}
       >

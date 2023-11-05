@@ -76,5 +76,11 @@ export async function changePasswordDescription<
   })
 }
 
-export { addPassWord, findPassWordList, findPasswordDetail, searchPassword }
+async function searchAllPassword() {
+  const model = await getModel()
+  const uid = useUid()
+  const data = await model.findMany({ where: { uid } })
+  return data
+}
 
+export { addPassWord, findPassWordList, findPasswordDetail, searchPassword, searchAllPassword }

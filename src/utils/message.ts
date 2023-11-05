@@ -20,3 +20,7 @@ export function successMsg(msg = '') {
 export function successTips(msg = '') {
   _message['success'](msg)
 }
+
+export function errorTips(msg = '') {
+  _message['error'](msg)
+}

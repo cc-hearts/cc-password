@@ -17,6 +17,7 @@ pages-password:
   cancelButtonText: 'Cancel'
 
 logout: Logout
+export: Export
 
 generaPasswordPage:
   modalTitle: Generate Password
@@ -55,3 +56,22 @@ passwordDescriptionPage:
 
 passwordList:
   refreshSuccessTips: '🎉 refresh success'
+
+side-context-menu:
+  remove-type: 'Remote Category Type'
+
+side:
+  addCategoryModal:
+    modalTitle: 'Add Category'
+    categoryName: 'Name'
+    categoryFieldPlaceholder: 'Please enter category name'
+    errorCategoryName: 'Category name cannot be empty'
+    successMsg: '🎉 Add category successfully'
+
+exportDateModal:
+  modalTitle: 'Export Data'
+  exportName: 'Export File Name'
+  exportNamePlaceholder: 'Please enter export file name'
+  exportSelectPath: 'Export File Path'
+  exportSelectPathPlaceholder: 'Please select export file path'
+  exportSuccess: '🎉 Export success'

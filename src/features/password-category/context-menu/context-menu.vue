@@ -7,6 +7,7 @@ import { Modal } from 'ant-design-vue'
 import { onMounted, onUnmounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ContextMenuContent from './context-menu-content.vue'
+import lazyRender from '@/components/lazy-render/lazy-render'
 
 const props = defineProps({
   id: {
@@ -77,15 +78,12 @@ const removeCategoryConfirm = async () => {
   </div>
   <Teleport to="body">
     <!-- TODO: use v-lazy-show to replace v-if -->
-    <ul
-      class="absolute"
-      v-if="menuTeleportTarget.visible"
-      :class="[cssNs.e('menu')]"
-      :style="menuTeleportTarget.style"
-      @click="handleMenuClick"
-    >
-      <ContextMenuContent @remove-directory="removeCategoryConfirm" />
-    </ul>
+    <lazyRender :show="menuTeleportTarget.visible">
+      <ul class="absolute" :class="[cssNs.e('menu')]" :style="menuTeleportTarget.style"
+        @click="handleMenuClick">
+        <ContextMenuContent @remove-directory="removeCategoryConfirm" />
+      </ul>
+    </lazyRender>
   </Teleport>
 </template>
 <style lang="scss">

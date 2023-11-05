@@ -83,4 +83,10 @@ async function searchAllPassword() {
   return data
 }
 
-export { addPassWord, findPassWordList, findPasswordDetail, searchPassword, searchAllPassword }
+export {
+  addPassWord,
+  findPassWordList,
+  findPasswordDetail,
+  searchPassword,
+  searchAllPassword,
+}

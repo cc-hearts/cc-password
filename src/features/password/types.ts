@@ -1,4 +1,4 @@
 export interface ExportDataForm {
-  exportName: string,
+  exportName: string
   exportSelectPath: string
 }

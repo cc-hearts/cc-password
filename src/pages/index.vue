@@ -9,9 +9,9 @@ import { searchAllPassword } from '@/model/password'
 import { clearRefreshToken, clearToken, useProfile } from '@/storage'
 import { decodeAes } from '@/utils/crypto'
 import {
-MoreOutlined,
-ToTopOutlined,
-ToolOutlined,
+  MoreOutlined,
+  ToTopOutlined,
+  ToolOutlined,
 } from '@ant-design/icons-vue'
 import { Modal, Popover } from 'ant-design-vue'
 import { reactive, ref } from 'vue'
@@ -48,7 +48,7 @@ const openExportDataModal = () => {
 const { profile } = useProfile()
 const handleExportData = async (formData: ExportDataForm) => {
   const passwordList = await searchAllPassword()
-  const exportDataPendingList =  passwordList.map(async passwordInfo => {
+  const exportDataPendingList = passwordList.map(async (passwordInfo) => {
     const { cid, uid, id, ...restPasswordInfo } = passwordInfo
     return {
       ...restPasswordInfo,
@@ -57,10 +57,13 @@ const handleExportData = async (formData: ExportDataForm) => {
   })
   const exportDataList = await Promise.all(exportDataPendingList)
   const filePath = join(formData.exportSelectPath, formData.exportName)
-  writeFileSync(filePath, JSON.stringify({
-    username: profile.value?.username,
-    data: exportDataList
-  }))
+  writeFileSync(
+    filePath,
+    JSON.stringify({
+      username: profile.value?.username,
+      data: exportDataList,
+    })
+  )
   localStorage.setItem('exportDataPath', formData.exportSelectPath)
   successTips(t('exportDataModal.exportSuccess'))
   exportDataModalRef.value?.onCancel()
@@ -91,14 +94,25 @@ const handleLogout = () => {
           </IPopover>
         </template>
         <template #right>
-          <Popover :overlayClassName="ns.e('custom-popover')" placement="bottomRight">
+          <Popover
+            :overlayClassName="ns.e('custom-popover')"
+            placement="bottomRight"
+          >
             <template #content>
-              <div class="flex items-center" :class="[ns.e('popover')]" @click="openExportDataModal">
+              <div
+                class="flex items-center"
+                :class="[ns.e('popover')]"
+                @click="openExportDataModal"
+              >
                 <ToTopOutlined />
                 <div class="popover__split"></div>
                 <span class="flex-1 text-center">{{ $t('export') }}</span>
               </div>
-              <div class="flex items-center" :class="[ns.e('popover')]" @click="handleLogout">
+              <div
+                class="flex items-center"
+                :class="[ns.e('popover')]"
+                @click="handleLogout"
+              >
                 <LogOut />
                 <div class="popover__split"></div>
                 <span class="flex-1 text-center">{{ $t('logout') }}</span>
@@ -108,12 +122,17 @@ const handleLogout = () => {
           </Popover>
         </template>
       </Headers>
-      <main class="text-gray-700 dark:text-gray-200 flex-1 flex flex-col min-h-0">
+      <main
+        class="text-gray-700 dark:text-gray-200 flex-1 flex flex-col min-h-0"
+      >
         <router-view />
       </main>
     </div>
   </div>
   <ExportDataModal ref="exportDataModalRef" @ok="handleExportData" />
-  <GeneratorPasswordModal :visible="generaPasswordProps.visible" @cancel="generaPasswordProps.onCancel" />
+  <GeneratorPasswordModal
+    :visible="generaPasswordProps.visible"
+    @cancel="generaPasswordProps.onCancel"
+  />
 </template>
 <style lang="scss"></style>

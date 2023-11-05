@@ -9,7 +9,6 @@ import { ipcRenderer } from 'electron'
 import { computed, onMounted, onUnmounted, ref, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-
 const { t } = useI18n()
 const formRef = ref<FormExpose>()
 
@@ -28,7 +27,10 @@ const onOpen = async () => {
   const currentTime = getCurrentTimeISOString()
   const timerSlice = currentTime.split(/[T.]/)
   const [date, time] = timerSlice
-  const exportName = `${profile.value?.name}-${date}-${time.replace(/:/g, '-')}.json`
+  const exportName = `${profile.value?.name}-${date}-${time.replace(
+    /:/g,
+    '-'
+  )}.json`
   await nextTick()
   const exportSelectPath = localStorage.getItem('exportDataPath') || undefined
   formRef.value?.setFieldsValue({ exportName, exportSelectPath })
@@ -47,15 +49,14 @@ const formRules = {
     {
       required: true,
       message: t('exportDataModal.exportNamePlaceholder'),
-    }
-
+    },
   ],
   exportSelectPath: [
     {
       required: true,
       message: t('exportDataModal.exportSelectPathPlaceholder'),
-    }
-  ]
+    },
+  ],
 }
 
 const formColumn = computed(() => {
@@ -69,8 +70,8 @@ const formColumn = computed(() => {
       label: t('exportDataModal.exportSelectPath'),
       name: 'exportSelectPath',
       type: 'select',
-      slot: { name: 'selectPath' }
-    }
+      slot: { name: 'selectPath' },
+    },
   ]
 })
 
@@ -95,14 +96,19 @@ onMounted(() => {
 onUnmounted(() => {
   ipcRenderer.off('selected-dir-path', setSelectDirPath)
 })
-
-
 </script>
 <template>
-  <Modal v-bind="modalProps" v-model:visible="modalProps.visible" @ok="validateAndEmitFormData">
+  <Modal
+    v-bind="modalProps"
+    v-model:visible="modalProps.visible"
+    @ok="validateAndEmitFormData"
+  >
     <Form ref="formRef" :columns="formColumn" :rules="formRules">
       <template #selectPath="{ formState }">
-        <a-input-search :value="formState.exportSelectPath" @search="openSearchDirPath" />
+        <a-input-search
+          :value="formState.exportSelectPath"
+          @search="openSearchDirPath"
+        />
       </template>
     </Form>
   </Modal>

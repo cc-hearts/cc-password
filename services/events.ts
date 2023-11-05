@@ -34,25 +34,28 @@ export function handleChangeWindowSizeEvent() {
 
 export function handleSelectFilePathEvent() {
   ipcMain.handle('open-search-dir-path', (event) => {
-    dialog.showOpenDialog({
-      properties: ['openDirectory'],
-      title: 'Select Directory',
-      buttonLabel: 'save'
-    }).then(res => {
-      console.log(res);
-      const { canceled } = res
-      if (!canceled) {
-        const [path] = res.filePaths
-        event.sender.send('selected-dir-path', path)
-      }
-    })
+    dialog
+      .showOpenDialog({
+        properties: ['openDirectory'],
+        title: 'Select Directory',
+        buttonLabel: 'save',
+      })
+      .then((res) => {
+        console.log(res)
+        const { canceled } = res
+        if (!canceled) {
+          const [path] = res.filePaths
+          event.sender.send('selected-dir-path', path)
+        }
+      })
   })
 }
 
 export function registerEvent() {
-  [handleSelectFilePathEvent,
+  ;[
+    handleSelectFilePathEvent,
     handleShowWindowEvent,
     handleCloseWindowEvent,
-    handleChangeWindowSizeEvent
-  ].forEach(fn => fn())
+    handleChangeWindowSizeEvent,
+  ].forEach((fn) => fn())
 }

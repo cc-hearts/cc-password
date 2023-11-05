@@ -16,10 +16,9 @@ export default defineComponent({
         isOnceRender = true
       }
     })
-
     function render() {
       if (isOnceRender) {
-        return <div style={{ display: props.show ? 'contents' : 'none' }}>
+        return <div style={{ display: 'contents' }} v-show={props.show}>
           {slots.default?.()}
         </div>
       }

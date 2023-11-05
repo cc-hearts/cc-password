@@ -77,7 +77,6 @@ const removeCategoryConfirm = async () => {
     <slot></slot>
   </div>
   <Teleport to="body">
-    <!-- TODO: use v-lazy-show to replace v-if -->
     <lazyRender :show="menuTeleportTarget.visible">
       <ul class="absolute" :class="[cssNs.e('menu')]" :style="menuTeleportTarget.style"
         @click="handleMenuClick">

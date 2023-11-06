@@ -8,6 +8,8 @@ pages-password:
   removeCategorySuccessMessage: Category removed successfully
   allCategory: "All Category"
   addPasswordModalTitle: "Add Password"
+  editPasswordModalTitle: "Edit Password"
+  passwordPlaceholder: Please enter password
   removeCategoryConfirmTitle: "Delete the classification?"
   rulesRef:
     cidRequireMessage: "The classification cannot be empty"
@@ -68,7 +70,7 @@ side:
     errorCategoryName: 'Category name cannot be empty'
     successMsg: '🎉 Add category successfully'
 
-exportDateModal:
+exportDataModal:
   modalTitle: 'Export Data'
   exportName: 'Export File Name'
   exportNamePlaceholder: 'Please enter export file name'

@@ -11,7 +11,7 @@ import {
   Spin,
 } from 'ant-design-vue'
 import AddIcon from '@/icons/add.vue'
-import AddPasswordModal from './add-password-modal'
+import AddPasswordModal from './password-modal'
 import RefreshIcon from '@/icons/refresh.vue'
 import { GetPromiseReturns } from '@/types/utils'
 import { useDescription } from '@/storage/description'

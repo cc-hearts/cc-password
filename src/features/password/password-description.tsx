@@ -14,7 +14,7 @@ import {
 import { DownOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { defineComponent, reactive, ref, watch } from 'vue'
 import { decodeAes } from '@/utils/crypto'
-import AddPasswordModal from './add-password-modal'
+import PasswordModal from './password-modal'
 import * as electron from 'electron'
 import { fn } from '@cc-heart/utils/helper'
 import { useOpenLink } from '@/hooks/use-open-link'
@@ -267,7 +267,7 @@ export default defineComponent({
               )}
             </div>
           </Spin>
-          <AddPasswordModal
+          <PasswordModal
             ref={passwordModalRef}
             id={description.data!.id}
             status="edit"

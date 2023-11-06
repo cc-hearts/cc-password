@@ -8,6 +8,8 @@ pages-password:
   removeCategorySuccessMessage: 删除分类成功
   allCategory: 全部分类
   addPasswordModalTitle: 新增密码
+  editPasswordModalTitle: 编辑密码
+  passwordPlaceholder: 请输入密码
   removeCategoryConfirmTitle: 是否删除该分类？
   rulesRef:
     cidRequireMessage: 分类不能为空

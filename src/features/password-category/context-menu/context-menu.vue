@@ -78,8 +78,12 @@ const removeCategoryConfirm = async () => {
   </div>
   <Teleport to="body">
     <lazyRender :show="menuTeleportTarget.visible">
-      <ul class="absolute" :class="[cssNs.e('menu')]" :style="menuTeleportTarget.style"
-        @click="handleMenuClick">
+      <ul
+        class="absolute"
+        :class="[cssNs.e('menu')]"
+        :style="menuTeleportTarget.style"
+        @click="handleMenuClick"
+      >
         <ContextMenuContent @remove-directory="removeCategoryConfirm" />
       </ul>
     </lazyRender>

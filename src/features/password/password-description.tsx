@@ -1,25 +1,20 @@
+import { useCssNamespace } from '@/hooks/use-css-namespace'
+import { useOpenLink } from '@/hooks/use-open-link'
+import ViewOff from '@/icons/view-off.vue'
+import ViewIcon from '@/icons/view.vue'
 import { findPasswordDetail, searchPassword } from '@/model/password'
 import { useDescription } from '@/storage/description'
 import { GetPromiseReturns } from '@/types/utils'
-
-import {
-  Button,
-  Dropdown,
-  Input,
-  Menu,
-  MenuItem,
-  Spin,
-  message,
-} from 'ant-design-vue'
-import { DownOutlined, EditOutlined } from '@ant-design/icons-vue'
-import { defineComponent, reactive, ref, watch } from 'vue'
+import { classnames } from '@/utils/classnames'
 import { decodeAes } from '@/utils/crypto'
-import PasswordModal from './password-modal'
-import * as electron from 'electron'
+import { EditOutlined } from '@ant-design/icons-vue'
 import { fn } from '@cc-heart/utils/helper'
-import { useOpenLink } from '@/hooks/use-open-link'
-import { useI18n } from 'vue-i18n'
+import { Button, Input, Popover, Spin, message } from 'ant-design-vue'
 import type { MenuInfo } from 'ant-design-vue/es/menu/src/interface'
+import * as electron from 'electron'
+import { defineComponent, reactive, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import PasswordModal from './password-modal'
 const { clipboard } = electron
 
 export default defineComponent({
@@ -35,6 +30,7 @@ export default defineComponent({
       { label: 'description', key: 'description' },
     ] as const
 
+    const ns = useCssNamespace('password')
     const passwordModelProps = reactive({
       visible: false,
     })
@@ -142,12 +138,21 @@ export default defineComponent({
     const formatDescription = (field: string, key: string) => {
       if (key === 'password')
         return (
-          <Input
-            style={{ padding: 0 }}
-            type={reviewPasswordStatus.value ? 'text' : 'password'}
-            bordered={false}
-            value={description.password}
-          />
+          <div
+            class={classnames(['w-full', 'h-full', ns.e('hover')])}
+            onClick={() => handleMenuClick({ key: 'toggle' } as MenuInfo)}
+          >
+            <Input
+              style={{ padding: '4px 0' }}
+              type={reviewPasswordStatus.value ? 'text' : 'password'}
+              bordered={false}
+              onFocus={(e) =>
+                (e.target as HTMLInputElement | undefined)?.blur?.()
+              }
+              value={description.password}
+            />
+            {reviewPasswordStatus.value ? <ViewOff /> : <ViewIcon />}
+          </div>
         )
       return field
     }
@@ -183,52 +188,43 @@ export default defineComponent({
                   return (
                     <div
                       key={key}
-                      class={
-                        (isLastIndex
-                          ? ''
-                          : 'border-b-1px border-b-solid border-b-ins ') + 'p-3'
-                      }
+                      class={classnames(
+                        isLastIndex
+                          ? ['border-b-1px', 'border-b-solid', 'border-b-ins']
+                          : '',
+                        'p-3'
+                      )}
                     >
                       <div
-                        class={
+                        class={classnames(
                           isPasswordField
-                            ? 'flex items-center justify-between	'
+                            ? ['flex', 'items-center', 'justify-between']
                             : ''
-                        }
+                        )}
                       >
                         <span>{column.label}</span>
-                        {isPasswordField && (
-                          <Dropdown>
-                            {{
-                              overlay: () => (
-                                <Menu onClick={handleMenuClick}>
-                                  <MenuItem key="toggle">
-                                    {t(
-                                      'passwordDescriptionPage.' +
-                                        (reviewPasswordStatus.value
-                                          ? 'hidden'
-                                          : 'view')
-                                    )}
-                                  </MenuItem>
-                                  <MenuItem key="copy">
-                                    {t('passwordDescriptionPage.copy')}
-                                  </MenuItem>
-                                </Menu>
-                              ),
-                              default: () => (
-                                <Button type="link">
-                                  {t('passwordDescriptionPage.actions')}
-                                  <DownOutlined />
-                                </Button>
-                              ),
-                            }}
-                          </Dropdown>
-                        )}
                       </div>
                       <div>
-                        {formatDescription(
-                          Reflect.get(description.data!, key),
-                          key
+                        {isPasswordField ? (
+                          <Popover trigger="hover">
+                            {{
+                              content: () => (
+                                <Button
+                                  type="link"
+                                  onClick={() => handleCopyPassword(key)}
+                                >
+                                  {t('passwordDescriptionPage.copy')}
+                                </Button>
+                              ),
+                              default: () =>
+                                formatDescription(
+                                  Reflect.get(description.data!, key),
+                                  key
+                                ),
+                            }}
+                          </Popover>
+                        ) : (
+                          formatDescription(description.data![key], key)
                         )}
                       </div>
                     </div>

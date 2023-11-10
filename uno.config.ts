@@ -15,7 +15,10 @@ export default defineConfig({
     ],
     [
       'border-b-ins',
-      { 'border-bottom-color': 'var(--box-color-1)', transition: 'border 0.3s' },
+      {
+        'border-bottom-color': 'var(--box-color-1)',
+        transition: 'border 0.3s',
+      },
     ],
     [
       'keyboard-bg',

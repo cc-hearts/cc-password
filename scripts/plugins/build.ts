@@ -40,7 +40,7 @@ function build() {
         },
         files: ['**'],
         extends: null,
-        productName: 'electron-password',
+        productName: 'cc-password',
         appId: 'cc-hearts',
         asar: true,
         nsis: {

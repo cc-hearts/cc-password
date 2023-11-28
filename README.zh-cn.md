@@ -1,6 +1,6 @@
-# electron-password
+# cc-password
 
-electron-password 是一款基于 Electron 和 Vue 3 的桌面端密码管理工具。
+cc-password 是一款基于 Electron 和 Vue 3 的桌面端密码管理工具。
 
 ## 功能特点
 
@@ -21,7 +21,7 @@ electron-password 是一款基于 Electron 和 Vue 3 的桌面端密码管理工
 
 ## 贡献
 
-欢迎贡献您的代码以改进 `electron-password` 。如果您有任何建议、问题或 bug 报告，请提出 issue。
+欢迎贡献您的代码以改进 `cc-password` 。如果您有任何建议、问题或 bug 报告，请提出 issue。
 
 ## 许可证
 

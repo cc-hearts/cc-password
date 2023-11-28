@@ -1,8 +1,8 @@
-# electron-password
+# cc-password
 
 [简体中文](./README.zh-cn.md)
 
-electron-password is a desktop password management tool built with Electron and Vue 3.
+cc-password is a desktop password management tool built with Electron and Vue 3.
 
 ## Features
 
@@ -24,7 +24,7 @@ electron-password is a desktop password management tool built with Electron and 
 
 ## Contribution
 
-Contributions to `electron-password` are welcome. If you have any suggestions, questions, or bug reports, please open an issue.
+Contributions to `cc-password` are welcome. If you have any suggestions, questions, or bug reports, please open an issue.
 
 ## License
 

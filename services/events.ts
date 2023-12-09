@@ -5,6 +5,7 @@ import { BrowserWindow, dialog, ipcMain } from 'electron'
 function getCurrentInstance(e: Electron.IpcMainInvokeEvent) {
   return BrowserWindow.fromWebContents(e.sender)
 }
+
 export function handleShowWindowEvent() {
   ipcMain.handle('show-window', (e) => {
     const ctx = getCurrentInstance(e)

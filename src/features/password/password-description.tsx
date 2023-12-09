@@ -211,6 +211,7 @@ export default defineComponent({
                               content: () => (
                                 <Button
                                   type="link"
+                                  class="text-inherit"
                                   onClick={() => handleCopyPassword(key)}
                                 >
                                   {t('passwordDescriptionPage.copy')}

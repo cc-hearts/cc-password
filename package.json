@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.4.0",
-    "electron": "^26.2.4",
+    "electron": "^26.6.2",
     "electron-builder": "^24.6.4",
     "eslint-plugin-vue": "^9.17.0",
     "prettier": "^2.8.8",

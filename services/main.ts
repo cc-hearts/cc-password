@@ -7,8 +7,9 @@ import { setup } from '../scripts/utils/preset'
 import { registerScheme } from './custom-scheme.js'
 import { registerEvent } from './events.js'
 import { registerTray } from './tray'
+import { setMainBrowserWindow, getMainBrowserWindow } from './context'
 setup()
-let mainBrowserWindow: BrowserWindow | null = null
+
 app.whenReady().then(() => {
   registerTray()
   const webPreferences: BrowserWindowConstructorOptions['webPreferences'] = {
@@ -21,11 +22,12 @@ app.whenReady().then(() => {
     disableHtmlFullscreenWindowResize: true,
     preload: `${__dirname}/preload.js`,
   }
-  mainBrowserWindow = new BrowserWindow({
+  const mainBrowserWindow = new BrowserWindow({
     webPreferences,
     show: false,
     frame: false,
   })
+  setMainBrowserWindow(mainBrowserWindow)
   const IS_DEV = !!process.argv[2]
   if (IS_DEV) {
     mainBrowserWindow.webContents.openDevTools({ mode: 'undocked' })
@@ -40,5 +42,5 @@ app.whenReady().then(() => {
 })
 
 app.on('activate', () => {
-  mainBrowserWindow?.show()
+  getMainBrowserWindow()?.show()
 })

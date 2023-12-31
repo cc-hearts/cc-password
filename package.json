@@ -1,6 +1,5 @@
 {
   "name": "cc-password",
-  "private": true,
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",

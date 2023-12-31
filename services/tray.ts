@@ -1,5 +1,6 @@
-import { nativeImage, Tray, Menu, clipboard, BrowserWindow } from 'electron'
+import { Menu, Tray, clipboard, nativeImage } from 'electron'
 import { resolve } from 'path'
+import { getMainBrowserWindow } from './context'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { generatorPassword } from '../federal/utils/crypto'
@@ -9,9 +10,10 @@ function genPasswordCopy() {
   clipboard.writeText(pwd)
 }
 
-function exitProgress(_, window: BrowserWindow) {
+function exitProgress() {
   // 关闭electron
-  window.close()
+  console.log(getMainBrowserWindow());
+  getMainBrowserWindow()?.close()
   process.exit(0)
 }
 

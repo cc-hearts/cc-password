@@ -42,6 +42,9 @@ function build() {
         extends: null,
         productName: 'cc-password',
         appId: 'cc-hearts',
+        mac: {
+          icon: './logo.png'
+        },
         asar: true,
         nsis: {
           oneClick: true,

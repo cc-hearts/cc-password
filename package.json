@@ -1,7 +1,9 @@
 {
   "name": "cc-password",
   "version": "1.0.0",
+  "author": "Carl Chen",
   "scripts": {
+    "postinstall": "npm run schema",
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
@@ -29,6 +31,7 @@
     "nprogress": "^0.2.0",
     "prisma": "^5.3.1",
     "sass": "^1.68.0",
+    "ts-node": "^10.9.2",
     "unocss": "^0.51.13",
     "vite-plugin-optimizer": "^1.4.2",
     "vite-plugin-pages": "^0.29.1",
@@ -40,7 +43,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.4.0",
-    "electron": "^26.6.2",
+    "electron": "^28.2.1",
     "electron-builder": "^24.6.4",
     "eslint-plugin-vue": "^9.17.0",
     "prettier": "^2.8.8",

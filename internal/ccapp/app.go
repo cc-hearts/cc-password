@@ -60,6 +60,8 @@ type App struct {
 	recover recoverState
 	// create holds what the first-run flow has been given.
 	create createState
+	// main holds what the main screen has been given, once the vault is open.
+	main mainState
 	// keyfile is the keyfile that was found in home, if there was one. Its
 	// absence is what puts the app on the first-run path.
 	keyfile *identity.Keyfile
@@ -230,26 +232,6 @@ func (a *App) recoverView(c *ui.Context) {
 				a.protect(false)
 			})
 		})
-	})
-}
-
-// mainView is the placeholder the vault sits in until the list and the detail
-// are built. It is here so an unlock has somewhere to arrive.
-func (a *App) mainView(c *ui.Context) {
-	ui.Column(c).Fill().Gap(12).Children(func() {
-		ui.Row(c).Children(func() {
-			ui.Text(c, "ccpass").FontSize(20).Bold().Grow(1)
-			if ui.Button(c, "锁定").Clicked() {
-				a.Lock()
-			}
-		})
-		if a.err != "" {
-			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
-			return
-		}
-		for _, vi := range a.v.Vaults() {
-			ui.Text(c, vi.Name)
-		}
 	})
 }
 

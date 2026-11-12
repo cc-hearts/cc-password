@@ -58,6 +58,8 @@ type App struct {
 	unlock unlockState
 	// recover holds what the recovery screen has been given.
 	recover recoverState
+	// create holds what the first-run flow has been given.
+	create createState
 	// keyfile is the keyfile that was found in home, if there was one. Its
 	// absence is what puts the app on the first-run path.
 	keyfile *identity.Keyfile
@@ -90,8 +92,11 @@ type outcome struct {
 	v       *vault.Vault
 	session *identity.Session
 	// keyfile is set when the work made an account, which is what tells a
-	// finished recovery from a finished unlock.
+	// finished recovery or creation from a finished unlock.
 	keyfile *identity.Keyfile
+	// created is whether the work made a new account from generated words,
+	// which is the one work whose words are kept when it fails.
+	created bool
 	// recovered is whether the work was a recovery.
 	recovered bool
 	err       error
@@ -106,6 +111,8 @@ const (
 	screenStart screen = iota
 	// screenRecover is the recovery screen: a mnemonic and a new passphrase.
 	screenRecover
+	// screenCreate is the first-run flow: the words a new account is made of.
+	screenCreate
 )
 
 // unlockState is what the unlock screen holds between frames.
@@ -167,6 +174,8 @@ func (a *App) View(c *ui.Context) {
 		switch a.screen {
 		case screenRecover:
 			a.recoverView(c)
+		case screenCreate:
+			a.createView(c)
 		default:
 			a.startView(c)
 		}
@@ -349,10 +358,11 @@ func (a *App) finish() {
 		if p.session != nil {
 			p.session.Lock()
 		}
-		if p.recovered {
+		if p.recovered || p.created {
 			// The mnemonic is the account, and a full disk is no reason to
-			// make someone type all 24 words again. Nothing was opened, so
-			// there is nothing to lock away.
+			// make someone type all 24 words again, or to throw away words they
+			// have already copied. Nothing was opened, so there is nothing to
+			// lock away.
 			a.err = failMessage(p.err)
 			return
 		}
@@ -364,9 +374,13 @@ func (a *App) finish() {
 		return
 	}
 	a.db, a.v, a.session = p.db, p.v, p.session
-	if p.recovered {
+	if p.recovered || p.created {
 		a.keyfile, a.accountID = p.keyfile, p.keyfile.AccountID
-		a.clearRecover()
+		if p.created {
+			a.clearCreate()
+		} else {
+			a.clearRecover()
+		}
 		a.protect(false)
 		return
 	}
@@ -453,6 +467,7 @@ func (a *App) Lock() {
 	a.busy, a.err = "", ""
 	a.clearUnlock()
 	a.clearRecover()
+	a.clearCreate()
 	a.screen = screenStart
 	a.protect(false)
 }

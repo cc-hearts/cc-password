@@ -33,7 +33,9 @@ func (a *App) startView(c *ui.Context) {
 		}
 		ui.Text(c, "把 24 个词收好，它们就是你的账号。").TextColor(c.Theme().TextMuted)
 		ui.Row(c).Gap(8).Children(func() {
-			ui.PrimaryButton(c, "新建账号")
+			if ui.PrimaryButton(c, "新建账号").Clicked() {
+				a.startCreate()
+			}
 			ui.Button(c, "恢复").OnClick(func() {
 				a.screen, a.err = screenRecover, ""
 				a.protect(true)

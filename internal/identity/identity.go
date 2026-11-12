@@ -160,3 +160,11 @@ func (s *Session) Lock() {
 	s.root = nil
 	s.locked = true
 }
+
+// DeriveAccount is the account id a mnemonic derives to, without wrapping a
+// root key or touching a file. It is what a screen asks before it overwrites
+// anything: recovering a mnemonic into a directory whose data belongs to
+// another account has to be refused, and this is the cheapest way to tell.
+func DeriveAccount(mnemonic string) (root []byte, accountID, vaultID string, err error) {
+	return deriveAccount(mnemonic)
+}

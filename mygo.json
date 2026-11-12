@@ -1,0 +1,7 @@
+{
+  "name": "ccpass",
+  "identifier": "dev.carl.ccpass",
+  "version": "0.1.0",
+  "main": ".",
+  "slug": "ccpass"
+}

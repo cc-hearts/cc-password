@@ -65,13 +65,20 @@ func newTester(t *testing.T, a *App) *ui.Tester {
 	return ui.NewTester(a.View, 900, 600)
 }
 
-// field clicks a field's label, which focuses the control inside it, and types
-// s into it.
+// field clicks a field's label, which focuses the control inside it, chooses
+// what the field already holds and types s over it.
+//
+// Choosing first is what makes the field hold s rather than have s appended to
+// whatever was in it. A click puts the caret where the pointer landed — it does
+// not choose the text — so a field typed into twice without it would hold
+// "2032" where "32" was meant. That is also what a user does: they select what
+// is there and type over it.
 func field(t *testing.T, tt *ui.Tester, label, s string) {
 	t.Helper()
 	if err := tt.Click(label); err != nil {
 		t.Fatalf("clicking the %s field: %v", label, err)
 	}
+	tt.Key(ui.Cmd, ui.KeyA)
 	tt.Type(s)
 }
 

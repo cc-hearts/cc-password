@@ -70,6 +70,9 @@ type App struct {
 	// detail is: the form is a screen over the list, and the plaintext it holds
 	// is the user's rather than the main screen's.
 	edit editState
+	// gen is what the generator holds, for the same reason: it is a screen over
+	// the list or the detail, and the password it makes is the user's.
+	gen genState
 	// keyfile is the keyfile that was found in home, if there was one. Its
 	// absence is what puts the app on the first-run path.
 	keyfile *identity.Keyfile

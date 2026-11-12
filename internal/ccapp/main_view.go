@@ -62,6 +62,9 @@ func (a *App) mainView(c *ui.Context) {
 			if ui.Button(c, "新建条目").Clicked() {
 				a.edit = newEditState(a.main.vaultID, vault.TypeLogin)
 			}
+			if ui.Button(c, "生成器").Clicked() {
+				a.openGen(a.main.open)
+			}
 			if ui.Button(c, "锁定").Clicked() {
 				a.Lock()
 			}
@@ -76,6 +79,13 @@ func (a *App) mainView(c *ui.Context) {
 		// key.
 		if a.edit.open {
 			a.editForm(c)
+			return
+		}
+		// The generator is a screen over the detail as well as over the list:
+		// it is opened from either, and while it is showing there is no list to
+		// walk and no item to read, so nothing behind it takes a key.
+		if a.gen.open {
+			a.genView(c)
 			return
 		}
 		if a.main.open != "" {

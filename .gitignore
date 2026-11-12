@@ -1,29 +1,19 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# build output
+/bin/
+/build/
+/ccpass
+*.test
+*.out
 
-node_modules
-dist
-dist-ssr
-*.local
+# local data written by tests or dev runs
+*.db
+*.db-wal
+*.db-shm
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# editor and OS files
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-.env
-app.*.yaml
-release
-prisma-client-js
-prisma.yaml
+.idea/
+.vscode/
+
+# agent workspace
+.ryugi/

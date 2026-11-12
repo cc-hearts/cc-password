@@ -59,12 +59,23 @@ func (a *App) mainView(c *ui.Context) {
 	ui.Column(c).Fill().Gap(12).Children(func() {
 		ui.Row(c).Children(func() {
 			ui.Text(c, "ccpass").FontSize(20).Bold().Grow(1)
+			if ui.Button(c, "新建条目").Clicked() {
+				a.edit = newEditState(a.main.vaultID, vault.TypeLogin)
+			}
 			if ui.Button(c, "锁定").Clicked() {
 				a.Lock()
 			}
 		})
 		if a.err != "" {
 			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
+			return
+		}
+		// The form is a screen of its own over everything the main screen
+		// shows: while it is open there is no list to walk and no detail to
+		// read, so nothing behind it is built and nothing behind it takes a
+		// key.
+		if a.edit.open {
+			a.editForm(c)
 			return
 		}
 		if a.main.open != "" {

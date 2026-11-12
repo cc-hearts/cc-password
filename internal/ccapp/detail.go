@@ -85,6 +85,10 @@ func (a *App) detailView(c *ui.Context) {
 		if len(it.History) > 0 {
 			a.detailHistory(c, it.History)
 		}
+		// What the item itself can be done to comes after what it holds: the
+		// buttons that change it are the least likely reason somebody opened
+		// it, and 彻底删除 is nowhere near a row's own copy button.
+		a.itemActions(c, e)
 		if a.detail.copied != "" {
 			ui.Text(c, a.detail.copied).TextColor(c.Theme().TextMuted)
 		}

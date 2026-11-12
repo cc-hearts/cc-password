@@ -66,6 +66,10 @@ type App struct {
 	// the main screen's own because it is a screen over it, and because every
 	// secret it shows is off again the moment the detail is left.
 	detail detailState
+	// edit is what the form holds. It is the app's own for the same reason the
+	// detail is: the form is a screen over the list, and the plaintext it holds
+	// is the user's rather than the main screen's.
+	edit editState
 	// keyfile is the keyfile that was found in home, if there was one. Its
 	// absence is what puts the app on the first-run path.
 	keyfile *identity.Keyfile

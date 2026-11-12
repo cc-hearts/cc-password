@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/vaultcrypto"
 )
 
 // testMnemonic is the BIP39 mnemonic of zero entropy, spelled out by the
@@ -481,8 +481,8 @@ func TestSaveKeyfileIsAtomic(t *testing.T) {
 		t.Errorf("%d files after two saves, want 1", len(entries))
 	}
 	// A save into a directory that does not exist creates it, owner-only,
-	// because the keyfile has to be able to live under a fresh CCPASS_HOME.
-	fresh := filepath.Join(t.TempDir(), "ccpass", "keyfile.json")
+	// because the keyfile has to be able to live under a fresh BIPPASS_HOME.
+	fresh := filepath.Join(t.TempDir(), "bipPass", "keyfile.json")
 	if err := SaveKeyfile(fresh, kf); err != nil {
 		t.Fatalf("a save into a fresh directory failed: %v", err)
 	}

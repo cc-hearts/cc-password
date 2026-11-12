@@ -1,5 +1,5 @@
 // Command vectors writes spec/crypto-vectors.json, the byte-level contract
-// every implementation of the ccpass format has to agree on: BIP39, the key
+// every implementation of the bipPass format has to agree on: BIP39, the key
 // tree, Argon2id, root-key wrapping, the item and vault-meta envelopes, TOTP,
 // Base32 and the password generator.
 //
@@ -24,7 +24,7 @@ import (
 	"strings"
 	"time"
 
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/vaultcrypto"
 )
 
 // vectorsVersion is the schema of the file. A breaking change to a section

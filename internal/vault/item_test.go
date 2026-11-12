@@ -120,7 +120,7 @@ func TestAnUnknownTypeIsReadOnlyButKeepsItsData(t *testing.T) {
 	}
 	// It displays as a note, and its own type and extra fields are kept for
 	// the re-save: an unknown type is a type another manager added, not a
-	// future ccpass, so editing it as a note loses nothing.
+	// future bipPass, so editing it as a note loses nothing.
 	if got := it.DisplayType(); got != TypeNote {
 		t.Errorf("DisplayType() = %q, want %q", got, TypeNote)
 	}

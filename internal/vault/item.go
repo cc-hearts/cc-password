@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/vaultcrypto"
 )
 
 // The item types. An item this build does not know displays as a note and
@@ -28,7 +28,7 @@ const SchemaVersion = 1
 type OTP = vaultcrypto.OTP
 
 // Field is one label/value pair of an item's own fields: the escape hatch for
-// anything a login form has that ccpass does not name, and where a card's or
+// anything a login form has that bipPass does not name, and where a card's or
 // an identity's specific fields live.
 type Field struct {
 	Label  string `json:"label"`

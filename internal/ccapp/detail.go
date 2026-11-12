@@ -8,7 +8,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/vault"
+	"bipPass/internal/vault"
 )
 
 // detailState is what the detail holds between frames: which of its secrets
@@ -56,7 +56,7 @@ func (a *App) detailView(c *ui.Context) {
 			// and it is said to be read-only, because a build that does not
 			// know the format must not rewrite it and lose what it cannot
 			// read.
-			ui.Text(c, "只读：这条来自更新版本的 ccpass，只能看，不能改。").TextColor(c.Theme().TextMuted)
+			ui.Text(c, "只读：这条来自更新版本的 bipPass，只能看，不能改。").TextColor(c.Theme().TextMuted)
 		}
 		if it.Username != "" {
 			a.detailRow(c, "用户名", it.Username, false, "复制用户名")
@@ -228,9 +228,10 @@ func (a *App) copyButton(c *ui.Context, label, value string) {
 
 // copy puts text on the clipboard and says what it was. The clipboard is the
 // system's, so what was copied is out of this app's hands the moment it is
-// there; the plan's answer is to clear it, which Task 17 does on a timer.
+// there: the thirty-second clear, and the comparison before it, are what the
+// app does about that.
 func (a *App) copy(c *ui.Context, value string) {
-	c.WriteClipboard(value)
+	a.copySecret(c, value)
 	a.detail.copied = "已复制"
 }
 

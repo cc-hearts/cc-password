@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [master, ccpass-v1, dev]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.27.3"
+          cache: true
+
+      # A commit nobody can build is a commit nobody can review, and the
+      # formatting is what a review reads first.
+      - name: gofmt
+        run: |
+          unformatted=$(gofmt -l internal/ main.go tools/)
+          if [ -n "$unformatted" ]; then
+            echo "these files are not gofmt-clean:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: go vet
+        run: go vet ./...
+
+      # The mygo check on native UI build lifetimes: an Element that outlives
+      # the frame that made it is a use-after-free the Go compiler cannot see.
+      - name: mygo vet
+        run: go run github.com/egoist/mygo/cmd/mygo vet
+
+      - name: test
+        run: go test ./...
+
+      # The committed contract. A change to the crypto that forgets to update
+      # spec/crypto-vectors.json is a change that silently breaks every other
+      # implementation of the format.
+      - name: vectors -check
+        run: go run ./tools/vectors -check
+
+      - name: build
+        run: go build ./...
+
+      # The plan's security checklist, as a gate rather than a habit. A weak
+      # primitive in a crypto path is the one mistake this project cannot
+      # afford, and it is also the easiest to grep for.
+      - name: no weak primitives
+        run: |
+          if grep -rnE '"(math/rand|crypto/md5|crypto/des|crypto/rc4)"|cipher\.NewCBC' \
+              --include='*.go' internal/ tools/; then
+            echo "a weak or deprecated primitive is in a crypto path"
+            exit 1
+          fi

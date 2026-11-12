@@ -7,7 +7,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/vaultcrypto"
 )
 
 // genState is what the generator screen holds between frames: the options the
@@ -214,7 +214,7 @@ func (a *App) copyGen(c *ui.Context) {
 	if a.gen.password == "" {
 		return
 	}
-	c.WriteClipboard(a.gen.password)
+	a.copySecret(c, a.gen.password)
 	a.gen.copied = "已复制"
 }
 

@@ -1,4 +1,4 @@
-module ccpass
+module bipPass
 
 go 1.27.3
 

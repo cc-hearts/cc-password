@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"ccpass/internal/identity"
-	"ccpass/internal/store"
+	"bipPass/internal/identity"
+	"bipPass/internal/store"
 )
 
 // aSession is a real account, derived from a fixed mnemonic, so the ids in

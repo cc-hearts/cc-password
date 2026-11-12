@@ -6,7 +6,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/vault"
+	"bipPass/internal/vault"
 )
 
 // genMain opens the app on the main view with one login item in it, which is

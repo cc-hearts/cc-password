@@ -26,11 +26,11 @@ const KeyfileName = "keyfile.json"
 
 // HomeEnv is the environment variable that moves the whole store, for tests
 // and for a user who wants it on a removable drive.
-const HomeEnv = "CCPASS_HOME"
+const HomeEnv = "BIPPASS_HOME"
 
 // appDir is the directory the store lives in under the user's config
 // directory.
-const appDir = "ccpass"
+const appDir = "bipPass"
 
 // The permissions a store is created with. The database holds ciphertext, but
 // it also holds the shape of the user's data and the fact that they use this
@@ -113,7 +113,7 @@ type DB struct {
 	db *sql.DB
 }
 
-// Home is the directory the keyfile and the database live in: CCPASS_HOME
+// Home is the directory the keyfile and the database live in: BIPPASS_HOME
 // when it is set, otherwise the user's config directory. The directory is
 // created owner-only the first time something is written into it.
 func Home() (string, error) {

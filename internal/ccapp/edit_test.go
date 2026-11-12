@@ -5,7 +5,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/vault"
+	"bipPass/internal/vault"
 )
 
 // editMain opens the app on the main view with one login item in it, and

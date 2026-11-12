@@ -1,4 +1,4 @@
-// Command ccpass is the password manager the plan describes: one binary, a
+// Command bipPass is the password manager the plan describes: one binary, a
 // window drawn by the Go UI, and a vault that stays encrypted on disk.
 //
 // The key never leaves this process's memory. What the shell needs from the
@@ -13,7 +13,7 @@ import (
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/ccapp"
+	"bipPass/internal/ccapp"
 )
 
 func main() {
@@ -44,10 +44,10 @@ func main() {
 			Protect: func(on bool) { win.SetContentProtection(on) },
 		})
 		if err != nil {
-			log.Fatalf("ccpass: %v", err)
+			log.Fatalf("bipPass: %v", err)
 		}
 		win = mygo.NewWindow(mygo.WindowOptions{
-			Title:    "ccpass",
+			Title:    "bipPass",
 			Width:    960,
 			Height:   640,
 			StateKey: "main",
@@ -79,7 +79,7 @@ func main() {
 
 	// The window closing is a lock: nothing stays open behind it.
 	if err := mygo.App.Run(); err != nil {
-		log.Fatalf("ccpass: %v", err)
+		log.Fatalf("bipPass: %v", err)
 	}
 	if app != nil {
 		app.Lock()

@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/vaultcrypto"
 )
 
 // ErrUnlock is the one error of every failed unlock: a wrong passphrase, a

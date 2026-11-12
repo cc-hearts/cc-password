@@ -39,8 +39,8 @@ func TestHomeHonoursCCPASSHome(t *testing.T) {
 	if got == "" || got == "." {
 		t.Errorf("the default home is %q", got)
 	}
-	if !strings.Contains(got, "ccpass") {
-		t.Errorf("the default home %q does not name ccpass", got)
+	if !strings.Contains(got, "bipPass") {
+		t.Errorf("the default home %q does not name bipPass", got)
 	}
 }
 

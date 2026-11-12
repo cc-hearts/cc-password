@@ -6,7 +6,7 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/vault"
+	"bipPass/internal/vault"
 )
 
 // sidebarView is the vaults down the side: which one the list is showing, and
@@ -90,6 +90,14 @@ func (a *App) listView(c *ui.Context, rows []vault.Entry) {
 		// lets a click on the name put the cursor in the input.
 		ui.Field(c, "搜索", func() {
 			in := ui.TextInput(c, &a.main.query).Fill()
+			// Typing is the user being there, and it is the auto-lock's only
+			// witness: a vault that locked while somebody was narrowing a list
+			// would make them unlock to press nothing. Changed is the input's
+			// own word for a character having landed, so a frame that drew a
+			// character is a frame that moved the deadline.
+			if in.Changed() {
+				a.touch(c.Now())
+			}
 			if a.main.wantSearch {
 				in.Focus()
 			}

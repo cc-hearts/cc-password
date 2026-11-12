@@ -9,9 +9,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/identity"
-	"ccpass/internal/store"
-	"ccpass/internal/vault"
+	"bipPass/internal/identity"
+	"bipPass/internal/store"
+	"bipPass/internal/vault"
 )
 
 // appMnemonic is a real 24-word mnemonic, so these tests exercise the actual

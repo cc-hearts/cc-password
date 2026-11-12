@@ -5,8 +5,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/vault"
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/vault"
+	"bipPass/internal/vaultcrypto"
 )
 
 // editState is what the edit screen holds between frames: the form being

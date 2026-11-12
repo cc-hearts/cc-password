@@ -3,14 +3,14 @@ package ccapp
 import (
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/identity"
+	"bipPass/internal/identity"
 )
 
 // startView is the everyday screen: a passphrase where there is a keyfile, and
 // the way to a new account where there is not.
 func (a *App) startView(c *ui.Context) {
 	ui.Column(c).Gap(12).Children(func() {
-		ui.Text(c, "ccpass").FontSize(20).Bold()
+		ui.Text(c, "bipPass").FontSize(20).Bold()
 		if a.keyfile != nil {
 			ui.Field(c, "口令", func() {
 				ui.TextInput(c, &a.unlock.passphrase).Password().Fill()

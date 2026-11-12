@@ -3,7 +3,7 @@ package ccapp
 import (
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/vault"
+	"bipPass/internal/vault"
 )
 
 // mainState is what the main screen holds between frames: which vault is
@@ -49,21 +49,19 @@ type mainState struct {
 // mainView is the vault itself: the vaults down the side, the list beside
 // them, and the detail on top of both when an item is open.
 func (a *App) mainView(c *ui.Context) {
-	// Cmd+K is the window's own: it works whichever of the screen's controls
-	// has the focus, including the list. It is declared here, at the top of
-	// the view and before any element is built, which is what makes it the
-	// window's rather than an element's.
-	c.OnShortcut(ui.Cmd, ui.KeyK, func() { a.main.wantSearch = true })
 	a.ensureVault()
 	rows := a.rows()
 	ui.Column(c).Fill().Gap(12).Children(func() {
 		ui.Row(c).Children(func() {
-			ui.Text(c, "ccpass").FontSize(20).Bold().Grow(1)
+			ui.Text(c, "bipPass").FontSize(20).Bold().Grow(1)
 			if ui.Button(c, "新建条目").Clicked() {
 				a.edit = newEditState(a.main.vaultID, vault.TypeLogin)
 			}
 			if ui.Button(c, "生成器").Clicked() {
 				a.openGen(a.main.open)
+			}
+			if ui.Button(c, "设置").Clicked() {
+				a.openSettings()
 			}
 			if ui.Button(c, "锁定").Clicked() {
 				a.Lock()
@@ -86,6 +84,13 @@ func (a *App) mainView(c *ui.Context) {
 		// walk and no item to read, so nothing behind it takes a key.
 		if a.gen.open {
 			a.genView(c)
+			return
+		}
+		// The settings are a screen of their own for the same reason: what is
+		// behind them is a list and a vault, and neither should take a key
+		// while a choice is being made.
+		if a.settings.open {
+			a.settingsView(c)
 			return
 		}
 		if a.main.open != "" {

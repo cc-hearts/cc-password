@@ -14,9 +14,9 @@ import (
 	"errors"
 	"fmt"
 
-	"ccpass/internal/identity"
-	"ccpass/internal/store"
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/identity"
+	"bipPass/internal/store"
+	"bipPass/internal/vaultcrypto"
 )
 
 // defaultVaultName is the name of the vault every account starts with.

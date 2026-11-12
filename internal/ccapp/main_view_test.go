@@ -7,9 +7,9 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/identity"
-	"ccpass/internal/store"
-	"ccpass/internal/vault"
+	"bipPass/internal/identity"
+	"bipPass/internal/store"
+	"bipPass/internal/vault"
 )
 
 // mainMnemonic is a second real mnemonic, so a seeded vault can be opened with
@@ -58,7 +58,7 @@ func seedVault(t *testing.T, v *vault.Vault, db *store.DB) {
 		t.Fatal(err)
 	}
 	items := []vault.Item{
-		{Type: vault.TypeLogin, Title: "招商银行", Username: "carl"},
+		{Type: vault.TypeLogin, Title: "招商银行", Username: "carl", Password: "s3cret-passphrase"},
 		{Type: vault.TypeLogin, Title: "apple", Username: "carl@example.com"},
 		{Type: vault.TypeNote, Title: "备用码", Notes: "放在抽屉里"},
 		{Type: vault.TypeCard, Title: "信用卡"},

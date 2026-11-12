@@ -19,10 +19,10 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/identity"
-	"ccpass/internal/store"
-	"ccpass/internal/vault"
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/identity"
+	"bipPass/internal/store"
+	"bipPass/internal/vault"
+	"bipPass/internal/vaultcrypto"
 )
 
 // Options is what the shell needs from the machine it runs on. The zero value
@@ -30,7 +30,7 @@ import (
 // not touch one.
 type Options struct {
 	// Home is the directory holding the keyfile and the database. Empty
-	// means the store's own: CCPASS_HOME, or the user's config directory.
+	// means the store's own: BIPPASS_HOME, or the user's config directory.
 	Home string
 	// Rand is the randomness an account is made with. Empty means
 	// crypto/rand.Reader.
@@ -73,6 +73,14 @@ type App struct {
 	// gen is what the generator holds, for the same reason: it is a screen over
 	// the list or the detail, and the password it makes is the user's.
 	gen genState
+	// settings is what the settings screen holds. It is the app's own for the
+	// same reason: the screen is over the main one.
+	settings settingsState
+	// lock is what the auto-lock and the clipboard hold. It is the app's own
+	// rather than the main screen's because both outlive a screen: a timeout
+	// that ran out with the detail open, or a password copied from it, are
+	// still there after it closes.
+	lock lockState
 	// keyfile is the keyfile that was found in home, if there was one. Its
 	// absence is what puts the app on the first-run path.
 	keyfile *identity.Keyfile
@@ -179,6 +187,24 @@ func New(opts Options) (*App, error) {
 // View builds the screen the user is on. It runs on the main thread whenever
 // the window needs a frame, so it only reads state and never waits on work.
 func (a *App) View(c *ui.Context) {
+	// The window's own shortcuts are declared here, on the window's own context
+	// and before anything is built, which is what makes them the window's rather
+	// than an element's. They work whichever of the screen's controls has the
+	// focus, including the list, and neither is taken by a focused text input
+	// first: Escape in a field is the field's own, and a vault that locked while
+	// a form was being filled in would throw away what was typed.
+	//
+	// Cmd+K is the search, and Esc is the way out.
+	c.OnShortcut(ui.Cmd, ui.KeyK, func() { a.main.wantSearch = true })
+	c.OnShortcut(0, ui.KeyEscape, func() { a.escape(c) })
+	// The two timers run before anything is built, so a frame that draws a
+	// locked screen is not one that also drew the open one. Both are the view's
+	// own: the clock and the screen are the same thread's, and a window that is
+	// closed asks for nothing.
+	if a.v != nil {
+		a.idleLock(c)
+	}
+	a.clipboardClear(c)
 	ui.Column(c).Fill().Padding(24).Children(func() {
 		if a.v != nil {
 			a.mainView(c)
@@ -461,8 +487,38 @@ func (a *App) Lock() {
 	a.clearUnlock()
 	a.clearRecover()
 	a.clearCreate()
+	a.clearScreens()
+	a.clearClipboard()
+	// The vault the list was showing is not held either: it is an id of a vault
+	// the closed handle knew, and a locked screen has no reason to keep it.
+	a.main.vaultID = ""
 	a.screen = screenStart
 	a.protect(false)
+}
+
+// clearScreens empties every screen that is over the main one: a lock with an
+// item open, or the generator showing a password, or a form half-typed, would
+// leave all of that in memory behind a screen nobody can see.
+func (a *App) clearScreens() {
+	a.main.open = ""
+	a.main.query = ""
+	a.main.typ = ""
+	a.main.trash = false
+	a.main.listed = false
+	a.detail = detailState{}
+	a.edit = editState{}
+	a.gen = genState{}
+	a.settings = settingsState{}
+}
+
+// clearClipboard forgets what this app copied. A locked vault with a password
+// on the clipboard is a password the vault was protecting sitting in plain text
+// in the system's own hands, so the clipboard itself is cleared on the way out
+// — which needs a Context, and so is done by the view that saw the lock.
+func (a *App) clearClipboard() {
+	a.lock.clipboard = ""
+	a.lock.clipboardAt = time.Time{}
+	a.lock.clipboardPending = true
 }
 
 // Unlocked reports whether the vault is open.

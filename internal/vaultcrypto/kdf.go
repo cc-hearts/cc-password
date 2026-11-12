@@ -29,7 +29,7 @@ func hkdfSHA256(secret, salt []byte, info string, length int) []byte {
 	key, err := hkdf.Key(sha256.New, secret, salt, info, length)
 	if err != nil {
 		// crypto/hkdf fails only for lengths over 255 hashes, or in FIPS
-		// 140-only mode, which ccpass does not run in.
+		// 140-only mode, which bipPass does not run in.
 		panic("vaultcrypto: " + err.Error())
 	}
 	return key

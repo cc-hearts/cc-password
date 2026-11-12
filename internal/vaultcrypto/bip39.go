@@ -14,7 +14,7 @@ import (
 	"golang.org/x/text/unicode/norm"
 )
 
-// MnemonicWords is the length of every ccpass mnemonic: 24 words carry
+// MnemonicWords is the length of every bipPass mnemonic: 24 words carry
 // 256 bits of entropy and an 8-bit checksum.
 const MnemonicWords = 24
 
@@ -146,7 +146,7 @@ func MnemonicSeed(mnemonic, passphrase string) []byte {
 	seed, err := pbkdf2.Key(sha512.New, NormalizeMnemonic(mnemonic), salt, 2048, 64)
 	if err != nil {
 		// crypto/pbkdf2 fails only in FIPS 140-only mode, whose minimum salt
-		// length rules out BIP39; ccpass does not run in it.
+		// length rules out BIP39; bipPass does not run in it.
 		panic("vaultcrypto: " + err.Error())
 	}
 	return seed

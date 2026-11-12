@@ -7,8 +7,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/vault"
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/vault"
+	"bipPass/internal/vaultcrypto"
 )
 
 // detailVault opens the app on the detail of one login item: a password, a

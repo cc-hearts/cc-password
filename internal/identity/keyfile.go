@@ -16,7 +16,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/vaultcrypto"
 )
 
 // KeyfileVersion is the only version this build reads or writes.

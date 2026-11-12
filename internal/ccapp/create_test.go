@@ -8,8 +8,8 @@ import (
 
 	"github.com/egoist/mygo/ui"
 
-	"ccpass/internal/store"
-	"ccpass/internal/vaultcrypto"
+	"bipPass/internal/store"
+	"bipPass/internal/vaultcrypto"
 )
 
 // createReader is the randomness a create flow runs on: 128 deterministic

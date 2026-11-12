@@ -1,0 +1,587 @@
+{
+  "version": 1,
+  "bip39": [
+    {
+      "name": "entropy-00",
+      "entropy": "0000000000000000000000000000000000000000000000000000000000000000",
+      "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art",
+      "seed": "QIsoXBI4NgBPS4hCyJMkwfATgkUMDUOa80W6f8Saz3BUicb8d9vU49wd2MxryfBD24raHiQ8Sg6vspDTmUgIQA",
+      "seedPassphrase": "LhPxOicpiEjZm932z2Ma0kFJDb-pKMOow2hJlB1RrwZQEPPtbUfiHTiVmMKYwXg0a2leOmSls7Q1wDP8REb9lw",
+      "valid": true
+    },
+    {
+      "name": "entropy-01",
+      "entropy": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "mnemonic": "zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo vote",
+      "seed": "4oo3BYx_URLsnhajQ3zzY6JXLXC2zrO2llRHYj1iDxTQa7Mhomsz7BX82Eo7Xd_VUg4jDJJMh6qg1Vl0ngRP7w",
+      "seedPassphrase": "WuknQ3rIhJ07cACHRX-z0icXfpu4Ww-eQORdOA7G1yQ08wo5bQ71j1CWXodfYZQliULLuHAJB4AbkJQkviJYKw",
+      "valid": true
+    },
+    {
+      "name": "entropy-02",
+      "entropy": "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+      "mnemonic": "audit journey sense bulk valley maple destroy tiger audit journey sense bulk valley maple destroy tiger audit journey sense bulk valley maple destroy vibrant",
+      "seed": "8zLE9azmdUm15u9UL3klrWfbONYhYZg6OW-h9lY8i4C7PklhXLBX7eowRoJ5_sMS93pL5OAJkkH4_pRNJJZ-xg",
+      "seedPassphrase": "k2AGZfgYn1fjPssKEkzHc1_kadQ42uIfv516hhaS-WIS5OLnvHywA0i9UgSVG-kGvTMXmHonGxPME5R-FTNckg",
+      "valid": true
+    },
+    {
+      "name": "entropy-03",
+      "entropy": "77c2b778b5c0b6d45a0f0e6ab6ae1e00e0f2a3b4c5d6e7f8091a2b3c4d5e6f70",
+      "mnemonic": "jelly between taste high arena health habit tide height rely maple achieve august fade spread river tree scare educate filter shadow quality saddle boss",
+      "seed": "sWtZiQ_5bGCKDh46MF4jZGYQYiPefSe73YfXSaxldS-uRgPezeem7zmiqJqOrECU1PAGgbGuePhmDv0TUkBrvw",
+      "seedPassphrase": "UOQ2_A47ZmRumJWgStgI9MNixxIGHSJA_jTrWWvEKCEL4JrJUG_QICy-bNdJMxTwMxkAsT2-FDbjO4uePJFZcQ",
+      "valid": true
+    },
+    {
+      "name": "bad-checksum",
+      "entropy": "0000000000000000000000000000000000000000000000000000000000000000",
+      "mnemonic": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon",
+      "seed": "",
+      "seedPassphrase": "",
+      "valid": false
+    },
+    {
+      "name": "short",
+      "entropy": "0000000000000000000000000000000000000000000000000000000000000000",
+      "mnemonic": "abandon abandon abandon",
+      "seed": "",
+      "seedPassphrase": "",
+      "valid": false
+    }
+  ],
+  "keyTree": [
+    {
+      "name": "seed-00",
+      "seed": "0000000000000000000000000000000000000000000000000000000000000000",
+      "rootKey": "sA3gNpG2bjv9F8OOefrP3P_D5pGY86pRbYaMRDm9jWU",
+      "identitySeed": "7pNSbtsTIQNtxeGqW6BFaoYbHhpUa9x4gfjoqdZN1jQ",
+      "identityPublic": "IDeJZ6Aa2kVC83Bw6ZWnSRi7Zo0N2YuG8IvUGdsGPxE",
+      "accountID": "IDeJZ6Aa2kVC83Bw6ZWnSRi7Zo0N2YuG8IvUGdsGPxE",
+      "vaultID": "_pP48xTPqcP_OhYldiQWfg",
+      "vaultKey": "M3sj1dedhewiUjjXE2WP5WGPwJbt4oMXptrQ76N5g8o"
+    },
+    {
+      "name": "seed-01",
+      "seed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "rootKey": "Zr2jJ9QxOLq2Z3dFTitHq5q9HvIU46wtec8b1EKOUk4",
+      "identitySeed": "-UvLm4vXovuDaRDFqs4k4s2PK08zFS0pb3GjPm3iHbs",
+      "identityPublic": "nJ04EVkylcbpm0sSW11uLm-7qoSH7ONgSgm2w4fSrhI",
+      "accountID": "nJ04EVkylcbpm0sSW11uLm-7qoSH7ONgSgm2w4fSrhI",
+      "vaultID": "JYZKC7fjTB-1ZEymqQoUaA",
+      "vaultKey": "mOrWLMW5yy2UITbnoP9UJTtVIrkLRnUk2H9CM4vM5lM"
+    },
+    {
+      "name": "seed-02",
+      "seed": "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+      "rootKey": "ADcK1kmo8RDJ2KAaf78CpZPGTgP5Bo_PUfIb-AK4RDk",
+      "identitySeed": "_ftu5jeZK3RtKBNqoaG2kgSaOrbc15lxNSXADAjvRcY",
+      "identityPublic": "ikahk_mysD5C24HJoX1al6USyRBC91QqU0LTMejEh_g",
+      "accountID": "ikahk_mysD5C24HJoX1al6USyRBC91QqU0LTMejEh_g",
+      "vaultID": "JiQDi6N1bc5BnpsBlm2p7w",
+      "vaultKey": "DL8SoTlTmj8oXTB0qhYk0LksPtmANGHos5YgtxH0mrQ"
+    },
+    {
+      "name": "seed-03",
+      "seed": "77c2b778b5c0b6d45a0f0e6ab6ae1e00e0f2a3b4c5d6e7f8091a2b3c4d5e6f70",
+      "rootKey": "mIvfN18K4pCiZtk7NvD3rZmdHeTJVqjmqzd6u1U5Gpc",
+      "identitySeed": "hxYcjCfbbDAwEYhCXSuImIQU7p8CXQ51z40vqHR3j8U",
+      "identityPublic": "gCzjyq6C_9sXMZdF1lKuA_eSzRS-ADSPkSFl3KZ7q4Y",
+      "accountID": "gCzjyq6C_9sXMZdF1lKuA_eSzRS-ADSPkSFl3KZ7q4Y",
+      "vaultID": "9REvsVJ_H9YFnAGLkHC7gg",
+      "vaultKey": "qFo2Fbx1m_SlS8Lj5P4cfVRVa9GFieao_78YGGNclZ8"
+    }
+  ],
+  "argon2": [
+    {
+      "name": "weak",
+      "passphrase": "correct horse battery staple",
+      "salt": "WlpaWlpaWlpaWlpaWlpaWg",
+      "mKiB": 8,
+      "t": 1,
+      "p": 1,
+      "kek": "c-mcTJs1FN9EfaBnmCmlceXhz99rJrwZRfm3QCXiVGo"
+    },
+    {
+      "name": "empty-passphrase",
+      "passphrase": "",
+      "salt": "WlpaWlpaWlpaWlpaWlpaWg",
+      "mKiB": 8,
+      "t": 1,
+      "p": 1,
+      "kek": "wDsbTS0rcxImh4JrMhpnZVNs7OU_XMfxVs2BEyfhrig"
+    },
+    {
+      "name": "unicode-passphrase",
+      "passphrase": "éè中文",
+      "salt": "WlpaWlpaWlpaWlpaWlpaWg",
+      "mKiB": 8,
+      "t": 2,
+      "p": 1,
+      "kek": "Xs7LvBdbpSba_Sy0qRhFq0XNP9Ap5RbvI5l6dDtVvvk"
+    }
+  ],
+  "wrap": [
+    {
+      "name": "default-account",
+      "passphrase": "correct horse battery staple",
+      "accountID": "vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA",
+      "mKiB": 65536,
+      "t": 3,
+      "p": 1,
+      "salt": "WlpaWlpaWlpaWlpaWlpaWg",
+      "nonce": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJC",
+      "rootKey": "ERERERERERERERERERERERERERERERERERERERERERE",
+      "ciphertext": "0ejp8E5-0P_ypQxpSPc3j_SI_b0jQDR8H3H-8C8T7-8ojqaof9rm0AdctymatHRt"
+    },
+    {
+      "name": "empty-passphrase",
+      "passphrase": "",
+      "accountID": "vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA",
+      "mKiB": 65536,
+      "t": 3,
+      "p": 1,
+      "salt": "WlpaWlpaWlpaWlpaWlpaWg",
+      "nonce": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJC",
+      "rootKey": "ERERERERERERERERERERERERERERERERERERERERERE",
+      "ciphertext": "ePII2aVZYlCjq8y79T2MkE91fuAlvBRxHb5Nd9-gaVq7nC2uw0Ed6egnBghLCP82"
+    },
+    {
+      "name": "other-account",
+      "passphrase": "correct horse battery staple",
+      "accountID": "vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmAx",
+      "mKiB": 65536,
+      "t": 3,
+      "p": 1,
+      "salt": "WlpaWlpaWlpaWlpaWlpaWg",
+      "nonce": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJC",
+      "rootKey": "ERERERERERERERERERERERERERERERERERERERERERE",
+      "ciphertext": "0ejp8E5-0P_ypQxpSPc3j_SI_b0jQDR8H3H-8C8T7-8IWRadJ-G5laEnBBVPYnW9"
+    }
+  ],
+  "item": [
+    {
+      "name": "login",
+      "vaultKey": "IiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI",
+      "header": {
+        "accountID": "vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA",
+        "vaultID": "RERERERERERERERERERERA",
+        "itemID": "VVVVVVVVVVVVVVVVVVVVVQ",
+        "rev": 1,
+        "updatedAt": 1730000000,
+        "deleted": false
+      },
+      "aad": "ccpass/v1/item|vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA|RERERERERERERERERERERA|VVVVVVVVVVVVVVVVVVVVVQ|1|1730000000|0",
+      "nonce": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJC",
+      "payload": "eyJ0aXRsZSI6IkJhbmsiLCJ1c2VybmFtZSI6Im1lIn0",
+      "ciphertext": "RAOBRuSVf5_3wyk6Wi7H_nKNfgpgnMX4z7qpGdPs1Vofq07xBVSOk4WUHFSCHvUc"
+    },
+    {
+      "name": "empty",
+      "vaultKey": "IiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI",
+      "header": {
+        "accountID": "vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA",
+        "vaultID": "RERERERERERERERERERERA",
+        "itemID": "VVVVVVVVVVVVVVVVVVVVVQ",
+        "rev": 1,
+        "updatedAt": 1730000000,
+        "deleted": false
+      },
+      "aad": "ccpass/v1/item|vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA|RERERERERERERERERERERA|VVVVVVVVVVVVVVVVVVVVVQ|1|1730000000|0",
+      "nonce": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJC",
+      "payload": "",
+      "ciphertext": "B6khBQWMiSWROp9b2BWc8w"
+    },
+    {
+      "name": "tombstone",
+      "vaultKey": "IiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI",
+      "header": {
+        "accountID": "vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA",
+        "vaultID": "RERERERERERERERERERERA",
+        "itemID": "VVVVVVVVVVVVVVVVVVVVVQ",
+        "rev": 7,
+        "updatedAt": 1730009999,
+        "deleted": true
+      },
+      "aad": "ccpass/v1/item|vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA|RERERERERERERERERERERA|VVVVVVVVVVVVVVVVVVVVVQ|7|1730009999|1",
+      "nonce": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJC",
+      "payload": "",
+      "ciphertext": "XVqkrzYbsZuyoIprNq1SEw"
+    }
+  ],
+  "vaultMeta": [
+    {
+      "name": "default-vault",
+      "vaultKey": "IiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI",
+      "header": {
+        "accountID": "vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA",
+        "vaultID": "RERERERERERERERERERERA",
+        "rev": 1,
+        "updatedAt": 1730000000
+      },
+      "aad": "ccpass/v1/vault-meta|vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA|RERERERERERERERERERERA|1|1730000000",
+      "nonce": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJC",
+      "payload": "eyJuYW1lIjoiUGVyc29uYWwifQ",
+      "ciphertext": "RAObTv2cOIfvsQ4pRyqLszzacOUKzua1jRi0Nuy0m6SdnOY"
+    },
+    {
+      "name": "empty",
+      "vaultKey": "IiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiI",
+      "header": {
+        "accountID": "vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA",
+        "vaultID": "RERERERERERERERERERERA",
+        "rev": 1,
+        "updatedAt": 1730000000
+      },
+      "aad": "ccpass/v1/vault-meta|vKpn9zd1-oxk_O__kV7XRZdcFjE8yMvTzObIYUv7gmA|RERERERERERERERERERERA|1|1730000000",
+      "nonce": "QkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJC",
+      "payload": "",
+      "ciphertext": "Hm-ZSz2xXgsTsjHHwpIQIw"
+    }
+  ],
+  "totp": [
+    {
+      "name": "sha1-t59",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&algorithm=SHA1&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA1",
+      "at": 59,
+      "code": "94287082",
+      "remaining": 1
+    },
+    {
+      "name": "sha1-t1111111109",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&algorithm=SHA1&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA1",
+      "at": 1111111109,
+      "code": "07081804",
+      "remaining": 1
+    },
+    {
+      "name": "sha1-t1111111111",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&algorithm=SHA1&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA1",
+      "at": 1111111111,
+      "code": "14050471",
+      "remaining": 29
+    },
+    {
+      "name": "sha1-t1234567890",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&algorithm=SHA1&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA1",
+      "at": 1234567890,
+      "code": "89005924",
+      "remaining": 30
+    },
+    {
+      "name": "sha1-t2000000000",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&algorithm=SHA1&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA1",
+      "at": 2000000000,
+      "code": "69279037",
+      "remaining": 10
+    },
+    {
+      "name": "sha1-t20000000000",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ&algorithm=SHA1&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA1",
+      "at": 20000000000,
+      "code": "65353130",
+      "remaining": 13
+    },
+    {
+      "name": "sha256-t59",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZA&algorithm=SHA256&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA256",
+      "at": 59,
+      "code": "46119246",
+      "remaining": 1
+    },
+    {
+      "name": "sha256-t1111111109",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZA&algorithm=SHA256&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA256",
+      "at": 1111111109,
+      "code": "68084774",
+      "remaining": 1
+    },
+    {
+      "name": "sha256-t1111111111",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZA&algorithm=SHA256&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA256",
+      "at": 1111111111,
+      "code": "67062674",
+      "remaining": 29
+    },
+    {
+      "name": "sha256-t1234567890",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZA&algorithm=SHA256&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA256",
+      "at": 1234567890,
+      "code": "91819424",
+      "remaining": 30
+    },
+    {
+      "name": "sha256-t2000000000",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZA&algorithm=SHA256&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA256",
+      "at": 2000000000,
+      "code": "90698825",
+      "remaining": 10
+    },
+    {
+      "name": "sha256-t20000000000",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZA&algorithm=SHA256&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA256",
+      "at": 20000000000,
+      "code": "77737706",
+      "remaining": 13
+    },
+    {
+      "name": "sha512-t59",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNA&algorithm=SHA512&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA512",
+      "at": 59,
+      "code": "90693936",
+      "remaining": 1
+    },
+    {
+      "name": "sha512-t1111111109",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNA&algorithm=SHA512&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA512",
+      "at": 1111111109,
+      "code": "25091201",
+      "remaining": 1
+    },
+    {
+      "name": "sha512-t1111111111",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNA&algorithm=SHA512&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA512",
+      "at": 1111111111,
+      "code": "99943326",
+      "remaining": 29
+    },
+    {
+      "name": "sha512-t1234567890",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNA&algorithm=SHA512&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA512",
+      "at": 1234567890,
+      "code": "93441116",
+      "remaining": 30
+    },
+    {
+      "name": "sha512-t2000000000",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNA&algorithm=SHA512&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA512",
+      "at": 2000000000,
+      "code": "38618901",
+      "remaining": 10
+    },
+    {
+      "name": "sha512-t20000000000",
+      "secret": "otpauth://totp/x?secret=GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNA&algorithm=SHA512&digits=8",
+      "digits": 8,
+      "period": 30,
+      "algorithm": "SHA512",
+      "at": 20000000000,
+      "code": "47863826",
+      "remaining": 13
+    }
+  ],
+  "base32": [
+    {
+      "name": "plain",
+      "input": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ",
+      "secret": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ",
+      "valid": true
+    },
+    {
+      "name": "spaced",
+      "input": "GEZD GNBV GY3T QOJQ GEZD GNBV GY3T QOJQ",
+      "secret": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ",
+      "valid": true
+    },
+    {
+      "name": "hyphenated",
+      "input": "GEZD-GNBV-GY3T-QOJQ-GEZD-GNBV-GY3T-QOJQ",
+      "secret": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ",
+      "valid": true
+    },
+    {
+      "name": "lowercase",
+      "input": "gezdgnbvgy3tqojqgezdgnbvgy3tqojq",
+      "secret": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ",
+      "valid": true
+    },
+    {
+      "name": "padded",
+      "input": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ====",
+      "secret": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ",
+      "valid": true
+    },
+    {
+      "name": "sha256-seed",
+      "input": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZA",
+      "secret": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZA",
+      "valid": true
+    },
+    {
+      "name": "sha512-seed",
+      "input": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNA",
+      "secret": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNA",
+      "valid": true
+    },
+    {
+      "name": "rfc4648-hello",
+      "input": "JBSWY3DPEHPK3PXP",
+      "secret": "JBSWY3DPEHPK3PXP",
+      "valid": true
+    },
+    {
+      "name": "rfc4648-bytes",
+      "input": "AAAQEAYEAUDAOCAJBIFQYDIOB4",
+      "secret": "AAAQEAYEAUDAOCAJBIFQYDIOB4",
+      "valid": true
+    },
+    {
+      "name": "non-canonical",
+      "input": "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQGEZB",
+      "secret": "",
+      "valid": false
+    },
+    {
+      "name": "not-alphabet",
+      "input": "0O1lI",
+      "secret": "",
+      "valid": false
+    },
+    {
+      "name": "one-byte",
+      "input": "MY",
+      "secret": "",
+      "valid": false
+    },
+    {
+      "name": "over-long",
+      "input": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "secret": "",
+      "valid": false
+    },
+    {
+      "name": "empty",
+      "input": "",
+      "secret": "",
+      "valid": false
+    }
+  ],
+  "generator": [
+    {
+      "name": "default",
+      "options": {
+        "length": 20,
+        "lower": true,
+        "upper": true,
+        "digits": true,
+        "symbols": true,
+        "noAmbiguous": false
+      },
+      "random": "001a343e011b353f021c3640031d3741041e3842001a343e001a343e",
+      "password": "aA0!bB1@cC2#dD3$eE4%",
+      "entropyBits": 122.58566033889933,
+      "strength": 3
+    },
+    {
+      "name": "no-ambiguous",
+      "options": {
+        "length": 24,
+        "lower": true,
+        "upper": true,
+        "digits": true,
+        "symbols": true,
+        "noAmbiguous": true
+      },
+      "random": "001a343e011b353f021c3640031d3741041e3842051f3943001a343e001a343e",
+      "password": "aB5^bC6&cD7*dE8aeF9bfG!c",
+      "entropyBits": 144.53682751268292,
+      "strength": 3
+    },
+    {
+      "name": "lower-only",
+      "options": {
+        "length": 16,
+        "lower": true,
+        "upper": false,
+        "digits": false,
+        "symbols": false,
+        "noAmbiguous": false
+      },
+      "random": "000102030405060708090a0b0c0d0e0f0000000000000000",
+      "password": "abcdefghijklmnop",
+      "entropyBits": 75.20703549025747,
+      "strength": 2
+    },
+    {
+      "name": "digits-only",
+      "options": {
+        "length": 12,
+        "lower": false,
+        "upper": false,
+        "digits": true,
+        "symbols": false,
+        "noAmbiguous": false
+      },
+      "random": "3435363738393a3b3c3d3e3f3434343434343434",
+      "password": "234567890123",
+      "entropyBits": 39.86313713864835,
+      "strength": 0
+    },
+    {
+      "name": "all-classes-long",
+      "options": {
+        "length": 128,
+        "lower": true,
+        "upper": true,
+        "digits": true,
+        "symbols": true,
+        "noAmbiguous": false
+      },
+      "random": "001a343e011b353f021c3640031d3741041e3842051f394306203a4407213b4508223c4609233d470a243e480b253f490c26404a0d27414b0e28424c0f29434d102a444e112b454f122c4650132d4751142e4852152f495316304a5417314b5518324c5619334d571a344e581b354f591c36505a1d37515b1e38525c1f39535d001a343e001a343e",
+      "password": "aA0!bB1@cC2#dD3$eE4%fF5^gG6&hH7*iI8ajJ9bkK!clL@dmM#enN$foO%gpP^hqQ&irR*jsSaktTbluUcmvVdnwWeoxXfpyYgqzZhrA0isB1jtC2kuD3lvE4mwF5nx",
+      "entropyBits": 784.5482261689557,
+      "strength": 3
+    }
+  ]
+}

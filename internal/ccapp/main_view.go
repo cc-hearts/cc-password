@@ -1,8 +1,6 @@
 package ccapp
 
 import (
-	"fmt"
-
 	"github.com/egoist/mygo/ui"
 
 	"ccpass/internal/vault"
@@ -139,67 +137,4 @@ var filters = []struct {
 }{
 	{label: "全部", typ: ""},
 	{label: "登录", typ: vault.TypeLogin},
-}
-
-// detailView is the one open item. It is a screen of its own over the list:
-// the list is not built while it shows, so the keys go where the detail puts
-// them and nothing behind it takes them.
-func (a *App) detailView(c *ui.Context) {
-	e, ok := a.v.Entry(a.main.open)
-	if !ok {
-		// Gone: purged, or the vault was closed under it. Back to the list,
-		// which shows what there is now.
-		a.main.open = ""
-		return
-	}
-	ui.Column(c).Fill().Gap(12).Children(func() {
-		ui.Row(c).Gap(8).Children(func() {
-			if ui.Button(c, "返回").Clicked() {
-				a.main.open = ""
-				// The list was not on screen while the detail was, so it has
-				// no focus now: it takes it again on the way back, which is
-				// what keeps the arrows working without a click first.
-				a.main.listed = false
-			}
-			ui.Text(c, title(e)).FontSize(20).Bold().Grow(1)
-		})
-		ui.Text(c, fmt.Sprintf("%s · %s", typeLabel(e.Item.DisplayType()), vaultName(a.v, e.VaultID))).TextColor(c.Theme().TextMuted)
-		if e.Item.Username != "" {
-			ui.Field(c, "用户名", func() {
-				ui.Text(c, e.Item.Username).SingleLine()
-			})
-		}
-		if e.Item.Notes != "" {
-			ui.Field(c, "备注", func() {
-				ui.Text(c, e.Item.Notes)
-			})
-		}
-		for _, f := range e.Item.Fields {
-			ui.Field(c, f.Label, func() {
-				ui.Text(c, f.Value)
-			})
-		}
-		if e.Deleted {
-			ui.Text(c, "这条在回收站里。").TextColor(c.Theme().TextMuted)
-		}
-	})
-}
-
-// title is what a row and a detail are headed with. An item with no title is
-// headed with its type rather than with nothing at all.
-func title(e vault.Entry) string {
-	if e.Item.Title != "" {
-		return e.Item.Title
-	}
-	return typeLabel(e.Item.DisplayType())
-}
-
-// vaultName is a vault's name, or its id for one this build did not open.
-func vaultName(v *vault.Vault, id string) string {
-	for _, vi := range v.Vaults() {
-		if vi.ID == id {
-			return vi.Name
-		}
-	}
-	return id
 }

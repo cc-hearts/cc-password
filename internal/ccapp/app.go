@@ -62,6 +62,10 @@ type App struct {
 	create createState
 	// main holds what the main screen has been given, once the vault is open.
 	main mainState
+	// detail is what the open item's screen holds. It is the app's rather than
+	// the main screen's own because it is a screen over it, and because every
+	// secret it shows is off again the moment the detail is left.
+	detail detailState
 	// keyfile is the keyfile that was found in home, if there was one. Its
 	// absence is what puts the app on the first-run path.
 	keyfile *identity.Keyfile

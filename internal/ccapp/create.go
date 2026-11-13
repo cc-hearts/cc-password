@@ -93,9 +93,8 @@ func (a *App) wordsStep(c *ui.Context) {
 		// check below: an export is somebody's own copy of their own account,
 		// and the check is that they read it.
 		a.exportWords(c)
-		if a.busy != "" {
-			ui.Text(c, a.busy).TextColor(c.Theme().TextMuted)
-		} else {
+		a.busyView(c)
+		if a.busy == "" {
 			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
 		}
 		ui.Row(c).Gap(8).Children(func() {
@@ -195,9 +194,8 @@ func (a *App) retypeStep(c *ui.Context) {
 				ui.TextInput(c, &f.value).Fill()
 			})
 		}
-		if a.busy != "" {
-			ui.Text(c, a.busy).TextColor(c.Theme().TextMuted)
-		} else {
+		a.busyView(c)
+		if a.busy == "" {
 			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
 		}
 		ui.Row(c).Gap(8).Children(func() {
@@ -224,9 +222,8 @@ func (a *App) passphraseStep(c *ui.Context) {
 		ui.Field(c, "再输一次", func() {
 			ui.TextInput(c, &a.create.again).Password().Fill()
 		})
-		if a.busy != "" {
-			ui.Text(c, a.busy).TextColor(c.Theme().TextMuted)
-		} else {
+		a.busyView(c)
+		if a.busy == "" {
 			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
 		}
 		ui.Row(c).Gap(8).Children(func() {

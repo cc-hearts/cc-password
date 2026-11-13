@@ -15,9 +15,8 @@ func (a *App) startView(c *ui.Context) {
 			ui.Field(c, "口令", func() {
 				ui.TextInput(c, &a.unlock.passphrase).Password().Fill()
 			})
-			if a.busy != "" {
-				ui.Text(c, a.busy).TextColor(c.Theme().TextMuted)
-			} else {
+			a.busyView(c)
+			if a.busy == "" {
 				ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
 			}
 			ui.Row(c).Gap(8).Children(func() {
@@ -69,4 +68,25 @@ func (a *App) unlockApp() {
 		}
 		a.pending = out
 	}, a.finish)
+}
+
+// busyView is what a screen shows while the machine is working: a spinner that
+// turns, and the words read out for whoever cannot see it turn.
+//
+// It is one place because three screens wait on the same work — unlock,
+// recover, create — and a spinner on one of them and a grey sentence on another
+// is a user wondering whether the sentence means something is broken. The
+// spinner is the library's own, which also tells a screen reader it is a
+// progress indicator of unknown length; the words are announced as well as
+// drawn, because a picture of work is nothing at all to somebody who cannot see
+// it.
+func (a *App) busyView(c *ui.Context) {
+	if a.busy == "" {
+		return
+	}
+	ui.Row(c).AlignItems(ui.Center).Gap(8).Children(func() {
+		ui.Spinner(c).Label(a.busy)
+		ui.Text(c, a.busy).TextColor(c.Theme().TextMuted)
+	})
+	c.Announce(a.busy)
 }

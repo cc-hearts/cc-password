@@ -258,9 +258,8 @@ func (a *App) recoverView(c *ui.Context) {
 		ui.Field(c, "再输一次", func() {
 			ui.TextInput(c, &a.recover.again).Password().Fill()
 		})
-		if a.busy != "" {
-			ui.Text(c, a.busy).TextColor(c.Theme().TextMuted)
-		} else {
+		a.busyView(c)
+		if a.busy == "" {
 			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
 		}
 		ui.Row(c).Gap(8).Children(func() {

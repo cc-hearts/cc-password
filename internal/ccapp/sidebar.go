@@ -13,42 +13,38 @@ import (
 // the way to make another. A vault's name is what a user called it, and it is
 // the only thing about it that is ever in the clear: everything inside it is
 // ciphertext behind the vault key.
+//
+// It is the library's own Sidebar, because the vaults are a list a keyboard has
+// to be able to walk: Up and Down move among them, Home and End go to the ends,
+// and typing the first letters of a name finds it. A column of hand-rolled rows
+// answers the pointer and nothing else, and a user who does not use one is left
+// on the vault they started on. The library's also gives the screen reader a
+// tree of items, which a column of rows is not.
 func (a *App) sidebarView(c *ui.Context) {
 	t := *c.Theme()
 	// A card, not a bare column against the window's white: the vaults are a
 	// place of their own beside the list, and the gutter of white between
 	// the two is what says so.
-	card := ui.Column(c).Width(180).Shrink(0).Gap(t.Space(1.5)).
+	card := ui.Column(c).Width(200).Shrink(0).Gap(t.Space(1.5)).
 		Padding(t.Space(2)).Radius(t.Radius+2).
 		Background(t.Surface).Border(1, t.Border)
 	card.Children(func() {
-		for _, vi := range a.v.Vaults() {
-			v := vi
-			// The row is the label and the click target both: a click on the
-			// text beside it would reach the list's row underneath. Its
-			// highlight is the row's own face, so it covers the whole row
-			// rather than the grey letters of the name.
-			row := ui.Row(c).Fill().AlignItems(ui.Center).Gap(t.Space(2)).
-				Padding(t.Space(1.5), t.Space(2)).Radius(t.Radius).Children(func() {
-				ui.Text(c, v.Name).SingleLine().Grow(1)
-			})
-			switch {
-			case v.ID == a.main.vaultID:
-				row.Selected(true)
-			case row.Hovered():
-				// The hover is the row's own face, so it covers the whole row
-				// rather than the letters of the name. It lands a frame after
-				// the pointer moves, exactly as the library's own hover does.
-				row.Background(t.SurfaceHover)
+		// The choice is the app's own: the sidebar holds the vault the list is
+		// showing, so a vault chosen with the keyboard is the one the list shows.
+		sb := ui.Sidebar(c, &a.main.vaultID, func() {
+			for _, vi := range a.v.Vaults() {
+				ui.SidebarItem(c, vi.ID, nil, vi.Name)
 			}
-			if row.Clicked() {
-				a.main.vaultID = v.ID
-				// A vault holds its own items, so the row the list was on
-				// means nothing in the one that opens.
-				a.main.selected = 0
-				a.main.open, a.err = "", ""
-			}
+		}).Fill()
+		// A vault chosen with the keyboard is a vault the list has to follow,
+		// and a new vault holds none of the rows the old one had on screen.
+		if sb.Changed() {
+			a.main.selected = 0
+			a.main.open, a.err = "", ""
 		}
+		// The way to make another sits under the sidebar rather than in it: it
+		// is not a vault, and a row among the vaults that is not one is a row
+		// the arrows stop on for nothing.
 		if a.main.making {
 			ui.Field(c, "名称", func() {
 				ui.TextInput(c, &a.main.newVault).Fill()

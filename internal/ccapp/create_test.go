@@ -22,10 +22,12 @@ func createReader() *strings.Reader {
 	return strings.NewReader(string(b))
 }
 
-// newCreate starts a fresh install on the first step of the create flow.
+// newCreate starts a fresh install on the first step of the create flow. The
+// machine it runs on can write a file, as the real one does: the words step
+// offers a save only when there is somewhere to save.
 func newCreate(t *testing.T) (*App, *ui.Tester) {
 	t.Helper()
-	a, err := New(Options{Home: emptyHome(t), Rand: createReader()})
+	a, err := New(Options{Home: emptyHome(t), Rand: createReader(), Export: func(string) error { return nil }})
 	if err != nil {
 		t.Fatal(err)
 	}

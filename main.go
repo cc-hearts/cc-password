@@ -8,13 +8,60 @@
 package main
 
 import (
+	"errors"
 	"log"
+	"os"
 
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/ui"
 
 	"bipPass/internal/ccapp"
 )
+
+// saveMnemonic asks where to put a file holding the mnemonic and writes it
+// there. The dialog is the system's and the write is the app's own, so the
+// words are handed to the dialog and never logged.
+func saveMnemonic(win *mygo.Window, mnemonic string) error {
+	path, err := mygo.Dialog.Save(mygo.SaveDialogOptions{
+		Parent:      win,
+		Title:       "存下助记词",
+		Message:     "这 24 个词就是你的账号，抄走它的人就拥有了它。",
+		ButtonLabel: "存储",
+		DefaultPath: "bipPass-助记词.txt",
+		Filters:     []mygo.FileFilter{{Name: "文本文件", Extensions: []string{"txt"}}},
+	})
+	if err != nil {
+		return err
+	}
+	// A cancelled dialog is not a failure: nothing was asked for, and nothing
+	// was written. It is reported as one so the screen does not claim a file
+	// that does not exist.
+	if path == "" {
+		return errNoSave
+	}
+	return writeMnemonic(path, mnemonic)
+}
+
+// writeMnemonic puts the mnemonic in a file and closes every door but the
+// owner's.
+//
+// The chmod is after the write, not a mode handed to it: WriteFile only applies
+// its mode when it creates the file, so a path the user picked that already
+// holds a world-readable file would keep those permissions and the words would
+// sit in it for anyone to read. The words are on disk for the moment between
+// the two either way — a write is a write — but nothing after that leaves them
+// open.
+func writeMnemonic(path, mnemonic string) error {
+	if err := os.WriteFile(path, []byte(mnemonic+"\n"), 0o600); err != nil {
+		return err
+	}
+	return os.Chmod(path, 0o600)
+}
+
+// errNoSave is what a cancelled save dialog reports. It is not an error of the
+// machine's, which is why it is not one of the io or os ones: it says the user
+// changed their mind, and the screen says so too.
+var errNoSave = errors.New("no file chosen")
 
 func main() {
 	// One vault, one window: a second launch hands its arguments to this one
@@ -42,6 +89,10 @@ func main() {
 			// A mnemonic on screen is the account: it is kept out of
 			// screenshots and recordings while it is there.
 			Protect: func(on bool) { win.SetContentProtection(on) },
+			// The words are written where the user says, as a file that is
+			// exactly the mnemonic: it can be pasted straight back into the
+			// recovery screen, and it holds nothing else about the account.
+			Export: func(text string) error { return saveMnemonic(win, text) },
 		})
 		if err != nil {
 			log.Fatalf("bipPass: %v", err)

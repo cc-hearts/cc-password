@@ -47,6 +47,14 @@ type createState struct {
 	asks []retypeField
 	// passphrase and again are the two passphrase fields.
 	passphrase, again string
+	// asking is whether the words step is asking before it writes the words to
+	// a file. It is a step rather than a second click on the same button: the
+	// words are the account, and a file holding them is the one copy that
+	// outlives this window and this machine.
+	asking bool
+	// said is what the last export or copy said, so somebody who cannot see
+	// where it went knows it went.
+	said string
 }
 
 // createView is the first-run flow: the words, then three of them typed back,
@@ -83,8 +91,15 @@ func (a *App) wordsStep(c *ui.Context) {
 				}
 			})
 		}
+		// A file and the clipboard, offered while the words are the only copy
+		// there is. Both are a way to keep the words, not a way past the retype
+		// check below: an export is somebody's own copy of their own account,
+		// and the check is that they read it.
+		a.exportWords(c)
 		if a.busy != "" {
 			ui.Text(c, a.busy).TextColor(c.Theme().TextMuted)
+		} else if a.create.said != "" {
+			ui.Text(c, a.create.said).TextColor(c.Theme().TextMuted)
 		} else {
 			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
 		}
@@ -97,6 +112,79 @@ func (a *App) wordsStep(c *ui.Context) {
 			})
 		})
 	})
+}
+
+// exportWords is the row that gets the words out of this app: into a file on
+// the user's machine, or onto the clipboard.
+//
+// Both are offered only when the machine can do them. A 存成文件 with no save
+// dialog to open is a button that lies, so it is not there at all; the words
+// stay on screen either way, because paper is always an option.
+func (a *App) exportWords(c *ui.Context) {
+	ui.Row(c).Gap(8).Children(func() {
+		if a.opts.Export != nil {
+			if ui.Button(c, "存成文件").Disabled(a.busy != "").Clicked() {
+				// Ask first, and take either answer. A file holding the words
+				// outlives this window, this machine and this app: it is the one
+				// copy nobody has to be asked for twice about.
+				a.create.asking = true
+			}
+		}
+		if ui.Button(c, "复制").Disabled(a.busy != "").Clicked() {
+			a.copyWords(c)
+		}
+	})
+	a.exportConfirm(c)
+}
+
+// exportConfirm asks whether to write the words to a file, and takes either
+// answer. It is a step of its own rather than a second click on the same
+// button, for the same reason a purge's is: the words are the account, and the
+// cost of one mis-click is a file holding them somewhere nobody chose.
+func (a *App) exportConfirm(c *ui.Context) {
+	if !a.create.asking {
+		return
+	}
+	ui.Column(c).Gap(8).Children(func() {
+		ui.Text(c, "把这 24 个词存到文件里？文件放在哪由你定，抄走它的人就拥有了这个账号。").TextColor(c.Theme().TextMuted)
+		ui.Row(c).Gap(8).Children(func() {
+			if ui.PrimaryButton(c, "确定保存").Clicked() {
+				a.saveWords()
+			}
+			if ui.Button(c, "取消").Clicked() {
+				a.create.asking, a.create.said = false, ""
+			}
+		})
+	})
+}
+
+// saveWords hands the mnemonic to the machine to write where the user picks.
+// The words are read here, on the main thread, before anything is handed over:
+// they belong to this screen, and a dialog is a place the app is not in control
+// of while it is up.
+func (a *App) saveWords() {
+	if a.opts.Export == nil {
+		return
+	}
+	a.create.asking = false
+	mnemonic := strings.Join(a.create.words, " ")
+	if err := a.opts.Export(mnemonic); err != nil {
+		// Nothing was written, so the words are still the only copy: they stay
+		// on screen, and the screen says the file did not happen. A user who
+		// pressed the button and was told nothing would believe they have a
+		// copy they do not have.
+		a.create.said = "没存上，纸还在屏幕上，再抄一遍也来得及。"
+		return
+	}
+	a.create.said = "已存到你选的地方。"
+}
+
+// copyWords puts the mnemonic on the clipboard and says so. The clipboard is
+// the system's the moment it is there, which is why the copy is the same
+// thirty-second one every other copy gets.
+func (a *App) copyWords(c *ui.Context) {
+	a.copySecret(c, strings.Join(a.create.words, " "))
+	a.create.said = "已复制，半分钟后自动清掉。"
 }
 
 // retypeStep asks for three of the words back, at positions chosen at random.

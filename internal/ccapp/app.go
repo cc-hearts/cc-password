@@ -42,6 +42,10 @@ type Options struct {
 	// Protect turns the window's content protection on and off, as a screen
 	// showing a mnemonic needs. Nil means there is nothing to protect.
 	Protect func(on bool)
+	// Export writes text to a file the user picks. Nil means there is nowhere
+	// to write: the screen that offers it is not offered at all, rather than
+	// offered a button that does nothing.
+	Export func(text string) error
 }
 
 // App is the shell. It holds the state the screens are built from: whether

@@ -46,6 +46,10 @@ func askFirst(t *testing.T, tt *ui.Tester, yes string) {
 		t.Fatalf("clicking %s: %v", yes, err)
 	}
 	tt.Frame()
+	// One more frame: the answer is drawn in the frame after the one that
+	// received it, and a screen read in between shows the question and nothing
+	// the question produced.
+	tt.Frame()
 }
 
 // TestTheWordsStepOffersBothWaysOut: the words are the account, so the screen

@@ -58,6 +58,11 @@ type editState struct {
 	// confirming is whether the purge is being confirmed. It is a step rather
 	// than a click: 彻底删除 destroys, and a mis-click is data gone for good.
 	confirming bool
+	// deleting is whether the move to the trash is being confirmed. It is a
+	// separate flag from confirming because the two questions are different
+	// questions, with different answers — one is reversible and one is not —
+	// and only one of them can be on screen at a time.
+	deleting bool
 }
 
 // newEditState is the form for a new item of a type, with that type's template
@@ -352,40 +357,59 @@ func (a *App) itemActions(c *ui.Context, e vault.Entry) {
 			a.openEdit(e)
 		}
 		if ui.Button(c, "删除").Clicked() {
-			a.deleteItem(e)
+			// One click from losing something, so it asks first — and in the
+			// library's own alert, which dims what is behind it, closes on Esc
+			// and answers Enter, and is what a screen reader names as a dialog.
+			// The trash is the way back from here, but the trash is one click
+			// from a purge, and a mis-click should not be able to reach that.
+			a.edit.deleting = true
 		}
 	})
+	a.deleteConfirm(c, e)
 	a.purgeConfirm(c, e)
 }
 
-// purgeConfirm asks before a purge, and takes either answer. It is a step of
-// its own rather than a second click on the same button: a purge has no undo,
-// and the cost of one mis-click is every byte of that item.
+// deleteConfirm asks before an item is moved to the trash. It is a modal of the
+// library's own rather than a few more lines on the screen: the thing being
+// asked about is a decision, and a decision that looks like the rest of the
+// page is one nobody reads before they answer it.
+func (a *App) deleteConfirm(c *ui.Context, e vault.Entry) {
+	if !a.edit.deleting {
+		return
+	}
+	switch ui.AlertDialog(c, &a.edit.deleting, "删除这条？",
+		"删除后进回收站，可以从那里找回来。", "取消", "确认删除") {
+	case 1:
+		a.deleteItem(c, e)
+	}
+}
+
+// purgeConfirm asks before a purge, and takes either answer. It is the same
+// modal for the same reason: a purge has no undo at all, and the cost of one
+// mis-click is every byte of that item.
 func (a *App) purgeConfirm(c *ui.Context, e vault.Entry) {
 	if !a.edit.confirming {
 		return
 	}
-	ui.Column(c).Gap(8).Children(func() {
-		ui.Text(c, "彻底删除后无法恢复，确定吗？").TextColor(c.Theme().TextMuted)
-		ui.Row(c).Gap(8).Children(func() {
-			if ui.PrimaryButton(c, "确认删除").Clicked() {
-				a.purgeItem(e)
-			}
-			if ui.Button(c, "取消").Clicked() {
-				a.edit.confirming = false
-			}
-		})
-	})
+	switch ui.AlertDialog(c, &a.edit.confirming, "彻底删除？",
+		"彻底删除后无法恢复。", "取消", "确认删除") {
+	case 1:
+		a.purgeItem(e)
+	}
 }
 
 // deleteItem moves an item to the trash. Its payload stays sealed and intact,
 // which is what makes a restore possible: the trash is a place an item waits,
 // not a way of losing it.
-func (a *App) deleteItem(e vault.Entry) {
+func (a *App) deleteItem(c *ui.Context, e vault.Entry) {
 	if err := a.v.Delete(e.ID, nowUnix()); err != nil {
 		a.err = failMessage(err)
 		return
 	}
+	// The item left the list it was in, which is a thing the user did and should
+	// be told happened. It is said as a toast rather than a line on the detail:
+	// the detail is closing, so a line on it would go out with it.
+	c.Toast("已删")
 	a.main.open = ""
 	a.err = ""
 }

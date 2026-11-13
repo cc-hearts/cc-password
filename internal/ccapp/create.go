@@ -52,9 +52,6 @@ type createState struct {
 	// words are the account, and a file holding them is the one copy that
 	// outlives this window and this machine.
 	asking bool
-	// said is what the last export or copy said, so somebody who cannot see
-	// where it went knows it went.
-	said string
 }
 
 // createView is the first-run flow: the words, then three of them typed back,
@@ -98,8 +95,6 @@ func (a *App) wordsStep(c *ui.Context) {
 		a.exportWords(c)
 		if a.busy != "" {
 			ui.Text(c, a.busy).TextColor(c.Theme().TextMuted)
-		} else if a.create.said != "" {
-			ui.Text(c, a.create.said).TextColor(c.Theme().TextMuted)
 		} else {
 			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
 		}
@@ -138,31 +133,27 @@ func (a *App) exportWords(c *ui.Context) {
 }
 
 // exportConfirm asks whether to write the words to a file, and takes either
-// answer. It is a step of its own rather than a second click on the same
-// button, for the same reason a purge's is: the words are the account, and the
-// cost of one mis-click is a file holding them somewhere nobody chose.
+// answer. It is a modal of the library's own, for the same reason a delete's is:
+// the words are the account, and the cost of one mis-click is a file holding
+// them somewhere nobody chose. It is also the one question in the app whose
+// answer is worth reading, so it gets a dialog that dims the rest of the screen
+// until it is answered rather than a line beside the words.
 func (a *App) exportConfirm(c *ui.Context) {
 	if !a.create.asking {
 		return
 	}
-	ui.Column(c).Gap(8).Children(func() {
-		ui.Text(c, "把这 24 个词存到文件里？文件放在哪由你定，抄走它的人就拥有了这个账号。").TextColor(c.Theme().TextMuted)
-		ui.Row(c).Gap(8).Children(func() {
-			if ui.PrimaryButton(c, "确定保存").Clicked() {
-				a.saveWords()
-			}
-			if ui.Button(c, "取消").Clicked() {
-				a.create.asking, a.create.said = false, ""
-			}
-		})
-	})
+	switch ui.AlertDialog(c, &a.create.asking, "存到文件里？",
+		"这 24 个词就是账号本身，抄走它的人就拥有了它。文件放在哪由你定。", "取消", "确定保存") {
+	case 1:
+		a.saveWords(c)
+	}
 }
 
 // saveWords hands the mnemonic to the machine to write where the user picks.
 // The words are read here, on the main thread, before anything is handed over:
 // they belong to this screen, and a dialog is a place the app is not in control
 // of while it is up.
-func (a *App) saveWords() {
+func (a *App) saveWords(c *ui.Context) {
 	if a.opts.Export == nil {
 		return
 	}
@@ -172,11 +163,13 @@ func (a *App) saveWords() {
 		// Nothing was written, so the words are still the only copy: they stay
 		// on screen, and the screen says the file did not happen. A user who
 		// pressed the button and was told nothing would believe they have a
-		// copy they do not have.
-		a.create.said = "没存上，纸还在屏幕上，再抄一遍也来得及。"
+		// copy they do not have. This one is a line on the screen rather than a
+		// toast: it is not news that the words were saved, it is news that they
+		// were not, and it should still be there when the eyes come back.
+		a.err = "没存上，纸还在屏幕上，再抄一遍也来得及。"
 		return
 	}
-	a.create.said = "已存到你选的地方。"
+	c.Toast("已存到你选的地方。")
 }
 
 // copyWords puts the mnemonic on the clipboard and says so. The clipboard is
@@ -184,7 +177,7 @@ func (a *App) saveWords() {
 // thirty-second one every other copy gets.
 func (a *App) copyWords(c *ui.Context) {
 	a.copySecret(c, strings.Join(a.create.words, " "))
-	a.create.said = "已复制，半分钟后自动清掉。"
+	c.Toast("已复制，半分钟后自动清掉。")
 }
 
 // retypeStep asks for three of the words back, at positions chosen at random.

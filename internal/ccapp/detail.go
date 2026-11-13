@@ -21,9 +21,6 @@ type detailState struct {
 	// that opens with somebody's field already legible is a bug nobody would
 	// see coming.
 	showing string
-	// copied is what the last copy said, so a user who cannot see the
-	// clipboard knows the copy happened.
-	copied string
 }
 
 // detailView is the one open item. It is a screen of its own over the list:
@@ -98,9 +95,6 @@ func (a *App) detailView(c *ui.Context) {
 		// buttons that change it are the least likely reason somebody opened
 		// it, and 彻底删除 is nowhere near a row's own copy button.
 		a.itemActions(c, e)
-		if a.detail.copied != "" {
-			ui.Text(c, a.detail.copied).TextColor(c.Theme().TextMuted)
-		}
 		if a.err != "" {
 			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
 		}
@@ -238,13 +232,16 @@ func (a *App) copyButton(c *ui.Context, label, value string) {
 	}
 }
 
-// copy puts text on the clipboard and says what it was. The clipboard is the
-// system's, so what was copied is out of this app's hands the moment it is
-// there: the thirty-second clear, and the comparison before it, are what the
-// app does about that.
+// copy puts text on the clipboard and says what it was. The saying is a toast:
+// a copy is the smallest thing the app does, and it is told about the way a
+// thing that small should be told about — briefly, out of the way, and in a
+// place a screen reader reads out too. The clipboard is the system's, so what
+// was copied is out of this app's hands the moment it is there: the
+// thirty-second clear, and the comparison before it, are what the app does
+// about that.
 func (a *App) copy(c *ui.Context, value string) {
 	a.copySecret(c, value)
-	a.detail.copied = "已复制"
+	c.Toast("已复制")
 }
 
 // copyLabel is the copy button of one of an item's own fields. A field with no

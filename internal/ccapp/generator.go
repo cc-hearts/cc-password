@@ -44,9 +44,6 @@ type genState struct {
 	// bits is the entropy of these options, and strength what it is called.
 	bits     float64
 	strength string
-	// copied is what the last copy said, so somebody who cannot see the
-	// clipboard knows the copy happened.
-	copied string
 }
 
 // newGenState is the generator as it opens: the default options, and no item to
@@ -134,9 +131,6 @@ func (a *App) genView(c *ui.Context) {
 				}
 			}
 		})
-		if a.gen.copied != "" {
-			ui.Text(c, a.gen.copied).TextColor(c.Theme().TextMuted)
-		}
 		if a.err != "" {
 			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)
 		}
@@ -223,7 +217,11 @@ func (a *App) copyGen(c *ui.Context) {
 		return
 	}
 	a.copySecret(c, a.gen.password)
-	a.gen.copied = "已复制"
+	// Said the same way the detail says it: a toast, that goes away on its own
+	// and is read out. A line of grey text beside the password would still be
+	// there next time the screen is opened, saying 已复制 about a copy that
+	// happened minutes ago.
+	c.Toast("已复制")
 }
 
 // useGenerated writes the password on screen into the item the generator was

@@ -332,6 +332,14 @@ func TestDeletePutsAnItemInTheTrashAndRestoreBringsItBack(t *testing.T) {
 		t.Fatalf("clicking 删除: %v", err)
 	}
 	tt.Frame()
+	// It asks first, and the answer is yes.
+	if !tt.HasText("删除这条？") {
+		t.Fatalf("the delete did not ask: %v", tt.Texts())
+	}
+	if err := tt.Click("确认删除"); err != nil {
+		t.Fatal(err)
+	}
+	tt.Frame()
 	// Gone from the list, and in the trash, where it can be restored.
 	if tt.HasText("京东") {
 		t.Errorf("the deleted item is still listed: %v", tt.Texts())
@@ -383,6 +391,10 @@ func TestAPurgeAsksFirstAndThenIsPermanent(t *testing.T) {
 	a, tt, id := editMain(t)
 	openItem(t, tt, "京东")
 	if err := tt.Click("删除"); err != nil {
+		t.Fatal(err)
+	}
+	tt.Frame()
+	if err := tt.Click("确认删除"); err != nil {
 		t.Fatal(err)
 	}
 	tt.Frame()

@@ -17,3 +17,7 @@
 
 # agent workspace
 .ryugi/
+
+# mygo dev/build output
+/.mygo/
+/out/

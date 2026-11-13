@@ -30,6 +30,7 @@ type detailState struct {
 // the list is not built while it shows, so the keys go where the detail puts
 // them and nothing behind it takes them.
 func (a *App) detailView(c *ui.Context) {
+	t := *c.Theme()
 	e, ok := a.v.Entry(a.main.open)
 	if !ok {
 		// Gone: purged, or the vault was closed under it. Back to the list,
@@ -48,43 +49,51 @@ func (a *App) detailView(c *ui.Context) {
 			}
 			ui.Text(c, title(e)).FontSize(20).Bold().Grow(1)
 		})
-		ui.Text(c, fmt.Sprintf("%s · %s", typeLabel(e.Item.DisplayType()), vaultName(a.v, e.VaultID))).TextColor(c.Theme().TextMuted)
-		it := e.Item
-		if it.ReadOnly() {
-			// A payload from a build that does not exist yet. Its data is
-			// shown in full — hiding the user's own data would be the loss —
-			// and it is said to be read-only, because a build that does not
-			// know the format must not rewrite it and lose what it cannot
-			// read.
-			ui.Text(c, "只读：这条来自更新版本的 bipPass，只能看，不能改。").TextColor(c.Theme().TextMuted)
-		}
-		if it.Username != "" {
-			a.detailRow(c, "用户名", it.Username, false, "复制用户名")
-		}
-		if it.Password != "" {
-			a.detailSecret(c, "密码", it.Password, keyPassword, "复制密码")
-		}
-		if it.OTP != nil {
-			a.detailOTP(c, it.OTP)
-		}
-		for i, u := range it.URLs {
-			a.detailURL(c, u, i)
-		}
-		if it.Notes != "" {
-			a.detailRow(c, "备注", it.Notes, false, "")
-		}
-		for i, f := range it.Fields {
-			if f.Secret {
-				a.detailSecret(c, f.Label, f.Value, fmt.Sprintf("字段%d", i), copyLabel(f.Label))
-				continue
+		ui.Text(c, fmt.Sprintf("%s · %s", typeLabel(e.Item.DisplayType()), vaultName(a.v, e.VaultID))).TextColor(t.TextMuted)
+		// What the item holds is one panel: its rows are the thing somebody
+		// opened it to read, and a face of their own is what makes them read
+		// as a set rather than as lines scattered down the page.
+		body := ui.Column(c).Gap(t.Space(3)).
+			Padding(t.Space(3), t.Space(4)).Radius(t.Radius+2).
+			Background(t.Surface).Border(1, t.Border)
+		body.Children(func() {
+			it := e.Item
+			if it.ReadOnly() {
+				// A payload from a build that does not exist yet. Its data is
+				// shown in full — hiding the user's own data would be the loss —
+				// and it is said to be read-only, because a build that does not
+				// know the format must not rewrite it and lose what it cannot
+				// read.
+				ui.Text(c, "只读：这条来自更新版本的 bipPass，只能看，不能改。").TextColor(c.Theme().TextMuted)
 			}
-			// A field that is not secret is the user's own words, like the
-			// username and the notes: shown, and copyable.
-			a.detailRow(c, f.Label, f.Value, false, copyLabel(f.Label))
-		}
-		if len(it.History) > 0 {
-			a.detailHistory(c, it.History)
-		}
+			if it.Username != "" {
+				a.detailRow(c, "用户名", it.Username, false, "复制用户名")
+			}
+			if it.Password != "" {
+				a.detailSecret(c, "密码", it.Password, keyPassword, "复制密码")
+			}
+			if it.OTP != nil {
+				a.detailOTP(c, it.OTP)
+			}
+			for i, u := range it.URLs {
+				a.detailURL(c, u, i)
+			}
+			if it.Notes != "" {
+				a.detailRow(c, "备注", it.Notes, false, "")
+			}
+			for i, f := range it.Fields {
+				if f.Secret {
+					a.detailSecret(c, f.Label, f.Value, fmt.Sprintf("字段%d", i), copyLabel(f.Label))
+					continue
+				}
+				// A field that is not secret is the user's own words, like the
+				// username and the notes: shown, and copyable.
+				a.detailRow(c, f.Label, f.Value, false, copyLabel(f.Label))
+			}
+			if len(it.History) > 0 {
+				a.detailHistory(c, it.History)
+			}
+		})
 		// What the item itself can be done to comes after what it holds: the
 		// buttons that change it are the least likely reason somebody opened
 		// it, and 彻底删除 is nowhere near a row's own copy button.
@@ -108,7 +117,10 @@ func (a *App) detailRow(c *ui.Context, label, value string, secret bool, copy st
 		if secret {
 			shown = bullets(value)
 		}
-		ui.Text(c, shown).SingleLine().Grow(1)
+		// The value is as wide as the row has for it, and it is not one line:
+		// a note is somebody's own words, and cutting them at the edge of a
+		// window is a note nobody can read.
+		ui.Text(c, shown).Grow(1)
 		if copy != "" {
 			a.copyButton(c, copy, value)
 		}

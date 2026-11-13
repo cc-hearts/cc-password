@@ -154,13 +154,17 @@ func typeLabel(t string) string {
 	return "笔记"
 }
 
+// filterChoice is one of the type filters: what it is called on screen, and
+// the type it narrows the list to.
+type filterChoice struct {
+	label string
+	typ   string
+}
+
 // filters are the type filters, in the order they are shown: everything first,
 // then the type most items are. The trash is not one of them: it is a place
 // the list goes, not a kind of item.
-var filters = []struct {
-	label string
-	typ   string
-}{
+var filters = []filterChoice{
 	{label: "全部", typ: ""},
 	{label: "登录", typ: vault.TypeLogin},
 }

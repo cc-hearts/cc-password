@@ -83,16 +83,15 @@ func (a *App) editForm(c *ui.Context) {
 			}
 			ui.Text(c, a.editHeading()).FontSize(20).Bold().Grow(1)
 		})
-		// The type is a picker, not a field: an item's type decides which of
-		// its fields mean anything, and a login saved as a note is an item
-		// whose password nobody finds.
-		ui.Row(c).Gap(8).Children(func() {
+		// The type is one choice among four, so it is one control: a picker's
+		// chips answer the pointer, where buttons given a face of their own
+		// do not. It is not a field — an item's type decides which of its
+		// fields mean anything, and a login saved as a note is an item whose
+		// password nobody finds.
+		ui.ToggleGroup(c, func() {
 			for _, t := range []string{vault.TypeLogin, vault.TypeNote, vault.TypeCard, vault.TypeIdentity} {
-				b := ui.Button(c, typeLabel(t))
-				if t == a.edit.typ {
-					b.Background(c.Theme().Surface)
-				}
-				if b.Clicked() {
+				on := t == a.edit.typ
+				if ui.Toggle(c, &on, typeLabel(t)).Changed() {
 					a.edit.typ = t
 					// A template belongs to the type that came with it: moving
 					// a half-filled card form to a login leaves its card fields
@@ -100,9 +99,13 @@ func (a *App) editForm(c *ui.Context) {
 					a.edit.fields = vault.TemplateFields(t)
 				}
 			}
-		})
+		}).Label("类型")
 		ui.Scroll(c).Fill().Children(func() {
-			ui.Column(c).Gap(8).Children(func() {
+			// A column of a scroll is stretched across it by default, which
+			// makes every child a bar. The fields are bars because they are
+			// fields; the buttons are not, so they are packed at the start
+			// instead.
+			ui.Column(c).AlignItems(ui.Start).Gap(8).Children(func() {
 				a.editField(c, "名称", &a.edit.title, false)
 				a.editField(c, "用户名", &a.edit.username, false)
 				a.editSecretField(c, "密码", &a.edit.password)
@@ -113,6 +116,9 @@ func (a *App) editForm(c *ui.Context) {
 					ui.TextInput(c, &a.edit.notes).Fill()
 				})
 				a.editFields(c)
+				// A button, not a bar across the form: the fields are bars
+				// because they are fields, and a button stretched to match them
+				// is the one thing on the form that is not one.
 				if ui.Button(c, "添加字段").Clicked() {
 					a.edit.adding = true
 				}
@@ -178,12 +184,8 @@ func (a *App) editFields(c *ui.Context) {
 				}
 			})
 			secret := a.edit.fields[i].Secret
-			t := ui.Button(c, "秘密")
-			if secret {
-				t.Background(c.Theme().Surface)
-			}
-			if t.Clicked() {
-				a.edit.fields[i].Secret = !secret
+			if ui.Toggle(c, &secret, "秘密").Changed() {
+				a.edit.fields[i].Secret = secret
 			}
 			if ui.Button(c, "去掉").Clicked() {
 				a.edit.fields = append(a.edit.fields[:i], a.edit.fields[i+1:]...)
@@ -202,13 +204,7 @@ func (a *App) editNewField(c *ui.Context) {
 	ui.Row(c).Fill().Gap(8).ScrollIntoView().Children(func() {
 		a.editField(c, "字段名", &a.edit.newLabel, false)
 		a.editField(c, "字段值", &a.edit.newValue, a.edit.newSecret)
-		s := ui.Button(c, "秘密")
-		if a.edit.newSecret {
-			s.Background(c.Theme().Surface)
-		}
-		if s.Clicked() {
-			a.edit.newSecret = !a.edit.newSecret
-		}
+		ui.Toggle(c, &a.edit.newSecret, "秘密")
 		if ui.PrimaryButton(c, "加上").Clicked() {
 			a.addField()
 		}

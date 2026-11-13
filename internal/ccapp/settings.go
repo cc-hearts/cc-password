@@ -25,22 +25,25 @@ func (a *App) settingsView(c *ui.Context) {
 			}
 			ui.Text(c, "设置").FontSize(20).Bold().Grow(1)
 		})
-		ui.Text(c, "自动锁定").Bold()
-		// The choices are named, and 永不 is not among them. A password manager
-		// with no lock is a password manager whose key sits in memory for as
-		// long as the machine is on, and somebody who wants it open for longer
-		// is offered an hour.
-		ui.Text(c, "一段时间没有操作就自动锁定，锁定后要用口令重新打开。").TextColor(c.Theme().TextMuted)
-		ui.Column(c).Gap(8).Children(func() {
-			for _, m := range idleChoices {
-				b := ui.Button(c, idleLabel(m))
-				if a.idleTimeout() == time.Duration(m)*time.Minute {
-					b.Background(c.Theme().Surface)
+		// The choices are one choice, so they are one control: a radio group
+		// draws the one in force with its own dot, and the arrows move among
+		// them. The labels are exactly what they were — N 分钟 — because
+		// somebody setting a timeout reads the number and nothing else.
+		// 永不 is not among them: a password manager with no lock is a
+		// password manager whose key sits in memory for as long as the
+		// machine is on, and somebody who wants it open for longer is
+		// offered an hour.
+		ui.Fieldset(c, "自动锁定", func() {
+			ui.Text(c, "一段时间没有操作就自动锁定，锁定后要用口令重新打开。").TextColor(c.Theme().TextMuted)
+			ui.RadioGroup(c, func() {
+				for _, m := range idleChoices {
+					minutes := m
+					chosen := a.idleTimeout() == time.Duration(minutes)*time.Minute
+					if ui.Radio(c, &chosen, true, idleLabel(minutes)).Changed() {
+						a.setIdle(c, minutes)
+					}
 				}
-				if b.Clicked() {
-					a.setIdle(c, m)
-				}
-			}
+			})
 		})
 		if a.err != "" {
 			ui.Text(c, a.err).TextColor(c.Theme().TextMuted)

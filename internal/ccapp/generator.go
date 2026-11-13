@@ -74,6 +74,7 @@ func (a *App) closeGen() {
 // make another one. It is a screen over the list and over the detail, because
 // it is opened from either and it is not a place anybody stays.
 func (a *App) genView(c *ui.Context) {
+	t := *c.Theme()
 	a.readGenLength()
 	a.genDraw()
 	ui.Column(c).Fill().Gap(12).Children(func() {
@@ -84,32 +85,39 @@ func (a *App) genView(c *ui.Context) {
 			ui.Text(c, "生成密码").FontSize(20).Bold().Grow(1)
 		})
 		// The password is the one thing on this screen, so it is the biggest
-		// thing on it, and it is shown rather than masked: it was made to be
-		// read or copied, and a password behind a hold-to-reveal is one nobody
-		// can check before they use it somewhere.
-		ui.Text(c, a.gen.password).FontSize(28).SingleLine().Grow(1)
-		// The strength is the number of bits with a name beside it. 强 on its
-		// own is a claim, and the bits are the reason for it — and the reason
-		// turning a class off costs something.
-		if p := a.gen.problem(); p != "" {
-			ui.Text(c, p).TextColor(c.Theme().TextMuted)
-		} else {
-			ui.Text(c, fmt.Sprintf("%s · %.0f 位熵", a.gen.strength, a.gen.bits)).TextColor(c.Theme().TextMuted)
-		}
+		// thing on it, in a panel of its own: it was made to be read or copied,
+		// and a password behind a hold-to-reveal is one nobody can check
+		// before they use it somewhere.
+		panel := ui.Column(c).Gap(t.Space(1)).Padding(t.Space(3), t.Space(4)).
+			Radius(t.Radius+2).Background(t.Surface).Border(1, t.Border)
+		panel.Children(func() {
+			ui.Text(c, a.gen.password).FontSize(28).SingleLine().Grow(1)
+			// The strength is the number of bits with a name beside it. 强 on
+			// its own is a claim, and the bits are the reason for it — and the
+			// reason turning a class off costs something.
+			if p := a.gen.problem(); p != "" {
+				ui.Text(c, p).TextColor(c.Theme().TextMuted)
+			} else {
+				ui.Text(c, fmt.Sprintf("%s · %.0f 位熵", a.gen.strength, a.gen.bits)).TextColor(c.Theme().TextMuted)
+			}
+		})
 		ui.Field(c, "长度", func() {
 			ui.TextInput(c, &a.gen.length).SingleLine().Fill()
 		})
-		ui.Row(c).Gap(8).Children(func() {
+		// The four classes are one choice — at least one of them must stay on
+		// — so they are drawn as the chips of one control, which is also what
+		// makes them answer the pointer: a button given a face of its own
+		// loses the hover and the press the theme would give it.
+		ui.ToggleGroup(c, func() {
 			a.genClass(c, "小写", &a.gen.opts.Lower)
 			a.genClass(c, "大写", &a.gen.opts.Upper)
 			a.genClass(c, "数字", &a.gen.opts.Digits)
 			a.genClass(c, "符号", &a.gen.opts.Symbols)
-		})
+		}).Label("字符")
 		// The ambiguous characters are the ones that look alike in a password
 		// field's font, and a password with them in it is one somebody types
 		// wrong on the site it was made for.
-		excl := ui.Toggle(c, &a.gen.opts.NoAmbiguous, "排除易混字符")
-		_ = excl
+		ui.Toggle(c, &a.gen.opts.NoAmbiguous, "排除易混字符").Shrink(0)
 		ui.Row(c).Gap(8).Children(func() {
 			if ui.PrimaryButton(c, "重新生成").Clicked() {
 				a.gen.again = true

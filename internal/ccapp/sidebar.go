@@ -14,17 +14,32 @@ import (
 // the only thing about it that is ever in the clear: everything inside it is
 // ciphertext behind the vault key.
 func (a *App) sidebarView(c *ui.Context) {
-	ui.Column(c).Width(180).Shrink(0).Gap(8).Children(func() {
+	t := *c.Theme()
+	// A card, not a bare column against the window's white: the vaults are a
+	// place of their own beside the list, and the gutter of white between
+	// the two is what says so.
+	card := ui.Column(c).Width(180).Shrink(0).Gap(t.Space(1.5)).
+		Padding(t.Space(2)).Radius(t.Radius+2).
+		Background(t.Surface).Border(1, t.Border)
+	card.Children(func() {
 		for _, vi := range a.v.Vaults() {
 			v := vi
-			// The name is the label, and the row itself is what a click acts
-			// on: a click on the text beside it would reach the list's row
-			// underneath.
-			row := ui.Row(c).Children(func() {
-				ui.Text(c, v.Name).SingleLine()
+			// The row is the label and the click target both: a click on the
+			// text beside it would reach the list's row underneath. Its
+			// highlight is the row's own face, so it covers the whole row
+			// rather than the grey letters of the name.
+			row := ui.Row(c).Fill().AlignItems(ui.Center).Gap(t.Space(2)).
+				Padding(t.Space(1.5), t.Space(2)).Radius(t.Radius).Children(func() {
+				ui.Text(c, v.Name).SingleLine().Grow(1)
 			})
-			if v.ID == a.main.vaultID {
-				row.Background(c.Theme().Surface)
+			switch {
+			case v.ID == a.main.vaultID:
+				row.Selected(true)
+			case row.Hovered():
+				// The hover is the row's own face, so it covers the whole row
+				// rather than the letters of the name. It lands a frame after
+				// the pointer moves, exactly as the library's own hover does.
+				row.Background(t.SurfaceHover)
 			}
 			if row.Clicked() {
 				a.main.vaultID = v.ID
@@ -83,7 +98,13 @@ func trimSpace(s string) string {
 // the rows. The list takes the keys while it has the focus, so the arrows move
 // the choice and Enter opens what is chosen.
 func (a *App) listView(c *ui.Context, rows []vault.Entry) {
-	ui.Column(c).Grow(1).MinWidth(0).Gap(8).Children(func() {
+	t := *c.Theme()
+	// The list is a card too, and the search field and the filters sit in its
+	// padding: the white around them is the gutter, not the page.
+	card := ui.Column(c).Grow(1).MinWidth(0).Gap(t.Space(3)).
+		Padding(t.Space(3)).Radius(t.Radius+2).
+		Background(t.Surface).Border(1, t.Border)
+	card.Children(func() {
 		// A Field around the input rather than a SearchField of its own: the
 		// field names its input with its own label, which is what lets a test
 		// ask whether the search field has the focus by its name, and what
@@ -104,14 +125,16 @@ func (a *App) listView(c *ui.Context, rows []vault.Entry) {
 			in.Placeholder("标题、用户名、备注")
 		})
 		a.main.wantSearch = false
-		ui.Row(c).Gap(8).Children(func() {
+		// One control rather than a row of buttons, and the trash is one of
+		// its chips: these are all ways of saying what the list is showing,
+		// and drawing them as one control says so. It is also what makes them
+		// answer the pointer — a button given a face of its own loses the
+		// hover and the press the theme would otherwise give it, which is
+		// how these used to sit there looking dead.
+		ui.ToggleGroup(c, func() {
 			for _, f := range filters {
 				on := f.typ == a.main.typ
-				b := ui.Button(c, f.label)
-				if on {
-					b.Background(c.Theme().Surface)
-				}
-				if b.Clicked() {
+				if ui.Toggle(c, &on, f.label).Changed() {
 					a.main.typ = f.typ
 					a.main.selected = 0
 					// 全部 names the whole vault rather than a kind of item, so
@@ -123,16 +146,12 @@ func (a *App) listView(c *ui.Context, rows []vault.Entry) {
 					}
 				}
 			}
-			ui.Spacer(c).Grow(1)
-			t := ui.Button(c, "已删除")
-			if a.main.trash {
-				t.Background(c.Theme().Surface)
-			}
-			if t.Clicked() {
-				a.main.trash = !a.main.trash
+			// The trash is a place rather than a kind, so it is a toggle and
+			// not a filter: it shows whether the list is looking at it.
+			if ui.Toggle(c, &a.main.trash, "已删除").Changed() {
 				a.main.selected = 0
 			}
-		})
+		}).Label("筛选")
 		a.list(c, rows)
 	})
 }
